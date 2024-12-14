@@ -1,0 +1,131 @@
+
+/* Fonts */
+.Bebas {
+    font-family: 'Bebas Neue', cursive;
+}
+.Montserrat {
+    font-family: 'Montserrat', cursive;
+}
+
+/* Background Picture */
+body {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    /* background-attachment: fixed; */
+    margin: 0;
+    /* height: 100vh;
+    overflow: hidden; */
+}
+
+/* Navbar */
+.navbar-custom {
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar-center {
+    flex-grow: 1;
+    text-align: center;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Inactive Page Button */
+.inactive {
+    background-color: #EAEAEA;
+    color: #1ABC02;
+}
+
+/* Apply the animation to the icon on hover */
+.icon:hover .fa-user {
+    animation: bounce 0.8s;
+}
+
+/* Logo Center */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+
+
+/* Responsive Image */
+.logo-image {
+    height: 12rem; /* Default height for larger screens */
+}
+
+@media (max-width: 768px) {
+    .logo-image {
+        height: 6rem;
+    }
+
+    .logo-container {
+        height: 60vh;
+    }
+}
+
+/* Footer */
+.footer {
+    /* position: fixed; */
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #0E7A03;
+    padding: 20px 0;
+    text-align: center;
+}
+.footerText {
+    padding: 1px;
+    margin: 1px;
+}
+
+/* Text Gradient */
+.textGradient {
+    background: linear-gradient(to right, #0E7A03, #25ec06);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Pre-Bookings List Button */
+.preBookings {
+    background-color:#1ABC02;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+.preBookings:hover {
+    background-color:#1ABC02;
+    color:  white;
+    font-weight: 600;
+    --tw-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--tw-shadow);
+}
+
+
+.custom-select {
+    background-color: #ccc; 
+    color: #666;
+}
+
+.custom-select option {
+    background-color: #ccc;
+    color: #666;
+}
+
+.custom-select option.bg-light-green-text-dark-white {
+    background-color: #32cd32;
+    color: #f5f5f5;
+}

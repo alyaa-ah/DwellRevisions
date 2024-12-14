@@ -1,0 +1,123 @@
+function viewDftcBookingAdminDftc(booking){
+    var data = JSON.parse(booking);
+    var total_amount = data.total_amount;
+    var position = data.position;
+    $('#fullNameDftcHall-modal').text(data.fullname);
+    $('#emailDftcHall-modal').text(data.email);
+    $('#contactDftcHall-modal').text(data.contact);
+    $('#homeAddressDftcHall-modal').text(data.address);
+    $('#positionDftcHall-modal').text(data.position);
+    $('#agencyDftcHall-modal').text(data.agency);
+    $('#datetimeFilledUpDftcHall-modal').text(data.DFTC_date);
+    $('#bookingNumberDftcHall-modal').text(data.DFTC_number);
+    $('#activityDftcHall-modal').text(data.activity);
+    $('#roomNumberDftcHall-modal').text(data.room_number);
+    $('#checkInDateDftcHall-modal').text(data.check_in_date);
+    $('#checkOutDateDftcHall-modal').text(data.check_out_date);
+    $('#numOfDaysDftcHall-modal').text(data.number_of_days);
+    $('#numOfNightsDftcHall-modal').text(data.number_of_nights);
+    $('#arrivalDftcHall-modal').text(data.arrival);
+    $('#departureDftcHall-modal').text(data.departure);
+    $('#numOfMalesDftcHall-modal').text(data.num_of_male);
+    $('#numOfFemalesDftcHall-modal').text(data.num_of_female);
+    $('#rateDftcHall-modal').text(data.rate);
+    if(total_amount == 0.00 && position == 'Student'){
+        $('#totalAmountDftcHall-modal').text('FREE');
+    }else{
+        $('#totalAmountDftcHall-modal').text(data.total_amount);
+    }
+    $('#specialRequestDftcHall-modal').text(data.special_request);
+    $('#avServicesDftcHall-modal').text(data.av_services);
+    $('#jServicesDftcHall-modal').text(data.janitor_services);
+    $('#view-DftcHall-modal').modal('show');
+}
+function viewPendingDftcBookingAdminDftc(data){
+    var total_amount = data.total_amount;
+    var position = data.position;
+    $('#fullNameDftcHall-modal').text(data.fullname);
+    $('#emailDftcHall-modal').text(data.email);
+    $('#contactDftcHall-modal').text(data.contact);
+    $('#homeAddressDftcHall-modal').text(data.address);
+    $('#positionDftcHall-modal').text(data.position);
+    $('#agencyDftcHall-modal').text(data.agency);
+    $('#datetimeFilledUpDftcHall-modal').text(data.DFTC_date);
+    $('#bookingNumberDftcHall-modal').text(data.DFTC_number);
+    $('#activityDftcHall-modal').text(data.activity);
+    $('#roomNumberDftcHall-modal').text(data.room_number);
+    $('#checkInDateDftcHall-modal').text(data.check_in_date);
+    $('#checkOutDateDftcHall-modal').text(data.check_out_date);
+    $('#numOfDaysDftcHall-modal').text(data.number_of_days);
+    $('#numOfNightsDftcHall-modal').text(data.number_of_nights);
+    $('#arrivalDftcHall-modal').text(data.arrival);
+    $('#departureDftcHall-modal').text(data.departure);
+    $('#numOfMalesDftcHall-modal').text(data.num_of_male);
+    $('#numOfFemalesDftcHall-modal').text(data.num_of_female);
+    $('#rateDftcHall-modal').text(data.rate);
+    if(total_amount == 0.00 && position == 'Student'){
+        $('#totalAmountDftcHall-modal').text('FREE');
+    }else{
+        $('#totalAmountDftcHall-modal').text(data.total_amount);
+    }
+    $('#specialRequestDftcHall-modal').text(data.special_request);
+    $('#avServicesDftcHall-modal').text(data.av_services);
+    $('#jServicesDftcHall-modal').text(data.janitor_services);
+    $('#view-DftcHall-modal').modal('show');
+}
+function reviewDftcBookingAdmin(data){
+    $('#booking_status_id').val(data.id);
+    $('#reviewModal').modal('show');
+}
+$(document).ready(function(){
+    $(document).on('submit', '#status-clientbooking-form', function(event){
+        event.preventDefault();
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'POST',
+            url: 'adminDftcStatusClientBooking',
+            data: $(this).serialize(),
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Loading...',
+                    text: 'Please wait while we process your review.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function(response){
+                if(response == 0){
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error!",
+                        text: "Could not change status at this time!",
+                        showConfirmButton: true,
+                    })
+                }else if(response == 404){
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error!",
+                        text: "Changes were made on the client side therefore, the webpage needs to be refreshed.",
+                        showConfirmButton: true,
+                    }).then(function(){
+                        window.location.reload();
+                    });
+                }else{
+                    Swal.fire({
+                        icon: "success",
+                        title: "All set!",
+                        text: "DFTC pre-reservation successfully changed status!",
+                        showConfirmButton: true,
+                    }).then(function(){
+                        window.location.reload();
+                    });
+                }
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+});

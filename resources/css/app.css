@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* custom class */
+.btn-nav {
+    @apply mx-0 rounded-full w-auto font-medium transition ease-in-out duration-500;
+  }
+
+.btn-nav:hover {
+    @apply bg-light-green text-gray-100;
+}
+.footer {
+    @apply bg-dark-green;
+}

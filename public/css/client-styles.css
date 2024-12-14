@@ -1,0 +1,13 @@
+.overflow-control {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+.user-role,
+.user-fullname {
+    display: inline-block;
+    max-width: calc(100% - 50px); /* Adjust this based on icon size and other elements */
+    vertical-align: middle;
+}

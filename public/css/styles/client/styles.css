@@ -1,0 +1,72 @@
+.form-control {
+    border: 2px solid #5a5a5a;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    color: #495057;
+}
+.form-control:focus {
+    border-color: #3a3a3a;
+    box-shadow: 0 0 5px rgba(58, 58, 58, 0.5);
+    outline: none;
+}.readonly-select {
+    pointer-events: none;
+}
+.scrollable-table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #000;
+}
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #000;
+}
+.modal-body.scrollable {
+    max-height: 400px;
+    overflow-y: auto;
+}
+.streamline{
+    cursor: pointer;
+}
+.developers {
+    max-height: 500px;
+    overflow-y: auto;
+}
+.sidebar-content {
+    display: none;
+}
+.sidebar-expanded .sidebar-content {
+    display: block;
+}
+@media (max-width: 720px) {
+    .image-home {
+        display: none;
+    }
+}
+@media (max-width: 720px) {
+    .dftcHallTitle {
+        font-size: 24px;
+    }
+}
+.social-icon {
+transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.social-icon:hover {
+    transform: scale(1.2) rotate(10deg);
+    opacity: 0.8;
+}
+
+.fb-icon:hover {
+    animation: fb-hover 0.3s forwards;
+}
+
+.gmail-icon:hover {
+    animation: gmail-hover 0.3s forwards;
+}
+
+.ig-icon:hover {
+    animation: ig-hover 0.3s forwards;
+}
+
+
