@@ -125,7 +125,7 @@
                                   <textarea
                                     class="form-control mt-2"
                                     id="activityTextArea"
-                                    name="activityCustom"
+                                    name="customActivity"
                                     placeholder="Please describe the custom activity here..."
                                     style="display: none;"
                                     rows="4"

@@ -130,7 +130,7 @@
                                       <textarea
                                         class="form-control mt-2"
                                         id="activityTextArea"
-                                        name="activityCustom"
+                                        name="customActivity"
                                         placeholder="Please describe the custom activity here..."
                                         style="display: none;"
                                         rows="4"
@@ -383,7 +383,7 @@
     </div>
 </div>
 <script>
-    document.getElementById('modalBodyPreBookStaffHouse').addEventListener('scroll', function() {
+document.getElementById('modalBodyPreBookStaffHouse').addEventListener('scroll', function() {
         const scrollable = this.scrollHeight - this.clientHeight;
 
         if (Math.ceil(this.scrollTop) >= scrollable - 10) {

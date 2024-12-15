@@ -45,6 +45,8 @@ function editGuestHouseBooking(booking){
     $('#editActivityGuestHouse').val(data.activity);
     $('#editFemaleGuestHouse').val(data.female_guest);
     $('#editMaleGuestHouse').val(data.male_guest);
+    $('#editNumOfMaleGuestHouse').val(data.num_of_male);
+    $('#editNumOfFemaleGuestHouse').val(data.num_of_female);
     $('#editSpecialRequestGuestHouse').val(data.special_request);
     var selectedPosition = $('#editPositionGuestHouse').val();
     if (selectedPosition === 'Student') {
@@ -82,7 +84,7 @@ $(document).ready(function() {
         $('#editCheckOutDateGuestHouse').val('').prop('disabled', true);
 
         var selectedDate = new Date($(this).val());
-        
+
         if ($(this).val()) {
             $('#editCheckOutDateGuestHouse').prop('disabled', false);  // Enable check-out field if check-in date is set
             var minCheckOutDate = new Date(selectedDate.getTime());
@@ -145,6 +147,7 @@ $(document).ready(function() {
         var bedding = parseInt($('#editBeddingGuestHouse').val());
         var checkInDate = new Date($('#editCheckInDateGuestHouse').val());
         var checkOutDate = new Date($('#editCheckOutDateGuestHouse').val());
+        var hasLetter = $('input[name="hasLetter"]:checked').val();
         if (isNaN(rate) || isNaN(capacity) || isNaN(numOfMale) || isNaN(numOfFemale)) {
             $('#editTotalAmountGuestHouse').val('0.00');
             return;
@@ -168,7 +171,7 @@ $(document).ready(function() {
 
         var totalAmount = 0;
 
-        if ($('#edithasLetter').val() === "Yes") {
+        if (hasLetter=== "Yes") {
             $('#editTotalAmountGuestHouse').val('FREE');
             return;
         }
@@ -186,48 +189,7 @@ $(document).ready(function() {
         $('#editTotalAmountGuestHouse').val(totalAmount.toFixed(2));
     }
     $('#editRateGuestHouse, #editCapacityGuestHouse, #editNumOfMaleGuestHouse, #editNumOfFemaleGuestHouse, #editRentGuestHouse, #editBeddingGuestHouse, #editCheckInDateGuestHouse, #editCheckOutDateGuestHouse, #edithasLetter').on('change', editcomputeTotalAmount);
-    function countGuests(guestList) {
-        if (!guestList) {
-            return 0; 
-        }
- 
-        return guestList.split(',').filter(function(guest) {
-            return guest.trim() !== ''; 
-        }).length;
-    }
-    function validateForm() {
-  
-        let maleCount = countGuests($('#editMaleGuestHouse').val());
-        let femaleCount = countGuests($('#editFemaleGuestHouse').val());
-
-  
-        let numOfMale = parseInt($('#editNumOfMaleGuestHouse').val(), 10);
-        let numOfFemale = parseInt($('#editNumOfFemaleGuestHouse').val(), 10);
-
-     
-        if (maleCount !== numOfMale) {
-            Swal.fire({
-                icon: "error",
-                title: "Can't proceed!",
-                text: "The number of male guests does not match the names entered.",
-                showConfirmButton: true,
-            });
-            return false; 
-        }
-
-       
-        if (femaleCount !== numOfFemale) {
-            Swal.fire({
-                icon: "error",
-                title: "Can't proceed!",
-                text: "The number of female guests does not match the names entered.",
-                showConfirmButton: true,
-            });
-            return false;
-        }
-
-        return true; 
-    }
+    $('input[name="hasLetter"]').on('change', editcomputeTotalAmount);
     $(document).on('click', '#submitButtonEditGuestHouse', function(event){
         event.preventDefault();
         const agreeCheckbox = $('#flexCheckDefaultEditGuestHouse')[0];
@@ -240,23 +202,31 @@ $(document).ready(function() {
             })
             return;
         }
-        var numOfMale = parseInt($('#editNumOfMaleGuestHouse').val());
-        var numOfFemale = parseInt($('#editNumOfFemaleGuestHouse').val());
-        if(numOfFemale == 0 && numOfMale == 0) {
-            Swal.fire({
-                icon: "error",
-                title: "Error!",
-                text: "You must have at least one female guest or male guest!",
-                showConfirmButton: true,
-            })
-            $('#edit-guesthousebooking-modal').modal('show');
-            $('#guestHouseTerms').modal('hide');
-            return;
+        const maleGuestsInputs = $('input[name="maleGuests[]"]');
+        const femaleGuestsInputs = $('input[name="femaleGuests[]"]');
+
+        for (let input of maleGuestsInputs) {
+            if (!input.value.trim()) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Validation Error",
+                    text: "Please fill in all male guest names before submitting.",
+                    showConfirmButton: true,
+                });
+                return;
+            }
         }
-        if (!validateForm()) {
-            $('#edit-guesthousebooking-modal').modal('show');
-            $('#guestHouseTerms').modal('hide');
-            return;
+
+        for (let input of femaleGuestsInputs) {
+            if (!input.value.trim()) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Validation Error",
+                    text: "Please fill in all female guest names before submitting.",
+                    showConfirmButton: true,
+                });
+                return;
+            }
         }
         let formData = new FormData($('#edit-guestHouse-booking-form')[0]);
         $.ajax({

@@ -236,8 +236,8 @@ class ClientFunctionController extends Controller
         $client = Client::where('id', $client_id)->first();
         $validator = Validator::make($request->all(), [
             'fullname' =>'required|max:100',
-            'agency' =>'required|min:6|max:50',
-            'address' =>'required|min:6|max:100',
+            'agency' =>'required|max:50',
+            'address' =>'required|max:100',
             'position' =>'required',
             'contact' =>'required|min:9|max:13',
             'old_password' =>'required',
