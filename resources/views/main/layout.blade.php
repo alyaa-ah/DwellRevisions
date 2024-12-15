@@ -57,7 +57,18 @@
                 content: url('{{ asset("images/ig-hover.svg") }}');
             }
         }
+        .styled-list {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
 
+        .styled-list li {
+            margin-bottom: 10px;
+        }
+
+        .styled-list li strong {
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -141,7 +152,7 @@
             <div class="container-fluid" data-aos="fade-right" data-aos-duration="800">
                 <div class="row text-dark-white text-left">
                     <div class="col-md-4 mb-6 md:mb-0">
-                        <img src="{{ asset('/public/images/FooterLogo.png') }}" class="h-16" alt="Navbar Logo">
+                        <img src="{{ asset('images/FooterLogo.png') }}" class="h-16" alt="Navbar Logo">
                         <p class="text-xs Montserrat footerText h-3">&copy; 2024 Dwell v1</p>
                         <p class="text-xs Montserrat footerText h-3">All Rights Reserved.</p>
                     </div>
@@ -380,7 +391,7 @@
                 <div class="row">
                     <div class="col text-center">
                         <span class="Montserrat text-xs font-medium">Already have an account?</span>
-                        <a  id="btnLogin" data-bs-toggle="modal" data-bs-target="#loginModal" class="Montserrat text-xs font-medium text-light-green hover:text-green-600 hover:underline">
+                        <a  id="btnLogin" data-bs-toggle="modal" data-bs-target="#loginModal" class="Montserrat text-xs font-medium text-light-green hover:text-green-600 hover:underline" style="cursor: pointer;">
                             Login
                         </a>
                     </div>
@@ -417,7 +428,7 @@
                 <hr>
                 <div class="modal-footer flex items-center space-x-2 Montserrat text-xs font-medium">
                     <span>Don't have an account?</span>
-                    <a id="btnRegister" data-bs-toggle="modal" data-bs-target="#registerModal" class="Montserrat text-light-green hover:text-green-600 hover:underline">
+                    <a id="btnRegister" data-bs-toggle="modal" data-bs-target="#registerModal" class="Montserrat text-light-green hover:text-green-600 hover:underline" style="cursor: pointer;">
                         REGISTER
                     </a>
                 </div>
@@ -432,43 +443,43 @@
                 <h1 class="modal-title Montserrat text-white font-semibold fs-5" id="privacypolicyLabel">Privacy Policy Agreement</h1>
                 <button type="button" class="btn-close text-white bg-lightest-green" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body Montserrat text-sm font-semibold" style="text-align: justify">
-                <h2>Effective Date: September 07, 2024</h2>
-
-                <h3>1. Introduction</h3>
+            <div class="modal-body Montserrat text-sm" style="text-align: justify; max-height: 80vh; overflow: scroll;">
+                <strong>Effective Date: September 07, 2024</strong>
+                <br>
+                <strong>1. Introduction</strong>
                 <p> Auxillary Program Services of Nueva Vizcaya State University is committed to protecting your privacy. This Privacy Policy outlines how we collect, use, disclose, and protect your personal information when you interact with our website, products, or services.</p>
 
-                <h3>2. Information We Collect</h3>
+                <strong>2. Information We Collect</strong>
                 <p>We may collect the following types of personal information:</p>
-                <ul>
+                <ul class="styled-list">
                     <li><strong>Personal Identifiable Information (PII):</strong> This includes your name, email address, phone number, and other contact information.</li>
                     <li><strong>Usage Data:</strong> Information about how you use our services, such as your IP address, browser type, device information, and interaction with our website.</li>
                     <li><strong>Cookies and Tracking Technologies:</strong> We may use cookies and similar tracking technologies to collect information about your browsing activities.</li>
                 </ul>
 
-                <h3>3. How We Use Your Information</h3>
+                <strong>3. How We Use Your Information</strong>
                 <p>We may use your personal information for the following purposes:</p>
-                <ul>
+                <ul class="styled-list">
                     <li>To provide and improve our products and services.</li>
                     <li>To communicate with you about our products, services, and promotions.</li>
                     <li>To process your orders and payments.</li>
                     <li>To comply with legal requirements and protect our rights.</li>
                 </ul>
 
-                <h3>4. Disclosure of Your Information</h3>
+                <strong>4. Disclosure of Your Information</strong>
                 <p>We may disclose your personal information to:</p>
-                <ul>
+                <ul class="styled-list">
                     <li>Our affiliates and subsidiaries.</li>
                     <li>Third-party service providers who assist us in providing our services.</li>
                     <li>Law enforcement authorities or regulatory bodies as required by law.</li>
                 </ul>
 
-                <h3>5. Data Security</h3>
+                <strong>5. Data Security</strong>
                 <p>We implement reasonable security measures to protect your personal information from unauthorized access, disclosure, alteration, or destruction. However, no method of transmission over the internet or electronic storage is completely secure.</p>
 
-                <h3>6. Your Rights</h3>
+                <strong>6. Your Rights</strong>
                 <p>You have the right to:</p>
-                <ul>
+                <ul class="styled-list">
                     <li>Access and rectify your personal information.</li>
                     <li>Object to the processing of your personal information.</li>
                     <li>Request the erasure of your personal information.</li>
@@ -476,15 +487,15 @@
                     <li>Data portability.</li>
                 </ul>
 
-                <h3>7. Children's Privacy</h3>
+                <strong>7. Children's Privacy</strong>
                 <p>We do not knowingly collect personal information from children under the age of 17. If you are a parent or guardian and believe that your child has provided us with personal information, please contact us.</p>
 
-                <h3>8. Changes to This Privacy Policy</h3>
+                <strong>8. Changes to This Privacy Policy</strong>
                 <p>We may update this Privacy Policy from time to time. We will notify you of any significant changes by posting the revised policy on our website.</p>
 
-                <h3>9. Contact Us</h3>
+                <strong>9. Contact Us</strong>
                 <p>If you have any questions about this Privacy Policy, please contact us at:</p>
-                <ul>
+                <ul class="styled-list">
                     <li><strong>Auxillary Program Services of Nueva Vizcaya State University</strong></li>
                     <li><strong>Bayombong, Nueva Vizcaya Philippines 3700</strong></li>
                     <li><strong>dwellasp@gmail.com</strong></li>
@@ -492,7 +503,7 @@
             </div>
             <div class="modal-footer flex items-center space-x-2 Montserrat text-xs font-medium">
                 <span>Get back to register form?</span>
-                <a id="btnRegister" data-bs-toggle="modal" data-bs-target="#registerModal" class="Montserrat text-light-green hover:text-green-600 hover:underline">
+                <a id="btnRegister" data-bs-toggle="modal" data-bs-target="#registerModal" class="Montserrat text-light-green hover:text-green-600 hover:underline" style="cursor: pointer;">
                     REGISTER
                 </a>
             </div>
@@ -507,9 +518,9 @@
                 <h1 class="modal-title Montserrat text-white font-semibold fs-5" id="termsAndConditionsLabel">Terms and Conditions</h1>
                 <button type="button" class="btn-close text-white bg-lightest-green" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body Montserrat text-sm font-semibold" style="text-align: justify">
-                <h2>Terms and Conditions</h2>
-                <p><strong>Last updated:</strong> September 07, 2024</p>
+            <div class="modal-body Montserrat text-sm" style="text-align: justify; max-height:80vh; overflow: scroll;">
+                <strong style="font-size: 18px">Terms and Conditions</strong>
+                <p><strong>Last updated:</strong> December 15, 2024</p>
 
                 <p>Please read these Terms and Conditions carefully before using the dwell.sharvilclass.com website operated by Auxillary Program Services of Nueva Vizcaya State University.</p>
 
@@ -517,36 +528,36 @@
 
                 <p>By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the Terms, you may not access the Service.</p>
 
-                <h2>1. Use of the Service</h2>
+                <strong>1. Use of the Service</strong>
                 <p>You are responsible for your use of the Service and for any content you post to the Service. You agree to use the Service in compliance with applicable laws, rules, and regulations.</p>
 
-                <h2>2. User Accounts</h2>
+                <strong>2. User Accounts</strong>
                 <p>When you create an account with us, you must provide accurate, complete, and current information. Failure to do so constitutes a breach of the Terms, which may result in the termination of your account.</p>
 
-                <h2>3. Intellectual Property</h2>
+                <strong>3. Intellectual Property</strong>
                 <p>The Service and its original content, features, and functionality are and will remain the exclusive property of Auxillary Program Services and its licensors.</p>
 
-                <h2>4. Termination</h2>
+                <strong>4. Termination</strong>
                 <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.</p>
 
-                <h2>5. Limitation of Liability</h2>
+                <strong>5. Limitation of Liability</strong>
                 <p>In no event shall Auxillary Program Services, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of the Service.</p>
 
-                <h2>6. Disclaimer</h2>
+                <strong>6. Disclaimer</strong>
                 <p>Your use of the Service is at your sole risk. The Service is provided on an "AS IS" and "AS AVAILABLE" basis. The Service is provided without warranties of any kind, whether express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, non-infringement, or course of performance.</p>
 
-                <h2>7. Governing Law</h2>
+                <strong>7. Governing Law</strong>
                 <p>These Terms shall be governed and construed in accordance with the laws of Republic of the Philippines, without regard to its conflict of law provisions.</p>
 
-                <h2>8. Changes</h2>
+                <strong>8. Changes</strong>
                 <p>We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.</p>
 
-                <h2>9. Contact Us</h2>
+                <strong>9. Contact Us</strong>
                 <p>If you have any questions about these Terms, please contact us at dwellasp@gmail.com</p>
             </div>
             <div class="modal-footer flex items-center space-x-2 Montserrat text-xs font-medium">
                 <span>Get back to register form?</span>
-                <a id="btnRegister" data-bs-toggle="modal" data-bs-target="#registerModal" class="Montserrat text-light-green hover:text-green-600 hover:underline">
+                <a id="btnRegister" data-bs-toggle="modal" data-bs-target="#registerModal" class="Montserrat text-light-green hover:text-green-600 hover:underline" style="cursor: pointer;">
                     REGISTER
                 </a>
             </div>

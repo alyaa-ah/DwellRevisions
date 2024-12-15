@@ -121,7 +121,7 @@
                                             @else
                                                 <span>No ratings yet</span>
                                             @endif
-                                        </tr>
+                                    </tr>
                                     <tr>
                                         <td class="w-5 Montserrat text-light-green text-sm font-semibold text-center"><i class="fa-solid fa-list" style="color: #25ec06;"></i></td>
                                         <td class="Montserrat text-light-green text-sm font-semibold">Type: {{ $room->room_type }}</td>
@@ -197,13 +197,7 @@
                             <div class="col-md-12">
                                 <p class="Montserrat text-light-green text-sm font-medium">Rate: {{ $room->room_rate }} Pesos/Head</p>
                                     <div class="d-flex justify-content-end">
-                                        {{-- <button onclick="viewGuestHousePreBookingsMain('{{ $room->id }}')"
-                                                class="mt-[-0.5rem] btn lg:rounded-full md:rounded bg-light-green text-white Montserrat hover:bg-dark-green transition ease-in-out duration-500 mr-2 flex items-center space-x-1">
-                                            <span class="hidden sm:inline">Pre-Booking(s) |</span>
-                                            <span class="flex items-center">{{ $bookingCount }}<i class="fa-solid fa-user fa-sm text-gray-300 ml-1"></i></span>
-                                        </button> --}}
-
-                                        <h1 class="text-lg mt-2 text-light-green Montserrat font-semibold"><a id="btnLogin" data-bs-toggle="modal" data-bs-target="#loginModal" class=" hover:text-green-600 hover:underline">Please login to book</a></h1>
+                                        <h1 class="text-lg mt-2 text-light-green Montserrat font-semibold"><a id="btnLogin" data-bs-toggle="modal" data-bs-target="#loginModal" class=" hover:text-green-600 hover:underline" style="cursor: pointer;">Please login to book</a></h1>
                                     </div>
                             </div>
                         </div>

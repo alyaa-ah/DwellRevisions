@@ -168,16 +168,46 @@ class MainController extends Controller
     }
     public function staffHouseRooms(){
         $facilityId = Facility::where('facility_name', 'Staff House')->value('id');
-        $staffHouse = Room::where('facility_id', $facilityId)->get();
+        $staffHouseRooms = Room::where('facility_id', $facilityId)->get();
         $now = Carbon::now('Asia/Manila');
-        $bookings = StaffHouseBooking::where('status', 'Reviewed')
-            ->get()
-            ->filter(function ($booking) use ($now) {
+        $bookings = StaffHouseBooking::where('status', 'Reviewed')->get()
+        ->filter(function ($booking) use ($now) {
+            try {
                 $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
                 $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
-                $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
-                return $now->lte($checkOutDateTime);
-            });
+                if ($checkOutDate && $departureTime) {
+                    $checkOutDateTime = $checkOutDate->setTime($departureTime->hour, $departureTime->minute);
+                    return $now->lte($checkOutDateTime);
+                }
+            } catch (\Exception $e) {
+
+                return false;
+            }
+            return false;
+        });
+        $feedbacks = StaffHouseBooking::where('status', 'Reviewed')
+        ->get()
+        ->filter(function ($booking) use ($now) {
+            try {
+                $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+                $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
+                if ($checkOutDate && $departureTime) {
+                    $checkOutDateTime = $checkOutDate->setTime($departureTime->hour, $departureTime->minute);
+                    return $now->gte($checkOutDateTime);
+                }
+            } catch (\Exception $e) {
+                return false;
+            }
+            return false;
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::parse($booking->comment_date, 'Asia/Manila');
+        })
+        ->map(function ($booking) {
+            $booking->comment_date = Carbon::parse($booking->comment_date, 'Asia/Manila')->format('F j, Y');
+            return $booking;
+        });
+
         $sessions = [
             'loggedInCustomer',
             'loggedInAdminGH',
@@ -185,26 +215,57 @@ class MainController extends Controller
             'loggedInAdminDftc',
             'loggedInAdminSH',
         ];
-
+        foreach ($staffHouseRooms as $room) {
+            $room->averageRating = $feedbacks->where('room_id', $room->id)->avg('ratings') ?? 0;
+        }
         foreach ($sessions as $session) {
             if (session()->has($session)) {
                 return back();
             }
         }
-        return view('main.rooms.staffHouseRooms' , ['staffHouse' => $staffHouse, 'bookings' => $bookings]);
+        return view('main.rooms.staffHouseRooms' , ['staffHouseRooms' => $staffHouseRooms , 'bookings' => $bookings, 'feedbacks' => $feedbacks]);
     }
     public function dftcRooms(){
         $facilityId = Facility::where('facility_name', 'DFTC')->value('id');
-        $DFTC = Room::where('facility_id', $facilityId)->get();
+        $DFTCrooms = Room::where('facility_id', $facilityId)->get();
         $now = Carbon::now('Asia/Manila');
-        $bookings = DftcBooking::where('status', 'Reviewed')
-            ->get()
-            ->filter(function ($booking) use ($now) {
+        $bookings = StaffHouseBooking::where('status', 'Reviewed')->get()
+        ->filter(function ($booking) use ($now) {
+            try {
                 $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
                 $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
-                $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
-                return $now->lte($checkOutDateTime);
-            });
+                if ($checkOutDate && $departureTime) {
+                    $checkOutDateTime = $checkOutDate->setTime($departureTime->hour, $departureTime->minute);
+                    return $now->lte($checkOutDateTime);
+                }
+            } catch (\Exception $e) {
+
+                return false;
+            }
+            return false;
+        });
+        $feedbacks = StaffHouseBooking::where('status', 'Reviewed')
+        ->get()
+        ->filter(function ($booking) use ($now) {
+            try {
+                $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+                $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
+                if ($checkOutDate && $departureTime) {
+                    $checkOutDateTime = $checkOutDate->setTime($departureTime->hour, $departureTime->minute);
+                    return $now->gte($checkOutDateTime);
+                }
+            } catch (\Exception $e) {
+                return false;
+            }
+            return false;
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::parse($booking->comment_date, 'Asia/Manila');
+        })
+        ->map(function ($booking) {
+            $booking->comment_date = Carbon::parse($booking->comment_date, 'Asia/Manila')->format('F j, Y');
+            return $booking;
+        });
         $sessions = [
             'loggedInCustomer',
             'loggedInAdminGH',
@@ -212,26 +273,57 @@ class MainController extends Controller
             'loggedInAdminDftc',
             'loggedInAdminSH',
         ];
-
+        foreach ($DFTCrooms as $room) {
+            $room->averageRating = $feedbacks->where('room_id', $room->id)->avg('ratings') ?? 0;
+        }
         foreach ($sessions as $session) {
             if (session()->has($session)) {
                 return back();
             }
         }
-        return view('main.rooms.dftcRooms', ['DFTC' => $DFTC, 'bookings' => $bookings]);
+        return view('main.rooms.dftcRooms', ['DFTCrooms' => $DFTCrooms, 'bookings' => $bookings, 'feedbacks' => $feedbacks]);
     }
     public function dftcHalls(){
         $facilityId = Facility::where('facility_name', 'DFTC')->value('id');
-        $DFTC = Room::where('facility_id', $facilityId)->get();
+        $DFTChalls = Room::where('facility_id', $facilityId)->get();
         $now = Carbon::now('Asia/Manila');
-        $bookings = DftcBooking::where('status', 'Reviewed')
-            ->get()
-            ->filter(function ($booking) use ($now) {
+        $bookings = StaffHouseBooking::where('status', 'Reviewed')->get()
+        ->filter(function ($booking) use ($now) {
+            try {
                 $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
                 $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
-                $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
-                return $now->lte($checkOutDateTime);
-            });
+                if ($checkOutDate && $departureTime) {
+                    $checkOutDateTime = $checkOutDate->setTime($departureTime->hour, $departureTime->minute);
+                    return $now->lte($checkOutDateTime);
+                }
+            } catch (\Exception $e) {
+
+                return false;
+            }
+            return false;
+        });
+        $feedbacks = StaffHouseBooking::where('status', 'Reviewed')
+        ->get()
+        ->filter(function ($booking) use ($now) {
+            try {
+                $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+                $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
+                if ($checkOutDate && $departureTime) {
+                    $checkOutDateTime = $checkOutDate->setTime($departureTime->hour, $departureTime->minute);
+                    return $now->gte($checkOutDateTime);
+                }
+            } catch (\Exception $e) {
+                return false;
+            }
+            return false;
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::parse($booking->comment_date, 'Asia/Manila');
+        })
+        ->map(function ($booking) {
+            $booking->comment_date = Carbon::parse($booking->comment_date, 'Asia/Manila')->format('F j, Y');
+            return $booking;
+        });
         $sessions = [
             'loggedInCustomer',
             'loggedInAdminGH',
@@ -239,13 +331,15 @@ class MainController extends Controller
             'loggedInAdminDftc',
             'loggedInAdminSH',
         ];
-
+        foreach ($DFTChalls as $room) {
+            $room->averageRating = $feedbacks->where('room_id', $room->id)->avg('ratings') ?? 0;
+        }
         foreach ($sessions as $session) {
             if (session()->has($session)) {
                 return back();
             }
         }
-        return view('main.rooms.dftcHalls', ['DFTC' => $DFTC, 'bookings' => $bookings]);
+        return view('main.rooms.dftcHalls', ['DFTChalls' => $DFTChalls, 'bookings' => $bookings, 'feedbacks' => $feedbacks]);
     }
     public function getGuestHousePreBookingDetailsMain(Request $request) {
         $roomId = $request->input('room_id');
