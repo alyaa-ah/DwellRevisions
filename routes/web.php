@@ -54,6 +54,7 @@ Route::controller(MainController::class)->group(function(){
 });
 Route::controller(RegisterController::class)->group(function(){
     Route::post('/register-client', 'registerClient');
+    Route::post('/forgotPassword', 'forgotPassword');
 });
 Route::controller(LoginController::class)->group(function(){
     Route::post('/login-client', 'loginClient');

@@ -11,6 +11,7 @@ use App\Mail\ReviewMail;
 use App\Mail\SuperAdminNotificationMail;
 use App\Mail\CancelationNotificationMail;
 use App\Mail\NewPreReservationMail;
+use App\Mail\ForgotPasswordMail;
 class EmailController extends Controller
 {
     public function sendEmailPassword($toEmail, $password, $fullname){
@@ -81,5 +82,12 @@ class EmailController extends Controller
         $status = $status;
         $subject = "Dwell New Reviewed Pre-Reservation Mail";
         Mail::to($toEmail)->send(new NewPreReservationMail($subject, $fullname, $admin, $requestor, $bookingNumber, $facility, $roomNumber, $status));
+    }
+    public function forgotPassword($toEmail, $fullname, $password){
+        $toEmail = $toEmail;
+        $fullname = $fullname;
+        $password = $password;
+        $subject = "Dwell Reset Password Mail";
+        Mail::to($toEmail)->send(new ForgotPasswordMail($toEmail, $fullname, $password, $subject));
     }
 }

@@ -427,11 +427,41 @@
                 </form>
                 <hr>
                 <div class="modal-footer flex items-center space-x-2 Montserrat text-xs font-medium">
-                    <span>Don't have an account?</span>
-                    <a id="btnRegister" data-bs-toggle="modal" data-bs-target="#registerModal" class="Montserrat text-light-green hover:text-green-600 hover:underline" style="cursor: pointer;">
-                        REGISTER
-                    </a>
+                    <div>
+                        <span>Don't have an account?</span>
+                        <a id="btnRegister" data-bs-toggle="modal" data-bs-target="#registerModal" class="Montserrat text-light-green hover:text-green-600 hover:underline" style="cursor: pointer;">
+                            REGISTER
+                        </a>
+                    </div>
+                    <div>
+                        <span>Forgot your password?</span>
+                        <a id="btnPassword" data-bs-toggle="modal" data-bs-target="#forgotPassword-modal" class="Montserrat text-light-green hover:text-green-600 hover:underline" style="cursor: pointer;">
+                            REQUEST RESET
+                        </a>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="forgotPassword-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light-green text-center">
+                <h1 class="modal-title Montserrat text-white font-semibold fs-5">Reset Password</h1>
+                <button type="button" class="btn-close text-white bg-lightest-green" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body Montserrat text-sm font-semibold">
+                <form id="forgotPassword-form">
+                    <div class="form-group text-light-green">
+                        <label for="username">Email</label>
+                        <input type="email" class="form-control" name="email" id="forgotEmailPassword" placeholder="Please type here your google email here.">
+                    </div><br>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn bg-light-green Montserrat text-white hover:bg-dark-green">Submit</button>
+                    </div>
+                </form>
+                <hr>
             </div>
         </div>
     </div>
@@ -567,4 +597,6 @@
 
 <script type="text/javascript" src="{{ url('js/registration/register.js') }}"></script>
 <script type="text/javascript" src="{{ url('js/login/login.js') }}"></script>
+<script type="text/javascript" src="{{ url('js/login/forgotpassword.js') }}"></script>
 <script type="text/javascript" src="{{ url('js/main/prebook/functions.js') }}"></script>
+

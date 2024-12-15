@@ -63,4 +63,30 @@ class RegisterController extends Controller
         }
         return $randomString;
     }
+    public function forgotPassword(Request $request){
+        $validator = Validator::make($request->all(), [
+            'email' =>'required|email',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+               'message' => $validator->errors(),
+            ]);
+        } else {
+            $client = Client::where('email', $request->get('email'))->first();
+            if($client){
+                $generatedPassword = $this->generatePassword(10);
+                $client->password = Hash::make($generatedPassword);
+                $client->save();
+                (new EmailController)->forgotPassword($client->email, $client->fullname, $generatedPassword);
+
+                if ($client){
+                    return 200;
+                }
+                return 500;
+            }else{
+                return 404;
+            }
+
+        }
+    }
 }
