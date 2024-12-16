@@ -109,7 +109,6 @@
                                 <div class="row mt-3">
                                     <div class="col-md-12">
                                         <p class="Montserrat text-light-green text-sm font-semibold" style="text-align: justify;">{{ $room->room_description }}</p><br>
-
                                         <table class="table table-borderless">
                                             <tr>
                                                 <td class="w-5 Montserrat text-light-green text-sm font-semibold text-center"><i class="fa-solid fa-star" style="color: #25ec06;"></i></td>

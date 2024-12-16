@@ -49,18 +49,18 @@ $(document).ready(function() {
     $('#checkOutDateDftc').prop('disabled', true);
 
     $('#checkInDateDftc').on('change', function() {
+        $('#checkOutDateDftc').val('').prop('disabled', true);
+
         var selectedDate = new Date($(this).val());
 
         if ($(this).val()) {
-            $('#checkOutDateDftc').prop('disabled', false);
-        } else {
-            $('#checkOutDateDftc').prop('disabled', true);
+            $('#checkOutDateDftc').prop('disabled', false);  // Enable check-out field if check-in date is set
+            var minCheckOutDate = new Date(selectedDate.getTime());
+            $('#checkOutDateDftc').attr('min', minCheckOutDate.toISOString().split('T')[0]);
         }
-
         var minCheckOutDate = new Date(selectedDate.getTime());
         $('#checkOutDateDftc').attr('min', minCheckOutDate.toISOString().split('T')[0]);
     });
-
     $('#checkInDateDftc, #checkOutDateDftc, #arrivalDftc, #departureDftc').on('change', computeDaysAndNights);
     $('#checkInDateDftc').on('change', function() {
         var selectedDate = new Date($(this).val());
@@ -114,6 +114,7 @@ $(document).ready(function() {
         var bedding = parseInt($('#beddingDftc').val());
         var checkInDate = new Date($('#checkInDateDftc').val());
         var checkOutDate = new Date($('#checkOutDateDftc').val());
+        var hasLetterDftc = $('input[name="hasLetterDftc"]:checked').val();
         if (isNaN(rate) || isNaN(capacity) || isNaN(numOfMale) || isNaN(numOfFemale)) {
             $('#totalAmountDftc').val('NaN');
             return;
@@ -137,9 +138,9 @@ $(document).ready(function() {
 
         var totalAmount = 0;
 
-        if ($('#hasLetterDftc').val() === "Yes") {
+        if (hasLetterDftc === "Yes") {
             $('#totalAmountDftc').val('FREE');
-            return;
+            return; // Exit calculation
         }
 
         totalAmount = rate * totalLodgers * numberOfNights;
@@ -152,6 +153,7 @@ $(document).ready(function() {
         $('#totalAmountDftc').val(totalAmount.toFixed(2));
     }
     $('#rateDftc, #capacityDftc, #numOfMaleDftc, #numOfFemaleDftc, #beddingDftc, #checkInDateDftc, #checkOutDateDftc, #hasLetterDftc').on('change', computeTotalAmount);
+    $('input[name="hasLetterDftc"]').on('change', computeTotalAmount);
     $(document).on('click', '#submitButtonDFTC', function(event){
         event.preventDefault();
         const agreeCheckbox = $('#flexCheckDefaultDFTC')[0];
@@ -205,13 +207,21 @@ $(document).ready(function() {
                         showConfirmButton: true,
                     })
                 }else if(response.message){
-                    var errorMessages = Object.values(response.message).join('<br>');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Pre-reservation validation failed!',
-                        html: errorMessages,
-                        showConfirmButton: true,
-                    });
+                    $('#dftcTerms').modal('hide');
+                    Swal.close();
+                    let errorMessages = '';
+                    for (let key in response.message) {
+                        if (response.message[key] && Array.isArray(response.message[key])) {
+                            errorMessages += response.message[key].join('<br>') + '<br>';
+                        }
+                    }
+                    $('#error-message').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#submitButtonDFTC').attr('disabled', false);
+                    setTimeout(function () {
+                        $('#error-message').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
                 }else{
                     Swal.fire({
                     icon: "success",
@@ -219,7 +229,8 @@ $(document).ready(function() {
                     text: "DFTC pre-reservation is now on pending review.",
                     showConfirmButton: true,
                 }).then(function(){
-                    window.location.reload();
+                    $('#submitButtonDFTC').attr('disabled', false);
+                    window.location = "/adminGH/view-my-ongoing-DFTC-pre-reservations";
                 });
                 }
             },

@@ -272,12 +272,6 @@
                                 <div class="col-12 text-center mb-2">
                                     <h3 class="Montserrat text-xl font-semibold text-light-green">Additional Information</h3>
                                 </div>
-                                {{-- <div class="col-md-6 mb-2" id="maleGuestsContainer">
-                                    <div class="form-group text-light-green">
-                                        <label for="maleGuests" class="Montserrat text-sm font-semibold">Name of Guest/s (Male)</label>
-                                        <textarea name="maleGuests" id="maleGuests" cols="5" rows="5" class="form-control" placeholder="Note: For every name, please include a comma in between and enter the name(s) of male guest(s), including yourself if necessary." disabled></textarea>
-                                    </div>
-                                </div> --}}
                                 <div class="col-md-6 mb-2">
                                     <div class="form-group text-light-green">
                                         <label class="Montserrat text-sm font-semibold">Name of Guest/s (Male)</label>

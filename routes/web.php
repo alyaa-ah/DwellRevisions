@@ -203,6 +203,7 @@ Route::group(['middleware' => 'LoginCheckAdminGH'], function () {
         Route::get('/adminGH/view-rejected-pre-reservations', 'goToRejectedBookingsAdminGH');
         Route::get('/adminGH/view-account','goToAccountAdminGH');
         Route::post('/adminGH/adminGHEditAccount','editAdminGHAccount');
+        Route::post('/adminGHCheckClientBooking','updateCheckOut');
     });
     Route::controller(AdminGHPreReservationController::class)->group(function(){
         Route::get('/adminGH/view-my-ongoing-guesthouse-pre-reservations', 'goToAdminGhPreReservation');

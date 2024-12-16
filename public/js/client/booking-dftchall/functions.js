@@ -254,13 +254,15 @@ $(document).ready(function() {
         event.preventDefault();
         const agreeCheckbox = $('#flexCheckDefaultDFTCHall')[0];
         if (!agreeCheckbox.checked) {
-            Swal.fire({
-                icon: "error",
-                title: "Can't proceed!",
-                text: "Please check the terms and condition before pre-booking!",
-                showConfirmButton: true,
-            })
-            return;
+            $('#error-message').html("<strong>Validation Error!</strong> <br><br> You must have at least one female guest or male guest!").show();
+            $('#submitButtonDFTCHall').attr('disabled', false);
+            setTimeout(function () {
+                $('#error-message').fadeOut('slow', function () {
+                    $(this).hide();
+                });
+            }, 3000);
+            $('#dftcHallTerms').modal('hide');
+        return;
         }
         var numOfMale = parseInt($('#numOfMaleHallDftc').val());
         var numOfFemale = parseInt($('#numOfFemaleHallDftc').val());

@@ -132,28 +132,28 @@
                         <div class="row mb-2">
                             <div class="col-md-12">
                                 <div class="form-group text-light-green">
-                                  <label for="activity" class="Montserrat text-sm font-semibold">
-                                    Activity <span class="text-red-600">*</span>
-                                  </label>
+                                    <label for="activity" class="Montserrat text-sm font-semibold">
+                                        Activity <span class="text-red-600">*</span>
+                                    </label>
 
-                                  <!-- Dropdown with predefined options -->
-                                  <select class="form-control" id="activitySelect" name="activitySelected" required>
-                                    <option value="">Select an activity...</option>
-                                    <option value="Meeting">Meeting</option>
-                                    <option value="Workshop">Workshop</option>
-                                    <option value="Seminar">Seminar</option>
-                                    <option value="Others">Others</option>
-                                  </select>
+                                    <!-- Dropdown with predefined options -->
+                                    <select class="form-control" id="activitySelect" name="activitySelected" required>
+                                        <option value="">Select an activity...</option>
+                                        <option value="Meeting">Meeting</option>
+                                        <option value="Workshop">Workshop</option>
+                                        <option value="Seminar">Seminar</option>
+                                        <option value="Others">Others</option>
+                                    </select>
 
-                                  <!-- Hidden textarea for custom activity -->
-                                  <textarea
-                                    class="form-control mt-2"
-                                    id="activityTextArea"
-                                    name="customActivity"
-                                    placeholder="Please describe the custom activity here..."
-                                    style="display: none;"
-                                    rows="4"
-                                  ></textarea>
+                                    <!-- Hidden textarea for custom activity -->
+                                    <textarea
+                                        class="form-control mt-2"
+                                        id="activityTextArea"
+                                        name="customActivity"
+                                        placeholder="Please describe the custom activity here..."
+                                        style="display: none;"
+                                        rows="4"
+                                    ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -371,13 +371,13 @@
     </div>
 </div>
 <script>
-    document.getElementById('modalBodyPreBookDftcHall').addEventListener('scroll', function() {
+document.getElementById('modalBodyPreBookDftcHall').addEventListener('scroll', function() {
         const scrollable = this.scrollHeight - this.clientHeight;
 
         if (Math.ceil(this.scrollTop) >= scrollable - 10) {
             document.getElementById('checkboxContainerPreBookDftcHall').style.display = 'block';
         }
-    });
+});
 document.addEventListener("DOMContentLoaded", function() {
     const activitySelect = document.getElementById("activitySelect");
     const activityTextArea = document.getElementById("activityTextArea");

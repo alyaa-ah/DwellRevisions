@@ -80,17 +80,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-2" id="letterInputCellHallDftc" style="display: none;">
-                            <div class="col-12">
-                                <div class="form-group text-light-green">
-                                    <label for="hasLetter" class="Montserrat text-sm font-semibold">Please present and attach the letter, duly approved by either the President or the Campus Administrator, to avail services. (Exclusive to students)</label>
-                                    <select name="hasLetter" id="hasLetterHallDftc" class="form-control">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row mb-2">
                             <div class="col-md-4">
                                 <div class="form-group text-light-green">
@@ -111,11 +100,51 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-2">
+                        <div class="row mb-2" id="letterInputCellHallDftc" style="display: none;">
                             <div class="col-12">
                                 <div class="form-group text-light-green">
-                                    <label for="activity" class="Montserrat text-sm font-semibold">Activity<span class="text-red-600">*</span></label>
-                                    <textarea type="text" class="form-control" cols=5 rows=5 name="activity" id="activity" placeholder="Please add your activity here." required></textarea>
+                                    <label for="hasLetter" class="Montserrat text-sm font-semibold">
+                                        Do you have the letter approved by the President or Campus Administrator to access services? (Exclusive to students)
+                                    </label>
+                                    <div class="mt-2">
+                                        <!-- Radio button for "No" option -->
+                                        <label class="Montserrat text-sm font-semibold">
+                                            <input type="radio" name="hasLetterHallDftc" value="Yes"> Yes
+                                        </label>
+
+                                        <!-- Radio button for "Yes" option -->
+                                        <label class="Montserrat text-sm font-semibold ml-3">
+                                            <input type="radio" name="hasLetterHallDftc" value="No" checked> No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="form-group text-light-green">
+                                    <label for="activity" class="Montserrat text-sm font-semibold">
+                                        Activity <span class="text-red-600">*</span>
+                                    </label>
+
+                                    <!-- Dropdown with predefined options -->
+                                    <select class="form-control" id="activitySelect" name="activitySelected" required>
+                                        <option value="">Select an activity...</option>
+                                        <option value="Meeting">Meeting</option>
+                                        <option value="Workshop">Workshop</option>
+                                        <option value="Seminar">Seminar</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+
+                                    <!-- Hidden textarea for custom activity -->
+                                    <textarea
+                                        class="form-control mt-2"
+                                        id="activityTextArea"
+                                        name="customActivity"
+                                        placeholder="Please describe the custom activity here..."
+                                        style="display: none;"
+                                        rows="4"
+                                    ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +186,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>  
+                            </div>
                             <div class="col-md-8">
                                 <div class="row">
                                     <div class="col-md-6 mb-2">
@@ -185,7 +214,7 @@
                                             <label for="departure" class="Montserrat text-sm font-semibold">Time Departure<span class="text-red-600">*</span></label>
                                             <input type="time" class="form-control" name="departure" id="departureHallDftc" required>
                                         </div>
-                                    </div>  
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-2">
@@ -202,14 +231,14 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                     </div>
-                    <div class="border-2 rounded-md border-green-500 p-1 m-2">                            
+                    <div class="border-2 rounded-md border-green-500 p-1 m-2">
                         <div class="row mb-2">
                             <div class="col-12 text-center">
                                 <h4 class="Montserrat text-xl font-semibold text-light-green">Rates and Computation</h4>
                             </div>
-                        </div>        
+                        </div>
                         <div class="row">
                             <div class="col-md-4 mb-2">
                                 <div class="form-group text-light-green">
@@ -270,6 +299,9 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div id="error-message" class="alert alert-danger mt-2" style="display: none;">
+
                         </div>
                         <div class="row my-2">
                             <div class="col-12 text-right my-2">
@@ -332,12 +364,34 @@
 </div>
 <br><br><br><br><br>
 <script>
-    document.getElementById('modalBodyPreBookDftcHall').addEventListener('scroll', function() {
-        const scrollable = this.scrollHeight - this.clientHeight;
-        
-        if (Math.ceil(this.scrollTop) >= scrollable - 10) {
-            document.getElementById('checkboxContainerPreBookDftcHall').style.display = 'block';
+document.getElementById('modalBodyPreBookDftcHall').addEventListener('scroll', function() {
+    const scrollable = this.scrollHeight - this.clientHeight;
+
+    if (Math.ceil(this.scrollTop) >= scrollable - 10) {
+        document.getElementById('checkboxContainerPreBookDftcHall').style.display = 'block';
+    }
+});
+document.addEventListener("DOMContentLoaded", function() {
+    const activitySelect = document.getElementById("activitySelect");
+    const activityTextArea = document.getElementById("activityTextArea");
+
+
+    activitySelect.addEventListener("change", function() {
+        if (activitySelect.value === "Others") {
+
+        activityTextArea.style.display = "block";
+        activityTextArea.required = true;
+        activityTextArea.focus();
+        } else {
+
+        activityTextArea.style.display = "none";
+        activityTextArea.value = "";
+        activityTextArea.required = false;
         }
     });
+        activityTextArea.addEventListener("input", function() {
+        activitySelect.value = "Others";
+    });
+});
 </script>
 @endsection

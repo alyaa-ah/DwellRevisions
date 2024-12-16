@@ -387,6 +387,9 @@ class AdminGHFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminGH.functions.guesthouse.view-bookings', [
@@ -406,6 +409,9 @@ class AdminGHFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminGH.functions.guesthouse.view-pendings', [
@@ -464,9 +470,10 @@ class AdminGHFunctionController extends Controller
                 case 'Rejected':
                     $bookings = GuestHouseBooking::where('id', $bookingId)->first();
                     if ($bookings) {
+                        $reason = $request->reason === 'Others' ? $request->other_reason : $request->reason;
                         $bookings->update([
                             'status' => 'Rejected',
-                            'reason' => $request->reason,
+                            'reason' => $reason,
                         ]);
 
                         $facility = Facility::where('facility_name', 'Guest House')->first();
@@ -501,6 +508,9 @@ class AdminGHFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->gte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminGH.functions.guesthouse.view-history', [
@@ -510,7 +520,10 @@ class AdminGHFunctionController extends Controller
     }
     public function goToCanceledBookingsAdminGH(){
         $bookings = GuestHouseBooking::where('status', 'Canceled')
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
+        });;
         $countBookings = count($bookings);
         return view('adminGH.functions.guesthouse.view-cancellations', [
             'bookings' => $bookings,
@@ -519,7 +532,10 @@ class AdminGHFunctionController extends Controller
     }
     public function goToRejectedBookingsAdminGH(){
         $bookings = GuestHouseBooking::where('status', 'Rejected')
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
+        });;
         $countBookings = count($bookings);
         return view('adminGH.functions.guesthouse.view-rejections', [
             'bookings' => $bookings,
@@ -591,4 +607,50 @@ class AdminGHFunctionController extends Controller
         }
         return response()->json(['status' => '404']);
     }
+    public function updateCheckOut(Request $request){
+        $booking = GuestHouseBooking::find($request->booking_id);
+        $orig = $booking->check_out_date;
+        if (!$booking) {
+            return 404;
+        }
+
+        try {
+            if ($request->remarks == 'Early Check Out') {
+                if (!$request->earlyCheckOutDate) {
+                    return 400;
+                }
+
+                $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->earlyCheckOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
+                $booking->check_out_date = $checkOutDate;
+                $booking->remarks = $request->newremarks;
+
+                if ($booking->save()) {
+                    return 200;
+                }
+
+                return 500;
+            }
+
+            if ($request->remarks == 'Extended') {
+                if (!$request->extendedCheckOutDate) {
+                    return 400;
+                }
+                $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->extendedCheckOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
+                $booking->check_out_date = $checkOutDate;
+                $booking->remarks = $request->newremarks;
+
+                if ($booking->save()) {
+                    return 200;
+                }
+
+                return 500;
+            }
+
+            return 400; // Bad Request
+        } catch (\Exception $e) {
+            return 500;
+        }
+    }
+
+
 }

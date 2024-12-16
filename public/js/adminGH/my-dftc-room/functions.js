@@ -73,14 +73,15 @@ $(document).ready(function() {
     $('#editCheckOutDateDftcRoom').prop('disabled', true);
 
     $('#editCheckInDateDftcRoom').on('change', function() {
+        $('#editCheckOutDateDftcRoom').val('').prop('disabled', true);
+
         var selectedDate = new Date($(this).val());
 
         if ($(this).val()) {
             $('#editCheckOutDateDftcRoom').prop('disabled', false);
-        } else {
-            $('#editCheckOutDateDftcRoom').prop('disabled', true);
+            var minCheckOutDate = new Date(selectedDate.getTime());
+            $('#editCheckOutDateDftcRoom').attr('min', minCheckOutDate.toISOString().split('T')[0]);
         }
-
         var minCheckOutDate = new Date(selectedDate.getTime());
         $('#editCheckOutDateDftcRoom').attr('min', minCheckOutDate.toISOString().split('T')[0]);
     });
@@ -137,7 +138,7 @@ $(document).ready(function() {
         var numOfFemale = parseInt($('#editNumOfFemaleDftcRoom').val());
         var checkInDate = new Date($('#editCheckInDateDftcRoom').val());
         var checkOutDate = new Date($('#editCheckOutDateDftcRoom').val());
-
+        var hasLetter = $('input[name="hasLetterDftcRoomEdit"]:checked').val();
         if (isNaN(rate) || isNaN(capacity) || isNaN(numOfMale) || isNaN(numOfFemale)) {
             $('#editTotalAmountDftcRoom').val('0.00');
             return;
@@ -161,7 +162,7 @@ $(document).ready(function() {
 
         var totalAmount = 0;
 
-        if ($('#editHasLetterDftcRoom').val() === "Yes") {
+        if (hasLetter=== "Yes") {
             $('#editTotalAmountDftcRoom').val('FREE');
             return;
         }
@@ -171,6 +172,7 @@ $(document).ready(function() {
         $('#editTotalAmountDftcRoom').val(totalAmount.toFixed(2));
     }
     $('#editRateDftcRoom, #editCapacityDftcRoom, #editNumOfMaleDftcRoom, #editNumOfFemaleDftcRoom, #editCheckInDateDftcRoom, #editCheckOutDateDftcRoom, #editHasLetterDftcRoom').on('change', computeTotalAmountEditDftcRoom);
+    $('input[name="hasLetterDftcRoomEdit"]').on('change', computeTotalAmountEditDftcRoom);
     $(document).on('click', '#submitButtonEditDftcRoom', function(event){
         event.preventDefault();
         const agreeCheckbox = $('#flexCheckDefaultEditDftcRoom')[0];
@@ -186,12 +188,12 @@ $(document).ready(function() {
         var numOfMale = parseInt($('#editNumOfMaleDftcRoom').val());
         var numOfFemale = parseInt($('#editNumOfFemaleDftcRoom').val());
         if (numOfMale == 0 && numOfFemale == 0) {
-            Swal.fire({
-                icon: "error",
-                title: "Can't proceed!",
-                text: "You must have at least one female guest or male guest!",
-                showConfirmButton: true,
-            })
+            $('#error-messageEditDftcRoom').html("<strong>Validation Error!</strong> <br><br>You must have at least one male or female guest.").show();
+            setTimeout(function () {
+                $('#error-messageEditDftcRoom').fadeOut('slow', function () {
+                    $(this).hide();
+                });
+            }, 3000);
             $('#edit-dftcroombooking-modal').modal('show');
             $('#dftcTermsEditDftcRoom').modal('hide');
             return;
@@ -215,15 +217,21 @@ $(document).ready(function() {
                         showConfirmButton: true,
                     })
                 }else if(response.message){
-                    var errorMessages = Object.values(response.message).join('<br>');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Pre-reservation validation failed!',
-                        html: errorMessages,
-                        showConfirmButton: true,
-                    });
                     $('#edit-dftcroombooking-modal').modal('show');
                     $('#dftcTermsEditDftcRoom').modal('hide');
+                    Swal.close();
+                    let errorMessages = '';
+                    for (let key in response.message) {
+                        if (response.message[key] && Array.isArray(response.message[key])) {
+                            errorMessages += response.message[key].join('<br>') + '<br>';
+                        }
+                    }
+                    $('#error-messageEditDftcRoom').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    setTimeout(function () {
+                        $('#error-messageEditDftcRoom').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
                     return;
                 }else{
                     Swal.fire({

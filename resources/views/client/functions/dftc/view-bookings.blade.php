@@ -616,28 +616,27 @@
                                             <div class="col-md-12 mb-2">
                                                 <div class="col-md-12">
                                                     <div class="form-group text-light-green">
-                                                      <label for="activity" class="Montserrat text-sm font-semibold">
-                                                        Activity <span class="text-red-600">*</span>
-                                                      </label>
-
+                                                        <label for="activity" class="Montserrat text-sm font-semibold">
+                                                            Activity <span class="text-red-600">*</span>
+                                                        </label>
                                                       <!-- Dropdown with predefined options -->
-                                                      <select class="form-control" id="activitySelectDftcRoomEdit" name="activitySelected" required>
-                                                        <option value="">Select an activity...</option>
-                                                        <option value="Meeting">Meeting</option>
-                                                        <option value="Workshop">Workshop</option>
-                                                        <option value="Seminar">Seminar</option>
-                                                        <option value="Others">Others</option>
-                                                      </select>
+                                                        <select class="form-control" id="activitySelectDftcRoomEdit" name="activitySelected" required>
+                                                            <option value="">Select an activity...</option>
+                                                            <option value="Meeting">Meeting</option>
+                                                            <option value="Workshop">Workshop</option>
+                                                            <option value="Seminar">Seminar</option>
+                                                            <option value="Others">Others</option>
+                                                        </select>
 
-                                                      <!-- Hidden textarea for custom activity -->
-                                                      <textarea
-                                                        class="form-control mt-2"
-                                                        id="activityTextAreaDftcRoomEdit"
-                                                        name="customActivity"
-                                                        placeholder="Please describe the custom activity here..."
-                                                        style="display: none;"
-                                                        rows="4"
-                                                      ></textarea>
+                                                        <!-- Hidden textarea for custom activity -->
+                                                        <textarea
+                                                            class="form-control mt-2"
+                                                            id="activityTextAreaDftcRoomEdit"
+                                                            name="customActivity"
+                                                            placeholder="Please describe the custom activity here..."
+                                                            style="display: none;"
+                                                            rows="4"
+                                                        ></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -685,7 +684,7 @@
                                                     </div>
                                                     <div class="col-md-6 mb-2">
                                                         <div class="form-group Montserrat text-sm font-semibold text-light-green">
-                                                            <label for="arrival">Time Arrival<span class="text-red-600">(Fixed based on regulations)</span></label>
+                                                            <label for="arrival">Time Arrival<span class="text-red-600"> (Fixed based on regulations)</span></label>
                                                             <input type="time" class="form-control" name="arrival" id="editArrivalDftcRoom" id="editDepartureGuestHouse" style="background-color:#d3d3d3;" readonly required>
                                                         </div>
                                                     </div>
@@ -871,28 +870,28 @@
                                         <div class="col-md-12 mb-2">
                                             <div class="col-md-12">
                                                 <div class="form-group text-light-green">
-                                                  <label for="activity" class="Montserrat text-sm font-semibold">
-                                                    Activity <span class="text-red-600">*</span>
-                                                  </label>
+                                                    <label for="activity" class="Montserrat text-sm font-semibold">
+                                                        Activity <span class="text-red-600">*</span>
+                                                    </label>
 
-                                                  <!-- Dropdown with predefined options -->
-                                                  <select class="form-control" id="activitySelectDftcHallEdit" name="activitySelected" required>
-                                                    <option value="">Select an activity...</option>
-                                                    <option value="Meeting">Meeting</option>
-                                                    <option value="Workshop">Workshop</option>
-                                                    <option value="Seminar">Seminar</option>
-                                                    <option value="Others">Others</option>
-                                                  </select>
+                                                    <!-- Dropdown with predefined options -->
+                                                    <select class="form-control" id="activitySelectDftcHallEdit" name="activitySelected" required>
+                                                        <option value="">Select an activity...</option>
+                                                        <option value="Meeting">Meeting</option>
+                                                        <option value="Workshop">Workshop</option>
+                                                        <option value="Seminar">Seminar</option>
+                                                        <option value="Others">Others</option>
+                                                    </select>
 
-                                                  <!-- Hidden textarea for custom activity -->
-                                                  <textarea
-                                                    class="form-control mt-2"
-                                                    id="activityTextAreaDftcHallEdit"
-                                                    name="customActivity"
-                                                    placeholder="Please describe the custom activity here..."
-                                                    style="display: none;"
-                                                    rows="4"
-                                                  ></textarea>
+                                                    <!-- Hidden textarea for custom activity -->
+                                                    <textarea
+                                                        class="form-control mt-2"
+                                                        id="activityTextAreaDftcHallEdit"
+                                                        name="customActivity"
+                                                        placeholder="Please describe the custom activity here..."
+                                                        style="display: none;"
+                                                        rows="4"
+                                                    ></textarea>
                                                 </div>
                                             </div>
                                         </div>

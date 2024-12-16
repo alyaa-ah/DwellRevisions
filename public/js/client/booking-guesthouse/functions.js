@@ -238,7 +238,6 @@ $(document).ready(function() {
                             $(this).hide();
                         });
                     }, 3000);
-
                 } else {
                     Swal.fire({
                         icon: "success",
