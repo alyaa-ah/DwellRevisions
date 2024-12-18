@@ -170,12 +170,14 @@ $(document).ready(function() {
         var numOfFemale = parseInt($('#numOfFemaleDftc').val());
 
         if(numOfMale == 0 && numOfFemale == 0){
-            Swal.fire({
-                icon: "error",
-                title: "Error!",
-                text: "You must have at least one female guest or male guest!",
-                showConfirmButton: true,
-            })
+            $('#dftcTerms').modal('hide');
+            $('#error-messageDftcRoom').html("<strong>Validation Error!</strong> <br><br> Please input number of male or female!").show();
+                $('#submitButtonDFTC').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageDftcRoom').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
             return;
         }
         let formData = new FormData($('#dftc-booking-form')[0]);
@@ -215,10 +217,10 @@ $(document).ready(function() {
                             errorMessages += response.message[key].join('<br>') + '<br>';
                         }
                     }
-                    $('#error-message').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#error-messageDftcRoom').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
                     $('#submitButtonDFTC').attr('disabled', false);
                     setTimeout(function () {
-                        $('#error-message').fadeOut('slow', function () {
+                        $('#error-messageDftcRoom').fadeOut('slow', function () {
                             $(this).hide();
                         });
                     }, 3000);

@@ -319,6 +319,9 @@
                             </div>
                         </div>
                     </div>
+                    <div id="error-messageStaffHouse" class="alert alert-danger mt-2" style="display: none;">
+
+                    </div>
                     <div class="row my-2">
                         <div class="col-12 text-right my-2">
                             <button type="button" class="btn bg-light-green Montserrat text-white hover:bg-dark-green" data-bs-toggle="modal" data-bs-target="#staffHouseTerms">Submit</button>
@@ -505,7 +508,6 @@ document.addEventListener('DOMContentLoaded', function () {
         activitySelect.value = "Others";
     });
 });
-</script>
 </script>
 <script src="{{ url('public/js/adminGH/booking-staffhouse/payment.js'); }}"></script>
 @endsection

@@ -237,8 +237,6 @@ $(document).ready(function() {
                     title: "All set!",
                     text: "Guest house pre-reservation successfully added!",
                     showConfirmButton: true,
-                }).then(function(){
-                    window.location.reload();
                 }).then(function() {
                     $('#submitButton').attr('disabled', false);
                     window.location = "/adminGH/view-my-ongoing-guesthouse-pre-reservations";

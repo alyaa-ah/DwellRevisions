@@ -141,20 +141,25 @@
                                     <label for="reviewStatus" class="form-group text-light-green">Review Status</label>
                                     <select id="reviewStatus" name="status" class="form-control" onchange="toggleReasonSelect()">
                                         <option value="">Select status</option>
-                                        <option value="Reviewed">Reviewed</option>
+                                        <option value="Reviewed">Approved</option>
                                         <option value="Rejected">Rejected</option>
                                     </select>
                                 </div>
                                 <div class="form-group Montserrat text-sm font-semibold" id="reasonGroup" style="display:none;">
                                     <label for="reason" class="form-group text-light-green">Reason</label>
-                                    <select name="reason" id="reason" class="form-control">
+                                    <select name="reason" id="reason" class="form-control" onchange="toggleOtherReason()">
                                         <option value="Conflict of schedule.">Conflict of schedule</option>
                                         <option value="Unclear pre-booking information.">Unclear pre-booking information</option>
                                         <option value="Room is not available at the moment.">Room is not available at the moment</option>
-                                        <option value="Project in charge is on seminar.">Project in charge is on seminar</option>
                                         <option value="No available attendants.">No available attendants</option>
+                                        <option value="Others">Others</option>
                                     </select>
                                 </div>
+                                <div class="form-group Montserrat text-sm font-semibold" id="otherReasonGroup" style="display:none;">
+                                    <label for="other_reason" class="form-group text-light-green">Specify Reason</label>
+                                    <input type="text" name="other_reason" id="other_reason" class="form-control" />
+                                </div>
+
                                 <div class="modal-footer">
                                     <button type="submit" class="btn bg-light-green Montserrat text-white hover:bg-dark-green">SUBMIT</button>
                                 </div>
@@ -399,13 +404,28 @@
 </div>
 <script>
     function toggleReasonSelect() {
-        var reviewStatus = document.getElementById('reviewStatus').value;
-        var reasonGroup = document.getElementById('reasonGroup');
-        if (reviewStatus === 'Rejected') {
-            reasonGroup.style.display = 'block';
-        } else {
-            reasonGroup.style.display = 'none';
-        }
+    const reviewStatus = document.getElementById('reviewStatus').value;
+    const reasonGroup = document.getElementById('reasonGroup');
+
+    if (reviewStatus === 'Rejected') {
+        reasonGroup.style.display = 'block'; // Show reason dropdown
+    } else {
+        reasonGroup.style.display = 'none'; // Hide reason dropdown
+        document.getElementById('reason').value = ''; // Clear the reason dropdown
+        toggleOtherReason(); // Ensure other input is cleared
     }
+}
+
+function toggleOtherReason() {
+    const reasonSelect = document.getElementById('reason').value;
+    const otherReasonGroup = document.getElementById('otherReasonGroup');
+
+    if (reasonSelect === 'Others') {
+        otherReasonGroup.style.display = 'block'; // Show the custom input field
+    } else {
+        otherReasonGroup.style.display = 'none'; // Hide the custom input field
+        document.getElementById('other_reason').value = ''; // Clear custom input
+    }
+}
 </script>
 @endsection

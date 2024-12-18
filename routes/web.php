@@ -285,6 +285,7 @@ Route::group(['middleware' => 'LoginCheckAdminSH'], function () {
         Route::get('/adminSH/view-rejected-pre-reservations','goToRejectedBookingsAdminSH');
         Route::get('/adminSH/view-account','goToAccountAdminSH');
         Route::post('/adminSH/adminSHEditAccount', 'editAdminSHAccount');
+        Route::post('adminSHCheckClientBooking','updateCheckOut');
     });
     Route::controller(AdminSHPrereservationController::class)->group(function(){
         Route::get('/adminSH/view-my-ongoing-guesthouse-pre-reservations','goToAdminSHGuestHousePreReservation');

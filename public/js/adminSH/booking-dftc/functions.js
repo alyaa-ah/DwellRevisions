@@ -49,14 +49,15 @@ $(document).ready(function() {
     $('#checkOutDateDftc').prop('disabled', true);
 
     $('#checkInDateDftc').on('change', function() {
+        $('#checkOutDateDftc').val('').prop('disabled', true);
+
         var selectedDate = new Date($(this).val());
 
         if ($(this).val()) {
-            $('#checkOutDateDftc').prop('disabled', false);
-        } else {
-            $('#checkOutDateDftc').prop('disabled', true);
+            $('#checkOutDateDftc').prop('disabled', false);  // Enable check-out field if check-in date is set
+            var minCheckOutDate = new Date(selectedDate.getTime());
+            $('#checkOutDateDftc').attr('min', minCheckOutDate.toISOString().split('T')[0]);
         }
-
         var minCheckOutDate = new Date(selectedDate.getTime());
         $('#checkOutDateDftc').attr('min', minCheckOutDate.toISOString().split('T')[0]);
     });
@@ -114,6 +115,7 @@ $(document).ready(function() {
         var bedding = parseInt($('#beddingDftc').val());
         var checkInDate = new Date($('#checkInDateDftc').val());
         var checkOutDate = new Date($('#checkOutDateDftc').val());
+        var hasLetterDftc = $('input[name="hasLetterDftc"]:checked').val();
         if (isNaN(rate) || isNaN(capacity) || isNaN(numOfMale) || isNaN(numOfFemale)) {
             $('#totalAmountDftc').val('0.00');
             return;
@@ -137,10 +139,11 @@ $(document).ready(function() {
 
         var totalAmount = 0;
 
-        if ($('#hasLetterDftc').val() === "Yes") {
+        if (hasLetterDftc === "Yes") {
             $('#totalAmountDftc').val('FREE');
-            return;
+            return; // Exit calculation
         }
+
         totalAmount = rate * totalLodgers * numberOfNights;
         if (!isNaN(bedding) && bedding > 0) {
             totalAmount += bedding * 200;
@@ -148,6 +151,7 @@ $(document).ready(function() {
         $('#totalAmountDftc').val(totalAmount.toFixed(2));
     }
     $('#rateDftc, #capacityDftc, #numOfMaleDftc, #numOfFemaleDftc, #beddingDftc, #checkInDateDftc, #checkOutDateDftc, #hasLetterDftc').on('change', computeTotalAmountSH);
+    $('input[name="hasLetterDftc"]').on('change', computeTotalAmountSH);
     $(document).on('click', '#submitButtonDFTC', function(event){
         event.preventDefault();
         const agreeCheckbox = $('#flexCheckDefaultDFTC')[0];
@@ -164,12 +168,14 @@ $(document).ready(function() {
         var numOfFemale = parseInt($('#numOfFemaleDftc').val());
 
         if(numOfMale == 0 && numOfFemale == 0){
-            Swal.fire({
-                icon: "error",
-                title: "Error!",
-                text: "You must have at least one female guest or male guest!",
-                showConfirmButton: true,
-            })
+            $('#dftcTerms').modal('hide');
+            $('#error-messageDftcRoom').html("<strong>Validation Error!</strong> <br><br> Please input number of male or female!").show();
+                $('#submitButtonDFTC').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageDftcRoom').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
             return;
         }
         let formData = new FormData($('#dftc-booking-form')[0]);
@@ -201,22 +207,31 @@ $(document).ready(function() {
                         showConfirmButton: true,
                     })
                 }else if(response.message){
-                    var errorMessages = Object.values(response.message).join('<br>');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Pre-reservation validation failed!',
-                        html: errorMessages,
-                        showConfirmButton: true,
-                    });
+                    $('#dftcTerms').modal('hide');
+                    Swal.close();
+                    let errorMessages = '';
+                    for (let key in response.message) {
+                        if (response.message[key] && Array.isArray(response.message[key])) {
+                            errorMessages += response.message[key].join('<br>') + '<br>';
+                        }
+                    }
+                    $('#error-messageDftcRoom').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#submitButtonDFTC').attr('disabled', false);
+                    setTimeout(function () {
+                        $('#error-messageDftcRoom').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
                 }else{
                     Swal.fire({
-                    icon: "success",
-                    title: "All set!",
-                    text: "DFTC pre-reservation is now on pending review.",
-                    showConfirmButton: true,
-                }).then(function(){
-                    window.location.reload();
-                });
+                        icon: "success",
+                        title: "All set!",
+                        text: "DFTC pre-reservation is now on pending review.",
+                        showConfirmButton: true,
+                    }).then(function(){
+                        $('#submitButtonDFTC').attr('disabled', false);
+                        window.location = "/adminSH/view-my-ongoing-DFTC-pre-reservations";
+                    });
                 }
             },
             error: function(error){

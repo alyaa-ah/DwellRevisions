@@ -81,17 +81,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" id="letterInputCellDftc" style="display: none;">
-                            <div class="col-md-12 mb-2">
-                                <div id="letterInputDftc" class="form-group text-light-green Montserrat text-sm font-semibold">
-                                    <label for="hasLetter">Please attach the letter approved by the President or the Campus Administrator to avail of free services (exclusive to students only).</label>
-                                    <select name="hasLetter" id="hasLetterDftc" class="form-control">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-4 mb-2">
                                 <div class="form-group text-light-green">
@@ -112,11 +101,51 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row" id="letterInputCellDftc" style="display: none;">
+                            <div class="col-md-12 mb-2">
+                                <div id="letterInputDftc" class="form-group text-light-green Montserrat text-sm font-semibold">
+                                    <label for="hasLetter" class="Montserrat text-sm font-semibold">
+                                        Do you have the letter approved by the President or Campus Administrator to access services? (Exclusive to students)
+                                    </label>
+                                    <div class="mt-2">
+                                        <!-- Radio button for "No" option -->
+                                        <label class="Montserrat text-sm font-semibold">
+                                            <input type="radio" name="hasLetterDftc" value="Yes"> Yes
+                                        </label>
+
+                                        <!-- Radio button for "Yes" option -->
+                                        <label class="Montserrat text-sm font-semibold ml-3">
+                                            <input type="radio" name="hasLetterDftc" value="No" checked> No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group text-light-green">
-                                    <label for="activity" class="Montserrat text-sm font-semibold">Activity<span class="text-red-600">*</span></label>
-                                    <textarea type="text" class="form-control" cols=5 rows=5 name="activity" id="activity" placeholder="Please add your activity here." required></textarea>
+                                    <label for="activity" class="Montserrat text-sm font-semibold">
+                                        Activity <span class="text-red-600">*</span>
+                                    </label>
+
+                                    <!-- Dropdown with predefined options -->
+                                    <select class="form-control" id="activitySelect" name="activitySelected" required>
+                                        <option value="">Select an activity...</option>
+                                        <option value="Meeting">Meeting</option>
+                                        <option value="Workshop">Workshop</option>
+                                        <option value="Seminar">Seminar</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+
+                                    <!-- Hidden textarea for custom activity -->
+                                    <textarea
+                                        class="form-control mt-2"
+                                        id="activityTextArea"
+                                        name="customActivity"
+                                        placeholder="Please describe the custom activity here..."
+                                        style="display: none;"
+                                        rows="4"
+                                    ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -149,7 +178,7 @@
                                 <div class="row mb-2">
                                     <div class="form-group text-light-green">
                                         <label for="numberOfDaysDftc" class="Montserrat text-sm font-semibold">Number Of Days</label>
-                                        <input type="text" class="form-control" style="background-color:#d3d3d3;" placeholder="0" name="numberOfDays" id="numberOfDaysDftc" readonly>
+                                        <input type="text" class="form-control" style="background-color:#d3d3d3;" placeholder="0" name="numberOfDays" id="numberOfDaysDftc"  readonly>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -169,8 +198,8 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group text-light-green">
-                                            <label for="arrivalDftc" class="Montserrat text-sm font-semibold">Time Arrival<span class="text-red-600">*</span></label>
-                                            <input type="time" class="form-control" name="arrival" id="arrivalDftc" required>
+                                            <label for="arrivalDftc" class="Montserrat text-sm font-semibold">Time Arrival<span class="text-red-600"> (Fixed based on regulations)</span></label>
+                                            <input type="time" class="form-control" name="arrival" id="arrivalDftc" style="background-color:#d3d3d3;" readonly required>
                                         </div>
                                     </div>
                                 </div>
@@ -183,8 +212,8 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group text-light-green">
-                                            <label for="departureDftc" class="Montserrat text-sm font-semibold">Time Departure<span class="text-red-600">*</span></label>
-                                            <input type="time" class="form-control" name="departure" id="departureDftc" required>
+                                            <label for="departureDftc" class="Montserrat text-sm font-semibold">Time Departure<span class="text-red-600"> (Fixed based on regulations)</span></label>
+                                            <input type="time" class="form-control" name="departure" id="departureDftc" style="background-color:#d3d3d3;" readonly required>
                                         </div>
                                     </div>
                                 </div>
@@ -247,6 +276,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div id="error-messageDftcRoom" class="alert alert-danger mt-2" style="display: none;">
+
                     </div>
                     <div class="row mb-2">
                         <div class="col-md-12 text-right">
@@ -311,12 +343,44 @@
 </div>
 
 <script>
-    document.getElementById('modalBodyPreBookDftcRoom').addEventListener('scroll', function() {
+document.getElementById('modalBodyPreBookDftcRoom').addEventListener('scroll', function() {
         const scrollable = this.scrollHeight - this.clientHeight;
 
         if (Math.ceil(this.scrollTop) >= scrollable - 10) {
             document.getElementById('checkboxContainerPreBookDftcRoom').style.display = 'block';
         }
     });
+document.addEventListener("DOMContentLoaded", function() {
+    const activitySelect = document.getElementById("activitySelect");
+    const activityTextArea = document.getElementById("activityTextArea");
+
+
+activitySelect.addEventListener("change", function() {
+        if (activitySelect.value === "Others") {
+
+        activityTextArea.style.display = "block";
+        activityTextArea.required = true;
+        activityTextArea.focus();
+        } else {
+
+        activityTextArea.style.display = "none";
+        activityTextArea.value = "";
+        activityTextArea.required = false;
+        }
+    });
+
+
+    activityTextArea.addEventListener("input", function() {
+        activitySelect.value = "Others";
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const arrivalInput = document.getElementById("arrivalDftc");
+    const departureInput = document.getElementById("departureDftc");
+
+    arrivalInput.value = "14:00";
+    departureInput.value = "12:00";
+});
 </script>
 @endsection

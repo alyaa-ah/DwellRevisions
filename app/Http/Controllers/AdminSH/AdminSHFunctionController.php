@@ -390,6 +390,9 @@ class AdminSHFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminSH.functions.staffhouse.view-bookings', [
@@ -409,6 +412,9 @@ class AdminSHFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminSH.functions.staffhouse.view-pendings', [
@@ -467,9 +473,10 @@ class AdminSHFunctionController extends Controller
                 case 'Rejected':
                     $bookings = StaffHouseBooking::where('id', $bookingId)->first();
                     if ($bookings) {
-                        $bookings->update([
+                        $reason = $request->reason === 'Others' ? $request->other_reason : $request->reason;
+                        $$bookings->update([
                             'status' => 'Rejected',
-                            'reason' => $request->reason,
+                            'reason' => $reason,
                         ]);
 
                         $facility = Facility::where('facility_name', 'Staff House')->first();
@@ -504,6 +511,9 @@ class AdminSHFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->gte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminSH.functions.staffhouse.view-history', [
@@ -513,7 +523,10 @@ class AdminSHFunctionController extends Controller
     }
     public function goToCanceledBookingsAdminSH(){
         $bookings = StaffHouseBooking::where('status', 'Canceled')
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminSH.functions.staffhouse.view-cancellations', [
             'bookings' => $bookings,
@@ -522,7 +535,10 @@ class AdminSHFunctionController extends Controller
     }
     public function goToRejectedBookingsAdminSH(){
         $bookings = StaffHouseBooking::where('status', 'Rejected')
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminSH.functions.staffhouse.view-rejections', [
             'bookings' => $bookings,
@@ -538,7 +554,7 @@ class AdminSHFunctionController extends Controller
         $client = Client::where('id', $request->client_id)->first();
         $validator = Validator::make($request->all(), [
             'fullname' =>'required|max:100',
-            'agency' =>'required|min:6|max:50',
+            'agency' =>'required|max:50',
             'address' =>'required|min:6|max:100',
             'position' =>'required',
             'contact' =>'required|min:9|max:13',
@@ -594,6 +610,49 @@ class AdminSHFunctionController extends Controller
         }
 
         return response()->json(['status' => '404']);
+    }
+    public function updateCheckOut(Request $request){
+        $booking = StaffHouseBooking::find($request->booking_id);
+        $orig = $booking->check_out_date;
+        if (!$booking) {
+            return 404;
+        }
 
+        try {
+            if ($request->remarks == 'Early Check Out') {
+                if (!$request->earlyCheckOutDate) {
+                    return 400;
+                }
+
+                $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->earlyCheckOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
+                $booking->check_out_date = $checkOutDate;
+                $booking->remarks = $request->newremarks;
+
+                if ($booking->save()) {
+                    return 200;
+                }
+
+                return 500;
+            }
+
+            if ($request->remarks == 'Extended') {
+                if (!$request->extendedCheckOutDate) {
+                    return 400;
+                }
+                $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->extendedCheckOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
+                $booking->check_out_date = $checkOutDate;
+                $booking->remarks = $request->newremarks;
+
+                if ($booking->save()) {
+                    return 200;
+                }
+
+                return 500;
+            }
+
+            return 400; // Bad Request
+        } catch (\Exception $e) {
+            return 500;
+        }
     }
 }

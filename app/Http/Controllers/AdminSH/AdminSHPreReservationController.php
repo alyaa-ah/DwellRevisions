@@ -31,6 +31,9 @@ class AdminSHPreReservationController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.guesthouse.view-bookings', [
@@ -87,6 +90,9 @@ class AdminSHPreReservationController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.staffhouse.view-bookings', [
@@ -136,6 +142,9 @@ class AdminSHPreReservationController extends Controller
             $threeDaysBeforeCheckIn = $checkInDateTime->copy()->subDays(3);
             $booking->canCancel = $now->lte($threeDaysBeforeCheckIn);
             return $booking;
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.DFTC.view-bookings' , ['bookings' => $bookings, 'rooms' => $rooms, 'countBookings' => $countBookings]);
@@ -185,6 +194,9 @@ class AdminSHPreReservationController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->gte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.guesthouse.view-history', [
@@ -206,6 +218,9 @@ class AdminSHPreReservationController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->gte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.staffhouse.view-history', [
@@ -238,6 +253,9 @@ class AdminSHPreReservationController extends Controller
                 $booking->room_type = null;
             }
             return $booking;
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.DFTC.view-history', [
@@ -252,7 +270,10 @@ class AdminSHPreReservationController extends Controller
         $client_id = session()->get('loggedInAdminSH')['id'];
         $bookings = GuestHouseBooking::where('status', 'Canceled')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.guesthouse.view-cancellations', [
             'rooms' => $rooms,
@@ -266,7 +287,10 @@ class AdminSHPreReservationController extends Controller
         $client_id = session()->get('loggedInAdminSH')['id'];
         $bookings = GuestHouseBooking::where('status', 'Rejected')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.guesthouse.view-rejections', [
             'rooms' => $rooms,
@@ -278,9 +302,12 @@ class AdminSHPreReservationController extends Controller
         $facilityId = Facility::where('facility_name', 'Staff House')->value('id');
         $rooms = Room::where('facility_id', $facilityId)->get();
         $client_id = session()->get('loggedInAdminSH')['id'];
-        $bookings = GuestHouseBooking::where('status', 'Canceled')
+        $bookings = StaffHouseBooking::where('status', 'Canceled')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.staffhouse.view-cancellations', [
             'rooms' => $rooms,
@@ -292,9 +319,12 @@ class AdminSHPreReservationController extends Controller
         $facilityId = Facility::where('facility_name', 'Staff House')->value('id');
         $rooms = Room::where('facility_id', $facilityId)->get();
         $client_id = session()->get('loggedInAdminSH')['id'];
-        $bookings = GuestHouseBooking::where('status', 'Rejected')
+        $bookings = StaffHouseBooking::where('status', 'Rejected')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.staffhouse.view-rejections', [
             'rooms' => $rooms,
@@ -308,7 +338,10 @@ class AdminSHPreReservationController extends Controller
         $client_id = session()->get('loggedInAdminSH')['id'];
         $bookings = DftcBooking::where('status', 'Canceled')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.DFTC.view-cancellations', [
             'rooms' => $rooms,
@@ -322,7 +355,10 @@ class AdminSHPreReservationController extends Controller
         $client_id = session()->get('loggedInAdminSH')['id'];
         $bookings = DftcBooking::where('status', 'Rejected')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminSH.myPre-reservations.DFTC.view-rejections', [
             'rooms' => $rooms,

@@ -47,20 +47,21 @@ $(document).ready(function() {
         var minDateString = minDate.toISOString().split('T')[0];
 
         $('#checkInDate').attr('min', minDateString);
-        $('#checkOutDate').prop('disabled', true);
+    $('#checkOutDate').prop('disabled', true);
 
-        $('#checkInDate').on('change', function() {
-            var selectedDate = new Date($(this).val());
+    $('#checkInDate').on('change', function() {
+        $('#checkOutDate').val('').prop('disabled', true);
 
-            if ($(this).val()) {
-                $('#checkOutDate').prop('disabled', false);
-            } else {
-                $('#checkOutDate').prop('disabled', true);
-            }
+        var selectedDate = new Date($(this).val());
 
+        if ($(this).val()) {
+            $('#checkOutDate').prop('disabled', false);  // Enable check-out field if check-in date is set
             var minCheckOutDate = new Date(selectedDate.getTime());
             $('#checkOutDate').attr('min', minCheckOutDate.toISOString().split('T')[0]);
-        });
+        }
+        var minCheckOutDate = new Date(selectedDate.getTime());
+        $('#checkOutDate').attr('min', minCheckOutDate.toISOString().split('T')[0]);
+    });
 
     $('#checkInDate, #checkOutDate, #arrival, #departure').on('change', computeDaysAndNightsAdminSH);
         $('#checkInDate').on('change', function() {
@@ -116,7 +117,7 @@ $(document).ready(function() {
         var bedding = parseInt($('#bedding').val());
         var checkInDate = new Date($('#checkInDate').val());
         var checkOutDate = new Date($('#checkOutDate').val());
-
+        var hasLetter = $('input[name="hasLetter"]:checked').val();
         if (isNaN(rate) || isNaN(capacity) || isNaN(numOfMale) || isNaN(numOfFemale)) {
             $('#totalAmount').val('NaN');
             return;
@@ -140,10 +141,11 @@ $(document).ready(function() {
 
         var totalAmount = 0;
 
-        if ($('#hasLetter').val() === "Yes") {
+        if (hasLetter=== "Yes") {
             $('#totalAmount').val('FREE');
             return;
         }
+
 
         totalAmount = rate * totalLodgers * numberOfNights;
 
@@ -157,6 +159,7 @@ $(document).ready(function() {
         $('#totalAmount').val(totalAmount.toFixed(2));
     }
     $('#rate, #capacity, #numOfMale, #numOfFemale, #rent, #bedding, #checkInDate, #checkOutDate, #hasLetter').on('change', computeTotalAmountAdminSH);
+    $('input[name="hasLetter"]').on('change', computeTotalAmountAdminSH);
     $(document).on('click', '#submitButton', function(event){
         event.preventDefault();
         const agreeCheckbox = $('#flexCheckDefault')[0];
@@ -169,16 +172,31 @@ $(document).ready(function() {
             })
             return;
         }
-        var numOfMale = parseInt($('#numOfMale').val());
-        var numOfFemale = parseInt($('#numOfFemale').val());
-        if(numOfFemale === 0 && numOfMale === 0){
-            Swal.fire({
-                icon: "error",
-                title: "Can't proceed!",
-                text: "You must have at least one female guest or male guest!",
-                showConfirmButton: true,
-            })
-            return;
+        const maleGuestsInputs = $('input[name="maleGuests[]"]');
+        const femaleGuestsInputs = $('input[name="femaleGuests[]"]');
+
+        for (let input of maleGuestsInputs) {
+            if (!input.value.trim()) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Validation Error",
+                    text: "Please fill in all male guest names before submitting.",
+                    showConfirmButton: true,
+                });
+                return;
+            }
+        }
+
+        for (let input of femaleGuestsInputs) {
+            if (!input.value.trim()) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Validation Error",
+                    text: "Please fill in all female guest names before submitting.",
+                    showConfirmButton: true,
+                });
+                return;
+            }
         }
         let formData = new FormData($('#guestHouse-booking-form')[0]);
         $.ajax({
@@ -209,22 +227,31 @@ $(document).ready(function() {
                         showConfirmButton: true,
                     })
                 }else if(response.message){
-                    var errorMessages = Object.values(response.message).join('<br>');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Pre-reservation validation failed!',
-                        html: errorMessages,
-                        showConfirmButton: true,
-                    });
+                    $('#guestHouseTerms').modal('hide');
+                    Swal.close();
+                    let errorMessages = '';
+                    for (let key in response.message) {
+                        if (response.message[key] && Array.isArray(response.message[key])) {
+                            errorMessages += response.message[key].join('<br>') + '<br>';
+                        }
+                    }
+                    $('#error-message').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#submitButton').attr('disabled', false);
+                    setTimeout(function () {
+                        $('#error-message').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
                 }else{
                     Swal.fire({
-                    icon: "success",
-                    title: "All set!",
-                    text: "Guest house pre-reservation is on pending review.",
-                    showConfirmButton: true,
-                }).then(function(){
-                    window.location.reload();
-                });
+                        icon: "success",
+                        title: "All set!",
+                        text: "Guest house pre-reservation successfully added!",
+                        showConfirmButton: true,
+                    }).then(function() {
+                        $('#submitButton').attr('disabled', false);
+                        window.location = "/adminSH/view-my-ongoing-guesthouse-pre-reservations";
+                    });
                 }
             },
             error: function(error){

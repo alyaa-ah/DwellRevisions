@@ -300,7 +300,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="error-message" class="alert alert-danger mt-2" style="display: none;">
+                        <div id="error-messageDftcHall" class="alert alert-danger mt-2" style="display: none;">
 
                         </div>
                         <div class="row my-2">

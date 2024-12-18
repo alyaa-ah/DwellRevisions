@@ -422,7 +422,34 @@ numOfFemalesInput.addEventListener('input', function () {
         }
     });
 });
+document.addEventListener('DOMContentLoaded', function () {
+    const numOfFemaleInput = document.getElementById('numOfFemale');
+    const femaleGuestsContainer = document.getElementById('femaleGuestsContainer');
 
+    numOfFemaleInput.addEventListener('input', function () {
+        let numOfFemales = parseInt(numOfFemaleInput.value, 10);
+
+
+        if (isNaN(numOfFemales) || numOfFemales < 0) {
+            numOfFemales = 0;
+        } else if (numOfFemales > 10) {
+            numOfFemales = 10;
+            numOfFemaleInput.value = numOfFemales;
+        }
+
+
+        femaleGuestsContainer.innerHTML = '';
+
+        for (let i = 0; i < numOfFemales; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'femaleGuests[]';
+            input.className = 'form-control';
+            input.placeholder = `Guest ${i + 1}`;
+            femaleGuestsContainer.appendChild(input);
+        }
+    });
+});
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {

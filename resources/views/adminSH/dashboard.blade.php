@@ -1,6 +1,6 @@
 @extends('adminSH/layout')
 
-@section('content') 
+@section('content')
 <div class="container-fluid m-0 w-full justify-content-center align-items-center" style="height: auto;">
     <div class="row">
         <!-- Sidebar -->
@@ -82,7 +82,7 @@
                                 <!-- Current bookings reviewed -->
                                 <div class="card m-2 text-white bg-primary shadow-md rounded-md">
                                     <div class="card-body pb-0 d-flex justify-content-between align-items-start">
-                                        <div>                                            
+                                        <div>
                                             <div class="Montserrat text-3xl">
                                                 @if ($staffHouseCurrentBookingsReviewed <= 9)
                                                     0{{$staffHouseCurrentBookingsReviewed}}
@@ -91,7 +91,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/ongoing.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
+                                                <img src="{{ asset('images/icons/ongoing.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
                                                 <span style="font-size: 18px;">Ongoing</span>
                                             </div>
                                         </div>
@@ -114,7 +114,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/history.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
+                                                <img src="{{ asset('images/icons/history.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
                                                 <span style="font-size: 18px;">History</span>
                                             </div>
                                         </div>
@@ -137,7 +137,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/pending.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
+                                                <img src="{{ asset('images/icons/pending.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
                                                 <span style="font-size: 18px;">Pending</span>
                                             </div>
                                         </div>
@@ -159,7 +159,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/voids.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
+                                                <img src="{{ asset('images/icons/voids.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
                                                 <span style="font-size: 18px;">Voids</span>
                                             </div>
                                         </div>
@@ -189,7 +189,7 @@
                                                 @endif
                                             </div>
                                             <div class="ml-5 d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
+                                                <img src="{{ asset('images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
                                                 <span style="font-size: 18px;">Earnings</span>
                                             </div>
                                         </div>

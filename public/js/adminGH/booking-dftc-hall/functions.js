@@ -267,10 +267,10 @@ $(document).ready(function() {
         var numOfMale = parseInt($('#numOfMaleHallDftc').val());
         var numOfFemale = parseInt($('#numOfFemaleHallDftc').val());
         if(numOfFemale == 0 && numOfMale == 0){
-            $('#error-message').html("<strong>Validation Error!</strong> <br><br> You must have at least one female guest or male guest!").show();
+            $('#error-messageDftcHall').html("<strong>Validation Error!</strong> <br><br> You must have at least one female guest or male guest!").show();
                 $('#submitButtonDFTCHall').attr('disabled', false);
                 setTimeout(function () {
-                    $('#error-message').fadeOut('slow', function () {
+                    $('#error-messageDftcHall').fadeOut('slow', function () {
                         $(this).hide();
                     });
                 }, 3000);
@@ -314,10 +314,10 @@ $(document).ready(function() {
                             errorMessages += response.message[key].join('<br>') + '<br>';
                         }
                     }
-                    $('#error-message').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#error-messageDftcHall').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
                     $('#submitButtonDFTCHall').attr('disabled', false);
                     setTimeout(function () {
-                        $('#error-message').fadeOut('slow', function () {
+                        $('#error-messageDftcHall').fadeOut('slow', function () {
                             $(this).hide();
                         });
                     }, 3000);

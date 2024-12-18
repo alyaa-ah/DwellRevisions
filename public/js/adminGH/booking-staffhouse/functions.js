@@ -168,23 +168,27 @@ $(document).ready(function() {
 
         for (let input of maleGuestsInputs) {
             if (!input.value.trim()) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Validation Error",
-                    text: "Please fill in all male guest names before submitting.",
-                    showConfirmButton: true,
-                });
+                $('#staffHouseTerms').modal('hide');
+                $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br> Please input male guest!").show();
+                    $('#submitButtonStaffHouse').attr('disabled', false);
+                    setTimeout(function () {
+                        $('#error-messageStaffHouse').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                }, 3000);
                 return;
             }
         }
         for (let input of femaleGuestsInputs) {
             if (!input.value.trim()) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Validation Error",
-                    text: "Please fill in all female guest names before submitting.",
-                    showConfirmButton: true,
-                });
+                $('#staffHouseTerms').modal('hide');
+                $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br> Please input female guest!").show();
+                    $('#submitButtonStaffHouse').attr('disabled', false);
+                    setTimeout(function () {
+                        $('#error-messageStaffHouse').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                }, 3000);
                 return;
             }
         }
@@ -225,10 +229,10 @@ $(document).ready(function() {
                             errorMessages += response.message[key].join('<br>') + '<br>';
                         }
                     }
-                    $('#error-message').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
                     $('#submitButtonStaffHouse').attr('disabled', false);
                     setTimeout(function () {
-                        $('#error-message').fadeOut('slow', function () {
+                        $('#error-messageStaffHouse').fadeOut('slow', function () {
                             $(this).hide();
                         });
                     }, 3000);

@@ -211,8 +211,7 @@
                                         }, explode(',', $female_guest))) !!}
                                     @endif
                                 </td>
-                            </tr>
-                        </table>
+                            </tr>                        </table>
                     </div>
 
                 </div>
