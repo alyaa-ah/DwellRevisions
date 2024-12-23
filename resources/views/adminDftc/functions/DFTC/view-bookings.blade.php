@@ -86,12 +86,12 @@
                         <table class="table table-responsive table-striped table-hover w-auto" id="dftcBookingTableAdminDftcCurrent">
                             <thead>
                                 <th width="15%">Full Name</th>
-                                <th width="15%">Room Name</th>
+                                <th width="10%">Room Name</th>
                                 <th width="13%">Check In</th>
                                 <th width="13%">Check Out</th>
                                 <th width="5%">Amount</th>
-                                <th width="12%" class="text-center">Remarks</th>
-                                <th width="7%" class="text-center">Action Taken</th>
+                                <th width="15%" class="text-center">Remarks</th>
+                                <th width="10%" class="text-center">Action Taken</th>
                             </thead>
                             <tbody>
                                 @foreach ($bookings as $booking)
@@ -549,6 +549,11 @@
                                     <input type="text" class="form-control" id="originalCheckIn" readonly>
                                 </div>
 
+                                <div class="form-group Montserrat text-sm font-semibold" hidden>
+                                    <label for="reviewStatus" class="form-group text-light-green">Original Checkout Date</label>
+                                    <input type="text" class="form-control" id="originalCheckoutDate" readonly>
+                                </div>
+
                                 <div class="form-group Montserrat text-sm font-semibold">
                                   <label for="reviewStatus" class="form-group text-light-green">Original Checkout Date</label>
                                   <input type="text" class="form-control" id="originalDate" readonly>
@@ -602,6 +607,7 @@
         earlyCheckOutGroup.style.display = "block";
         document.getElementById('earlyCheckOutDate').value = originalDate;
         setMinCheckOutDate(originalDate);
+        setMinEarlyCheckOutDate(originalDate);
       } else if (statusSelect === "Extended") {
         extendedCheckOutGroup.style.display = "block";
         setMinCheckOutDate(originalDate);
@@ -624,7 +630,39 @@
       }
     }
 
+    function setMinEarlyCheckOutDate() {
+    const checkInDateStr = document.getElementById('originalCheckIn').value;
+    const checkOutDateStr = document.getElementById('originalCheckoutDate').value;
 
+    if (checkInDateStr && checkOutDateStr) {
+
+        const [checkInDay, checkInMonth, checkInYear] = checkInDateStr.split('/');
+        const checkInDate = new Date(checkInYear, checkInMonth - 1, checkInDay);
+
+
+        const [checkOutDay, checkOutMonth, checkOutYear] = checkOutDateStr.split('/');
+        const checkOutDate = new Date(checkOutYear, checkOutMonth - 1, checkOutDay);
+
+
+        const minDate = `${checkInDate.getFullYear()}-${(checkInDate.getMonth() + 1).toString().padStart(2, '0')}-${checkInDate.getDate().toString().padStart(2, '0')}`;
+
+
+        checkOutDate.setDate(checkOutDate.getDate() - 1);
+        const maxDate = `${checkOutDate.getFullYear()}-${(checkOutDate.getMonth() + 1).toString().padStart(2, '0')}-${checkOutDate.getDate().toString().padStart(2, '0')}`;
+
+
+        document.getElementById('earlyCheckOutDate').setAttribute('min', minDate);
+        document.getElementById('earlyCheckOutDate').setAttribute('max', maxDate);
+    }
+}
+
+
+if (statusSelect === "Early Check Out") {
+    earlyCheckOutGroup.style.display = "block";
+    document.getElementById('earlyCheckOutDate').value = originalDate;
+    setMinCheckOutDate(originalDate);
+    setMinEarlyCheckOutDate(originalDate);
+}
 
 
     function updateEarlyCheckOutRemarks() {

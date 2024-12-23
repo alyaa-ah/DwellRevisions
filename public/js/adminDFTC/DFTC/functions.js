@@ -83,6 +83,7 @@ function checkDftcBookingAdminDFTC(booking) {
     $('#booking_check_id').val(data.id);
     $('#originalDate').val(data.check_out_date);
     $('#originalCheckIn').val(formatDateToDDMMYYYY(data.check_in_date));
+    $('#originalCheckoutDate').val(formatDateToDDMMYYYY(data.check_out_date));
     $('#checkModal').modal('show');
 }
 $(document).ready(function(){

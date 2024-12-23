@@ -107,25 +107,25 @@
                                             <td>{{ $booking->total_amount }}</td>
                                         @endif
                                         <td class="status-cell">
-                                            @if ($booking->remarks == "Early Check Out")
-                                                <span class="status-badge early-checkout">
-                                                    <i class="fas fa-arrow-right"></i> {{ $booking->remarks }}
-                                                </span>
-                                            @elseif (Str::contains($booking->remarks, "Extended"))
-                                                <span class="status-badge extended">
-                                                    <i class="fas fa-plus-circle"></i> {{ $booking->remarks }}
+                                        @if ($booking->remarks == "Early Check Out")
+                                            <span class="status-badge early-checkout">
+                                                <i class="fas fa-arrow-right"></i> {{ $booking->remarks }}
+                                            </span>
+                                        @elseif (Str::contains($booking->remarks, "Extended"))
+                                            <span class="status-badge extended">
+                                                <i class="fas fa-plus-circle"></i> {{ $booking->remarks }}
+                                            </span>
+                                        @else
+                                            @if ($booking->remarks == "" || $booking->remarks == null)
+                                                <span class="status-badge no-remarks">
+                                                    <i class="fas fa-info-circle"></i> No Remark
                                                 </span>
                                             @else
-                                                @if ($booking->remarks == "" || $booking->remarks == null)
-                                                    <span class="status-badge no-remarks">
-                                                        <i class="fas fa-info-circle"></i> No Remark
-                                                    </span>
-                                                @else
-                                                    <span class="status-badge default">
-                                                        {{ $booking->remarks }}
-                                                    </span>
-                                                @endif
+                                                <span class="status-badge default">
+                                                    {{ $booking->remarks }}
+                                                </span>
                                             @endif
+                                        @endif
                                         </td>
                                         <td class="text-center">
                                             <button type="button" onclick="viewGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
@@ -394,6 +394,11 @@
                                     <input type="text" class="form-control" id="originalCheckIn" readonly>
                                 </div>
 
+                                <div class="form-group Montserrat text-sm font-semibold" hidden>
+                                    <label for="reviewStatus" class="form-group text-light-green">Original Checkout Date</label>
+                                    <input type="text" class="form-control" id="originalCheckoutDate" readonly>
+                                </div>
+
                                 <div class="form-group Montserrat text-sm font-semibold">
                                   <label for="reviewStatus" class="form-group text-light-green">Original Checkout Date</label>
                                   <input type="text" class="form-control" id="originalDate" readonly>
@@ -450,6 +455,7 @@ function handleStatusChange() {
     earlyCheckOutGroup.style.display = "block";
     document.getElementById('earlyCheckOutDate').value = originalDate;
     setMinCheckOutDate(originalDate);
+    setMinEarlyCheckOutDate(originalDate);
   } else if (statusSelect === "Extended") {
     extendedCheckOutGroup.style.display = "block";
     setMinCheckOutDate(originalDate);
@@ -473,7 +479,39 @@ function setMinCheckOutDate() {
     document.getElementById('extendedCheckOutDate').setAttribute('min', isoFormattedDate);
   }
 }
+function setMinEarlyCheckOutDate() {
+    const checkInDateStr = document.getElementById('originalCheckIn').value;
+    const checkOutDateStr = document.getElementById('originalCheckoutDate').value;
 
+    if (checkInDateStr && checkOutDateStr) {
+
+        const [checkInDay, checkInMonth, checkInYear] = checkInDateStr.split('/');
+        const checkInDate = new Date(checkInYear, checkInMonth - 1, checkInDay);
+
+
+        const [checkOutDay, checkOutMonth, checkOutYear] = checkOutDateStr.split('/');
+        const checkOutDate = new Date(checkOutYear, checkOutMonth - 1, checkOutDay);
+
+
+        const minDate = `${checkInDate.getFullYear()}-${(checkInDate.getMonth() + 1).toString().padStart(2, '0')}-${checkInDate.getDate().toString().padStart(2, '0')}`;
+
+
+        checkOutDate.setDate(checkOutDate.getDate() - 1);
+        const maxDate = `${checkOutDate.getFullYear()}-${(checkOutDate.getMonth() + 1).toString().padStart(2, '0')}-${checkOutDate.getDate().toString().padStart(2, '0')}`;
+
+
+        document.getElementById('earlyCheckOutDate').setAttribute('min', minDate);
+        document.getElementById('earlyCheckOutDate').setAttribute('max', maxDate);
+    }
+}
+
+
+if (statusSelect === "Early Check Out") {
+    earlyCheckOutGroup.style.display = "block";
+    document.getElementById('earlyCheckOutDate').value = originalDate;
+    setMinCheckOutDate(originalDate);
+    setMinEarlyCheckOutDate(originalDate);
+}
 
 
 // Update remarks for early checkout

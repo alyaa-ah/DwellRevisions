@@ -399,6 +399,11 @@
                                     <input type="text" class="form-control" id="originalCheckIn" readonly>
                                 </div>
 
+                                <div class="form-group Montserrat text-sm font-semibold" hidden>
+                                    <label for="reviewStatus" class="form-group text-light-green">Original Checkout Date</label>
+                                    <input type="text" class="form-control" id="originalCheckoutDate" readonly>
+                                </div>
+
                                 <div class="form-group Montserrat text-sm font-semibold">
                                   <label for="reviewStatus" class="form-group text-light-green">Original Checkout Date</label>
                                   <input type="text" class="form-control" id="originalDate" readonly>
@@ -453,6 +458,7 @@
         earlyCheckOutGroup.style.display = "block";
         document.getElementById('earlyCheckOutDate').value = originalDate;
         setMinCheckOutDate(originalDate);
+        setMinEarlyCheckOutDate(originalDate);
       } else if (statusSelect === "Extended") {
         extendedCheckOutGroup.style.display = "block";
         setMinCheckOutDate(originalDate);
@@ -474,42 +480,72 @@
         document.getElementById('extendedCheckOutDate').setAttribute('min', isoFormattedDate);
       }
     }
+function setMinEarlyCheckOutDate() {
+    const checkInDateStr = document.getElementById('originalCheckIn').value;
+    const checkOutDateStr = document.getElementById('originalCheckoutDate').value;
+
+    if (checkInDateStr && checkOutDateStr) {
+
+        const [checkInDay, checkInMonth, checkInYear] = checkInDateStr.split('/');
+        const checkInDate = new Date(checkInYear, checkInMonth - 1, checkInDay);
 
 
+        const [checkOutDay, checkOutMonth, checkOutYear] = checkOutDateStr.split('/');
+        const checkOutDate = new Date(checkOutYear, checkOutMonth - 1, checkOutDay);
 
 
-    function updateEarlyCheckOutRemarks() {
-      const earlyCheckOutDateStr = document.getElementById('earlyCheckOutDate').value;
-      if (earlyCheckOutDateStr) {
-        const earlyCheckOutDate = new Date(earlyCheckOutDateStr);
-        const formattedDate = earlyCheckOutDate.toLocaleDateString('en-US', {
-          timeZone: 'Asia/Manila',
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-        });
+        const minDate = `${checkInDate.getFullYear()}-${(checkInDate.getMonth() + 1).toString().padStart(2, '0')}-${checkInDate.getDate().toString().padStart(2, '0')}`;
 
-        document.getElementById('newRemarks').value = `Early Check Out`;
-      }
+
+        checkOutDate.setDate(checkOutDate.getDate() - 1);
+        const maxDate = `${checkOutDate.getFullYear()}-${(checkOutDate.getMonth() + 1).toString().padStart(2, '0')}-${checkOutDate.getDate().toString().padStart(2, '0')}`;
+
+
+        document.getElementById('earlyCheckOutDate').setAttribute('min', minDate);
+        document.getElementById('earlyCheckOutDate').setAttribute('max', maxDate);
     }
+}
 
 
-    function calculateExtendedDays() {
-      const extendedCheckoutDate = document.getElementById('extendedCheckOutDate').value;
-      const originalDateInput = document.getElementById('originalDate').value;
+if (statusSelect === "Early Check Out") {
+    earlyCheckOutGroup.style.display = "block";
+    document.getElementById('earlyCheckOutDate').value = originalDate;
+    setMinCheckOutDate(originalDate);
+    setMinEarlyCheckOutDate(originalDate);
+}
 
-      if (!extendedCheckoutDate || !originalDateInput) return;
+function updateEarlyCheckOutRemarks() {
+    const earlyCheckOutDateStr = document.getElementById('earlyCheckOutDate').value;
+    if (earlyCheckOutDateStr) {
+    const earlyCheckOutDate = new Date(earlyCheckOutDateStr);
+    const formattedDate = earlyCheckOutDate.toLocaleDateString('en-US', {
+        timeZone: 'Asia/Manila',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+    });
 
-      const originalDate = new Date(originalDateInput);
-      const newDate = new Date(extendedCheckoutDate);
-
-      const diffTime = newDate - originalDate;
-      const daysExtended = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      if (daysExtended > 0) {
-        document.getElementById('newRemarks').value = `Extended + ${daysExtended} days`;
-      }
+    document.getElementById('newRemarks').value = `Early Check Out`;
     }
+}
+
+
+function calculateExtendedDays() {
+    const extendedCheckoutDate = document.getElementById('extendedCheckOutDate').value;
+    const originalDateInput = document.getElementById('originalDate').value;
+
+    if (!extendedCheckoutDate || !originalDateInput) return;
+
+    const originalDate = new Date(originalDateInput);
+    const newDate = new Date(extendedCheckoutDate);
+
+    const diffTime = newDate - originalDate;
+    const daysExtended = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (daysExtended > 0) {
+    document.getElementById('newRemarks').value = `Extended + ${daysExtended} days`;
+    }
+}
 </script>
 @endsection
 

@@ -74,7 +74,7 @@ function reviewStaffHouseBookingAdminSH(data){
 function checkStaffHouseBookingAdminSH(booking) {
     var data = JSON.parse(booking);
 
-    // Function to convert date from "December 17, 2024" to "17/12/2024"
+
     function formatDateToDDMMYYYY(dateStr) {
         const date = new Date(dateStr);
         const day = String(date.getDate()).padStart(2, '0');
@@ -87,6 +87,7 @@ function checkStaffHouseBookingAdminSH(booking) {
     $('#booking_check_id').val(data.id);
     $('#originalDate').val(data.check_out_date);
     $('#originalCheckIn').val(formatDateToDDMMYYYY(data.check_in_date));
+    $('#originalCheckoutDate').val(formatDateToDDMMYYYY(data.check_out_date));
     $('#checkModal').modal('show');
 }
 
