@@ -208,7 +208,7 @@ class AdminSHPdfController extends Controller
              'title' => 'DFTC Accomodation',
              'bookings' => $bookingData,
              'director' => $adminFullName,
-             'admin' => $admin->fullname,
+             'admin' => $adminFullName,
              'fullname' => $bookingData['fullname'],
              'DFTC_date' => $bookingData['DFTC_date'],
              'DFTC_number' => $bookingData['DFTC_number'],

@@ -81,7 +81,7 @@
                         <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminSH/view-my-staffhouse-canceled-pre-reservations') || Request::is('adminSH/view-my-staffhouse-rejected-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminSH/view-my-staffhouse-canceled-pre-reservations') }}">Staff House</a>
                         <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminSH/view-my-DFTC-canceled-pre-reservations') || Request::is('adminSH/view-my-DFTC-rejected-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminSH/view-my-DFTC-canceled-pre-reservations') }}">DFTC</a>
                     </div>
-                </div>  
+                </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-12 mt-2">
@@ -102,7 +102,7 @@
                     <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminSH/view-my-guesthouse-rejected-pre-reservations') || Request::is('adminSH/view-my-staffhouse-rejected-pre-reservations') || Request::is('adminSH/view-my-DFTC-rejected-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminSH/view-my-staffhouse-rejected-pre-reservations') }}">Rejected</a>
                 </div>
             </div>
-            
+
             <p class="Montserrat h-12  lg:text-5xl text-3xl font-extrabold textGradient text-center" style="margin-top: 1rem">CANCELLED</p>
             <div class="container card w-100 bg-light-white mt-2">
                 <div class="row">
@@ -110,10 +110,9 @@
                         <table class="table table-responsive table-striped table-hover w-auto" id="myStaffHouseRejectedTableAdminSH">
                             <thead>
                                 <th width="20%">Room Name</th>
-                                <th width="15%">Check-in Date</th>
-                                <th width="15%">Check-out Date</th>
-                                <th width="15%">Status</th>
-                                <th width="5%">Amount</th>
+                                <th width="15%">Check In Date</th>
+                                <th width="15%">Check Out Date</th>
+                                <th width="15%" class="text-center">Status</th>
                                 <th width="30%" style="text-align: left;">Reason</th>
                             </thead>
                             <tbody>
@@ -122,12 +121,23 @@
                                         <td>{{ $booking->room_number }}</td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
-                                        <td>{{ $booking->status }}</td>
-                                        <td>
-                                            @if ($booking->total_amount == '0.00' && $booking->position == 'Student')
-                                                FREE
+                                        <td class="status-cell">
+                                            @if ($booking->status == 'Pending Review')
+                                                <span class="status-badge pending">
+                                                    <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                            @elseif ($booking->status == 'Canceled')
+                                                <span class="status-badge canceled">
+                                                    <i class="fas fa-times-circle"></i> Cancelled
+                                                </span>
+                                            @elseif ($booking->status == 'Rejected')
+                                                <span class="status-badge rejected">
+                                                    <i class="fas fa-ban"></i> Rejected
+                                                </span>
                                             @else
-                                                {{ $booking->total_amount }}
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-check-circle"></i> Approved
+                                                </span>
                                             @endif
                                         </td>
                                         <td>{{ $booking->reason }}</td>

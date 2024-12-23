@@ -285,7 +285,7 @@ class AdminSHPreReservationController extends Controller
         $facilityId = Facility::where('facility_name', 'Guest House')->value('id');
         $rooms = Room::where('facility_id', $facilityId)->get();
         $client_id = session()->get('loggedInAdminSH')['id'];
-        $bookings = GuestHouseBooking::where('status', 'Rejected')
+        $bookings = StaffHouseBooking::where('status', 'Rejected')
         ->where('client_id', $client_id)
         ->get()
         ->sortByDesc(function ($booking) {

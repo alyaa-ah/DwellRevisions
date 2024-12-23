@@ -76,11 +76,11 @@
             <p class="Montserrat h-12 text-3xl font-extrabold textGradient" style="margin-top: 4rem">PRE-BOOKINGS</p>
             <div class="row justify-content-center">
                 <div class="col-md-12 d-flex justify-content-center" style="margin-top: 1rem;">
-                    <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminSH/view-ongoing-staffhouse-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminSH/view-ongoing-staffhouse-pre-reservations') }}">Ongoing</a>
+                    <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminSH/view-ongoing-staffhouse-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminSH/view-ongoing-staffhouse-pre-reservations') }}">Current</a>
                     <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminSH/view-pending-staffhouse-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminSH/view-pending-staffhouse-pre-reservations') }}">Pending</a>
                 </div>
             </div>
-            <p class="Montserrat h-12  lg:text-5xl text-3xl  font-extrabold textGradient text-center" style="margin-top: 1rem">ONGOING</p>
+            <p class="Montserrat h-12  lg:text-5xl text-3xl  font-extrabold textGradient text-center" style="margin-top: 1rem">CURRENT</p>
             <div class="container card w-12/12 bg-light-white mt-3">
                 <div class="row">
                     <div class="col-md-12">
@@ -106,10 +106,32 @@
                                     @else
                                         <td>{{ $booking->total_amount }}</td>
                                     @endif
-                                    <td>{{ $booking->remarks }}</td>
+                                    <td class="status-cell">
+                                        @if ($booking->remarks == "Early Check Out")
+                                            <span class="status-badge early-checkout">
+                                                <i class="fas fa-arrow-right"></i> {{ $booking->remarks }}
+                                            </span>
+                                        @elseif (Str::contains($booking->remarks, "Extended"))
+                                            <span class="status-badge extended">
+                                                <i class="fas fa-plus-circle"></i> {{ $booking->remarks }}
+                                            </span>
+                                        @else
+                                            @if ($booking->remarks == "" || $booking->remarks == null)
+                                                <span class="status-badge no-remarks">
+                                                    <i class="fas fa-info-circle"></i> No Remark
+                                                </span>
+                                            @else
+                                                <span class="status-badge default">
+                                                    {{ $booking->remarks }}
+                                                </span>
+                                            @endif
+                                        @endif
+                                    </td>
                                     <td class="text-center">
                                         <button type="button" onclick="viewStaffHouseBookingAdminSH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
-                                        <button type="button" onclick="checkStaffHouseBookingAdminSH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: BLACK;"></i></button>
+                                            @if ($booking->remarks == null || $booking->remarks == '')
+                                                <button type="button" onclick="checkStaffHouseBookingAdminSH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: BLACK;"></i></button>
+                                            @endif
                                     </td>
                                 </tr>
                             @endforeach

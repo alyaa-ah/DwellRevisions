@@ -116,9 +116,15 @@
                                                     <i class="fas fa-plus-circle"></i> {{ $booking->remarks }}
                                                 </span>
                                             @else
-                                                <span class="status-badge default">
-                                                    {{ $booking->remarks }}
-                                                </span>
+                                                @if ($booking->remarks == "" || $booking->remarks == null)
+                                                    <span class="status-badge no-remarks">
+                                                        <i class="fas fa-info-circle"></i> No Remark
+                                                    </span>
+                                                @else
+                                                    <span class="status-badge default">
+                                                        {{ $booking->remarks }}
+                                                    </span>
+                                                @endif
                                             @endif
                                         </td>
                                         <td class="text-center">

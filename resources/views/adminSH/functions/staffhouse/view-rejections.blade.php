@@ -86,12 +86,11 @@
                         <table class="table table-responsive table-striped table-hover w-auto" id="rejectedStaffHouseAdminSH">
                             <thead>
                                 <tr>
-                                    <th width="20%">Full Name</th>
-                                    <th width="10%">Room Name</th>
+                                    <th width="18%">Full Name</th>
+                                    <th width="12%">Room Name</th>
                                     <th width="15%">Check In Date</th>
                                     <th width="15%">Check Out Date</th>
-                                    <th width="5%">Status</th>
-                                    <th width="5%">Amount</th>
+                                    <th width="10%" class="text-center">Status</th>
                                     <th width="30%" style="text-align: left;">Reason</th>
                                 </tr>
                             </thead>
@@ -102,12 +101,23 @@
                                         <td>{{ $booking->room_number }}</td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
-                                        <td>{{ $booking->status }}</td>
-                                        <td>
-                                            @if ($booking->total_amount == '0.00' && $booking->position == 'Student')
-                                                FREE
+                                        <td class="status-cell">
+                                            @if ($booking->status == 'Pending Review')
+                                                <span class="status-badge pending">
+                                                    <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                            @elseif ($booking->status == 'Canceled')
+                                                <span class="status-badge canceled">
+                                                    <i class="fas fa-times-circle"></i> Cancelled
+                                                </span>
+                                            @elseif ($booking->status == 'Rejected')
+                                                <span class="status-badge rejected">
+                                                    <i class="fas fa-ban"></i> Rejected
+                                                </span>
                                             @else
-                                                {{ $booking->total_amount }}
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-check-circle"></i> Approved
+                                                </span>
                                             @endif
                                         </td>
                                         <td>{{ $booking->reason }}</td>

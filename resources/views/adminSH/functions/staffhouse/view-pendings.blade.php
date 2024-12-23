@@ -76,7 +76,7 @@
             <p class="Montserrat h-12 text-3xl font-extrabold textGradient" style="margin-top: 4rem">PRE-BOOKINGS</p>
             <div class="row justify-content-center">
                 <div class="col-md-12 d-flex justify-content-center" style="margin-top: 1rem;">
-                    <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminSH/view-ongoing-staffhouse-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminSH/view-ongoing-staffhouse-pre-reservations') }}">Ongoing</a>
+                    <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminSH/view-ongoing-staffhouse-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminSH/view-ongoing-staffhouse-pre-reservations') }}">Current</a>
                     <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminSH/view-pending-staffhouse-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminSH/view-pending-staffhouse-pre-reservations') }}">Pending</a>
                 </div>
             </div>

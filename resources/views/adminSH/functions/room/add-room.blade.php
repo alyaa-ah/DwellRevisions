@@ -151,7 +151,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group text-light-green">
                                         <label for="room_amenities" style="font-weight: bold;">Room Amenities</label>
-                                        <textarea name="room_amenities" id="room_amenities" cols="5" rows="5" class="form-control" placeholder="Type the room amenities here. If there is no amenities, type None"></textarea>
+                                        <textarea name="room_amenities" id="room_amenities" cols="5" rows="5" class="form-control" placeholder="Type your amenities here. If there are multiple amenities, separate them with commas. If there are no amenities, type None"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-4">

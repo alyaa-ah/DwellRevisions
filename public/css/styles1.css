@@ -204,4 +204,7 @@ body {
     top: 0;
     font-size: 1rem;
 }
+.status-badge.no-remarks {
+    background-color: #6c757d;
+}
 

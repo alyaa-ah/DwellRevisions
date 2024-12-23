@@ -106,9 +106,10 @@
                                 <th width="30%">Room Name</th>
                                 <th width="15%">Check In Date</th>
                                 <th width="15%">Check Out Date</th>
-                                <th width="15%">Status</th>
+                                <th width="15%" class="text-center">Status</th>
                                 <th width="5%">Amount</th>
                                 <th width="20%" class="text-center">Action Taken</th>
+                                <th>DFTC DATE</th>
                             </thead>
                             <tbody>
                                 @foreach ($bookings as $booking)
@@ -116,7 +117,17 @@
                                         <td>{{ $booking->room_number}}</td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
-                                        <td>{{ $booking->status }}</td>
+                                        <td class="status-cell">
+                                            @if ($booking->status == 'Pending Review')
+                                                <span class="status-badge pending">
+                                                    <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                            @else
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-check-circle"></i> Approved
+                                                </span>
+                                            @endif
+                                        </td>
                                         @if ($booking->total_amount == "0.00" && $booking->position == "Student")
                                             <td>FREE</td>
                                         @else
@@ -126,20 +137,22 @@
                                     <td class="text-center">
                                             @if ($booking->room_type == "Hall")
                                                 <button type="button" onclick="viewAdminSHDftcHallBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;" title="View Button for hall"></i></button>
-                                                <button type="button" onclick="editAdminSHDftcHallBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;" title="Edit Button for hall"></i></button>
+                                                @if ($booking->status == "Pending Review")
+                                                    <button type="button" onclick="editAdminSHDftcHallBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;" title="Edit Button for hall"></i></button>
+                                                @endif
                                             @else
                                                 <button type="button" onclick="viewAdminSHDftcRoomBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;" title="View Button for room"></i></button>
-                                                <button type="button" onclick="editAdminSHDftcRoomBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;" title="Edit Button for room"></i></button>
+                                                @if ($booking->status == "Pending Review")
+                                                    <button type="button" onclick="editAdminSHDftcRoomBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;" title="Edit Button for room"></i></button>
+                                                @endif
                                             @endif
                                             @if ($booking->status == 'Pending Review')
-
                                             @else
-                                            <button type="button" onclick="generateAdminSHPdfDftcBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-success"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></button>
+                                                <button type="button" onclick="generateAdminSHPdfDftcBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-success"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></button>
                                             @endif
-
                                         <button type="button" onclick="cancelAdminSHDftcBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-danger"><i class="fa-solid fa-xmark" style="color: #000000;"></i></i></button>
-
                                     </td>
+                                    <td style="display:none;">{{ $booking->DFTC_date }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
