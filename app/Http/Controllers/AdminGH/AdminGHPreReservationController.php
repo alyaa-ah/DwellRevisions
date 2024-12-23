@@ -319,7 +319,7 @@ class AdminGHPreReservationController extends Controller
         $facilityId = Facility::where('facility_name', 'Staff House')->value('id');
         $rooms = Room::where('facility_id', $facilityId)->get();
         $client_id = session()->get('loggedInAdminGH')['id'];
-        $bookings = GuestHouseBooking::where('status', 'Canceled')
+        $bookings = StaffHouseBooking::where('status', 'Canceled')
         ->where('client_id', $client_id)
         ->get()
         ->sortByDesc(function ($booking) {

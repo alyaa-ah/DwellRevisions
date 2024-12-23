@@ -91,7 +91,7 @@
                                 <th width="13%">Check In</th>
                                 <th width="13%">Check Out</th>
                                 <th width="5%">Amount</th>
-                                <th width="15%">Remarks</th>
+                                <th width="15%" class="text-center">Remarks</th>
                                 <th width="10%" class="text-center">Action Taken</th>
                             </thead>
                             <tbody>
@@ -106,10 +106,26 @@
                                         @else
                                             <td>{{ $booking->total_amount }}</td>
                                         @endif
-                                        <td>{{ $booking->remarks }}</td>
+                                        <td class="status-cell">
+                                            @if ($booking->remarks == "Early Check Out")
+                                                <span class="status-badge early-checkout">
+                                                    <i class="fas fa-arrow-right"></i> {{ $booking->remarks }}
+                                                </span>
+                                            @elseif (Str::contains($booking->remarks, "Extended"))
+                                                <span class="status-badge extended">
+                                                    <i class="fas fa-plus-circle"></i> {{ $booking->remarks }}
+                                                </span>
+                                            @else
+                                                <span class="status-badge default">
+                                                    {{ $booking->remarks }}
+                                                </span>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <button type="button" onclick="viewGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
-                                            <button type="button" onclick="checkGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: BLACK;"></i></button>
+                                                @if ($booking->remarks == null || $booking->remarks == "")
+                                                    <button type="button" onclick="checkGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: BLACK;"></i></button>
+                                                @endif
                                         </td>
                                     </tr>
                                 @endforeach

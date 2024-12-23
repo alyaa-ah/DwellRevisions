@@ -71,7 +71,7 @@
                 </ul>
             </div>
         </div>
-        
+
         <div class="col-9 col-md-10 content m-3 mx-auto items-center" data-aos="fade-up" data-aos-duration="800">
             <p class="Montserrat h-12 text-3xl font-extrabold textGradient" style="margin-top: 4rem">DASHBOARD</p>
             <div class="card w-full bg-light-white mt-2 px-2">
@@ -91,7 +91,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/ongoing.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;" class="mr-1">
+                                                <img src="{{ asset('images/icons/ongoing.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;" class="mr-1">
                                                 <span class="d-sm-inline" style="font-size: 18px;">Ongoing</span>
                                             </div>
                                         </div>
@@ -113,7 +113,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/history.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;" class="mr-1">
+                                                <img src="{{ asset('images/icons/history.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;" class="mr-1">
                                                 <span style="font-size: 18px;">History</span>
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/pending.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;"class="mr-1">
+                                                <img src="{{ asset('images/icons/pending.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;"class="mr-1">
                                                 <span style="font-size: 18px;">Pending</span>
                                             </div>
                                         </div>
@@ -145,7 +145,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-3">
                                 <div class="card m-2 text-white bg-danger  shadow-md rounded-md">
                                     <div class="card-body pb-0 d-flex justify-content-between align-items-start">
@@ -158,7 +158,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/voids.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;" class="mr-1">
+                                                <img src="{{ asset('images/icons/voids.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;" class="mr-1">
                                                 <span style="font-size: 18px;">Voids</span>
                                             </div>
                                         </div>
@@ -189,7 +189,7 @@
                                                 @endif
                                             </div>
                                             <div class="ml-5 d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
+                                                <img src="{{ asset('images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
                                                 <span style="font-size: 18px; margin-top: 0.5rem">Earnings</span>
                                             </div>
                                         </div>

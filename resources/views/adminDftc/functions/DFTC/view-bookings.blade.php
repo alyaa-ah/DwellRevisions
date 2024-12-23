@@ -101,7 +101,21 @@
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
                                         <td class="text-center">{{ $booking->total_amount }}</td>
-                                        <td>{{ $booking->remarks }}</td>
+                                        <td class="status-cell">
+                                            @if ($booking->remarks == "Early Check Out")
+                                                <span class="status-badge early-checkout">
+                                                    <i class="fas fa-arrow-right"></i> {{ $booking->remarks }}
+                                                </span>
+                                            @elseif (Str::contains($booking->remarks, "Extended"))
+                                                <span class="status-badge extended">
+                                                    <i class="fas fa-plus-circle"></i> {{ $booking->remarks }}
+                                                </span>
+                                            @else
+                                                <span class="status-badge default">
+                                                    {{ $booking->remarks }}
+                                                </span>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <button type="button" onclick="viewDftcBookingAdminDftc('{{ addslashes(json_encode($booking) )}}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
                                             <button type="button" onclick="checkDftcBookingAdminDFTC('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: BLACK;"></i></button>

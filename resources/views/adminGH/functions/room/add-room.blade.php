@@ -12,7 +12,7 @@
                             <i class="fas fa-house"></i>
                             <span class="ms-1 d-none d-sm-inline">DASHBOARD</span>
                         </a>
-                    </li> 
+                    </li>
                     <li class="border-bottom w-full">
                         <a href="{{ url('/adminGH/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminGH/view-rooms')  || Request::is('adminGH/create-room')  ? 'bg-dark-green text-dark-white': '' }}">
                             <i class="fas fa-door-open"></i>
@@ -151,7 +151,7 @@
                                         <div class="col-md-4 mb-2">
                                             <div class="form-group text-light-green">
                                                 <label for="room_amenities" style="font-weight: bold;">Room Amenities</label>
-                                                <textarea name="room_amenities" id="room_amenities" cols="5" rows="5" class="form-control" placeholder="Type the room amenities here. If there is no amenities, type None"></textarea>
+                                                <textarea name="room_amenities" id="room_amenities" cols="5" rows="5" class="form-control" placeholder="Type your amenities here. If there are multiple amenities, separate them with commas. If there are no amenities, type None"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-2">

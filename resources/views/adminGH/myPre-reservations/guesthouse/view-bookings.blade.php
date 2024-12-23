@@ -99,12 +99,12 @@
                 <div class="container card w-100 bg-light-white mt-2">
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table table-responsive table-striped table-hover w-auto" id="dftcBookingTableAdminGH">
+                            <table class="table table-responsive table-striped table-hover w-auto" id="guestHouseBookingTableAdminGH">
                                 <thead>
                                     <th width="30%">Room Name</th>
                                     <th width="15%">Check In Date</th>
                                     <th width="15%">Check Out Date</th>
-                                    <th width="15%">Status</th>
+                                    <th width="15%" class="text-center">Status</th>
                                     <th width="5%">Amount</th>
                                     <th width="20%" class="text-center">Action Taken</th>
                                 </thead>
@@ -114,18 +114,26 @@
                                             <td>{{ $booking->room_number}}</td>
                                             <td>{{ $booking->check_in_date }}</td>
                                             <td>{{ $booking->check_out_date }}</td>
-                                            <td>{{ $booking->status }}</td>
+                                            <td class="status-cell">
+                                                @if ($booking->status == 'Pending Review')
+                                                    <span class="status-badge pending">
+                                                        <i class="fas fa-clock"></i> Pending
+                                                    </span>
+                                                @else
+                                                    <span class="status-badge approved">
+                                                        <i class="fas fa-check-circle"></i> Approved
+                                                    </span>
+                                                @endif
+                                            </td>
                                             @if ($booking->total_amount == "0.00" && $booking->position == "Student")
                                                 <td>FREE</td>
                                             @else
                                                 <td>{{ $booking->total_amount }}</td>
                                             @endif
-
                                             <td class="text-center">
                                                 <button type="button" onclick="viewGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
-                                                <button type="button" onclick="editGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;"></i></button>
                                                     @if ($booking->status == 'Pending Review')
-
+                                                    <button type="button" onclick="editGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;"></i></button>
                                                     @else
                                                         <button type="button" onclick="generateAdminGHPdfGuestHouseBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-success"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></button>
                                                     @endif

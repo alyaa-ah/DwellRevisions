@@ -81,7 +81,7 @@
                     <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminGH/view-my-staffhouse-history*') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminGH/view-my-staffhouse-history') }}">Staff House</a>
                     <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminGH/view-my-DFTC-history*') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminGH/view-my-DFTC-history') }}">DFTC</a>
                 </div>
-                 </div>  
+                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-12 mt-2">
@@ -105,7 +105,7 @@
                                 <th width="30%">Room Name</th>
                                 <th width="15%">Check In Date</th>
                                 <th width="15%">Check Out Date</th>
-                                <th width="15%">Status</th>
+                                <th width="15%" class="text-center">Status</th>
                                 <th width="5%">Amount</th>
                                 <th width="20%" class="text-center">Action Taken</th>
                             </thead>
@@ -115,7 +115,17 @@
                                         <td>{{ $booking->room_number}}</td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
-                                        <td>{{ $booking->status }}</td>
+                                        <td class="status-cell">
+                                            @if ($booking->status == 'Pending Review')
+                                                <span class="status-badge pending">
+                                                    <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                            @else
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-check-circle"></i> Approved
+                                                </span>
+                                            @endif
+                                        </td>
                                         @if ($booking->total_amount == "0.00" && $booking->position == "Student")
                                             <td>FREE</td>
                                         @else
@@ -280,7 +290,7 @@
                                     <p class="h6">Number of Male(s)</p>
                                 </div>
                                 <div class="col-md-4 my-2">
-                                    <p id="numOfMalesDftcHall-modal"></p>                                            
+                                    <p id="numOfMalesDftcHall-modal"></p>
                                 </div>
                                 <div class="col-md-2 my-2">
                                     <p class="h6">Number of Female(s)</p>
@@ -334,7 +344,7 @@
                                 <div class="col-md-4 my-2">
                                     <p id="totalAmountDftcHall-modal"></p>
                                 </div>
-                            </div>                         
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -399,7 +409,7 @@
                                     <p class="h6">Agency</p>
                                 </div>
                                 <div class="col-md-4 my-2">
-                                    <p id="agencyDftcRoom-modal"></p>                                
+                                    <p id="agencyDftcRoom-modal"></p>
                                 </div>
                             </div>
                             <!-- Booking Information -->
@@ -418,12 +428,12 @@
                                 <div class="col-md-2 my-2">
                                     <p class="h6">Booking Number</p>
                                 </div>
-                                <div class="col-md-4 my-2">    
+                                <div class="col-md-4 my-2">
                                     <p id="bookingNumberDftcRoom-modal"></p>
                                 </div>
                             </div>
                             <div class="row bg-gray-100">
-                                <div class="col-md-2 my-2">                                
+                                <div class="col-md-2 my-2">
                                     <p colspan="1" class="h6">Activity</p>
                                 </div>
                                 <div class="col-md-10 my-2">
@@ -431,7 +441,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-2 my-2">                                
+                                <div class="col-md-2 my-2">
                                     <p colspan="1" class="h6">Room Name/Number</p>
                                 </div>
                                 <div class="col-md-10 my-2">
@@ -442,7 +452,7 @@
                                 <div class="col-md-2 my-2">
                                 <p class="h6">Check In Date</p>
                                 </div>
-                                <div class="col-md-4 my-2">                                            
+                                <div class="col-md-4 my-2">
                                     <p id="checkInDateDftcRoom-modal"></p>
                                 </div>
                                 <div class="col-md-2 my-2">
@@ -463,7 +473,7 @@
                                     <p class="h6">Number of Night(s)</p>
                                 </div>
                                 <div class="col-md-4 my-2">
-                                    <p id="numOfNightsDftcRoom-modal"></p>                                
+                                    <p id="numOfNightsDftcRoom-modal"></p>
                                 </div>
                             </div>
                             <div class="row">
@@ -504,15 +514,15 @@
                                 <div class="col-md-2 my-2">
                                     <p class="h6">Special Request</p>
                                 </div>
-                                <div class="col-md-10 my-2"> 
+                                <div class="col-md-10 my-2">
                                     <p colspan="3" id="specialRequestDftcRoom-modal"></p>
-                                </div>                            
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="text-light-green text-center text-xl font-semibold py-2">
                                     Rates and Computation
                                 </div>
-                            </div>  
+                            </div>
                             <div class="row">
                                 <div class="col-md-2 my-2">
                                     <p class="h6">Rate</p>
