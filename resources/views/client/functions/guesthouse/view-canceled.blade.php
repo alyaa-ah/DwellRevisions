@@ -14,13 +14,13 @@
                         </a>
                     </li>
                     <li class="border-bottom w-full">
-                        <a href="{{ url('/client/view-guesthouse-prereservations') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('client/view-guesthouse-prereservations') || Request::is('client/view-staffhouse-prereservations') || Request::is('client/view-DFTC-prereservations') ? 'bg-dark-green text-dark-white' : '' }}">                            
+                        <a href="{{ url('/client/view-guesthouse-prereservations') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('client/view-guesthouse-prereservations') || Request::is('client/view-staffhouse-prereservations') || Request::is('client/view-DFTC-prereservations') ? 'bg-dark-green text-dark-white' : '' }}">
                             <i class="fas fa-calendar-alt"></i>
                             <span class="ms-1 d-none d-sm-inline">PRE-BOOKINGS</span>
                         </a>
                     </li>
                     <li class="border-bottom w-full">
-                        <a href="{{ url('/client/view-guesthouse-history') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('client/view-guesthouse-history') || Request::is('client/view-staffhouse-history') || Request::is('client/view-DFTC-history') ? 'bg-dark-green text-dark-white' : '' }}">                            
+                        <a href="{{ url('/client/view-guesthouse-history') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('client/view-guesthouse-history') || Request::is('client/view-staffhouse-history') || Request::is('client/view-DFTC-history') ? 'bg-dark-green text-dark-white' : '' }}">
                             <i class="fas fa-history"></i>
                             <span class="ms-1 d-none d-sm-inline">HISTORY</span>
                         </a>
@@ -49,7 +49,7 @@
                             <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('client/view-staffhouse-canceled-preservations') || Request::is('client/view-staffhouse-rejected-preservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/client/view-staffhouse-canceled-preservations') }}">Staff House</a>
                             <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('client/view-DFTC-canceled-preservations') || Request::is('client/view-DFTC-rejected-preservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/client/view-DFTC-canceled-preservations') }}">DFTC</a>
                         </div>
-                    </div>  
+                    </div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-md-12 mt-2">
@@ -79,7 +79,7 @@
                                     <th width="20%">Room Name</th>
                                     <th width="15%">Check In Date</th>
                                     <th width="15%">Check Out Date</th>
-                                    <th width="15%">Status</th>
+                                    <th width="15%" class="text-center">Status</th>
                                     <th width="5%">Amount</th>
                                     <th width="30%" style="text-align: left;">Reason</th>
                                 </tr>
@@ -90,7 +90,25 @@
                                         <td>{{ $booking->room_number }}</td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
-                                        <td>{{ $booking->status }}</td>
+                                        <td class="status-cell">
+                                            @if ($booking->status == 'Pending Review')
+                                                <span class="status-badge pending">
+                                                    <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                            @elseif ($booking->status == 'Canceled')
+                                                <span class="status-badge canceled">
+                                                    <i class="fas fa-times-circle"></i> Cancelled
+                                                </span>
+                                            @elseif ($booking->status == 'Rejected')
+                                                <span class="status-badge rejected">
+                                                    <i class="fas fa-ban"></i> Rejected
+                                                </span>
+                                            @else
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-check-circle"></i> Approved
+                                                </span>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if ($booking->total_amount == '0.00' && $booking->position == 'Student')
                                                 FREE

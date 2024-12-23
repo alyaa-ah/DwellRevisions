@@ -239,7 +239,7 @@
                                 <div class="col-md-6 mb-2">
                                     <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                         <label for="position">Position</label>
-                                        <select name="position" id="edit-position-account" class="form-control">
+                                        <select name="position" id="edit-position-account" class="form-control readonly-select" style="background-color:#d3d3d3;">
                                             <option value="">Select Position</option>
                                             <option value="Guest">Guest</option>
                                             <option value="Student">Student</option>

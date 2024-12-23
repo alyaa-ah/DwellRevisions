@@ -70,7 +70,6 @@ class AdminSHMainController extends Controller
         $staffHouseRooms = Room::where('facility_id', $facilityId)->get();
         $now = Carbon::now('Asia/Manila');
         $staffHouseRooms = Room::where('facility_id', $facilityId)->get();
-        $now = Carbon::now('Asia/Manila');
         $bookings = StaffHouseBooking::where('status', 'Reviewed')->get()
         ->filter(function ($booking) use ($now) {
             try {

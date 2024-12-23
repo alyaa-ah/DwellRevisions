@@ -91,7 +91,7 @@
                                     <th width="22%">Room Name</th>
                                     <th width="15%">Check In Date</th>
                                     <th width="15%">Check Out Date</th>
-                                    <th width="7%">Status</th>
+                                    <th width="7%" class="text-center">Status</th>
                                     <th width="3%">Amount</th>
                                     <th width="25%" style="text-align: left;">Reason</th>
                                 </tr>
@@ -103,7 +103,17 @@
                                         <td>{{ $booking->room_number }}</td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
-                                        <td>{{ $booking->status }}</td>
+                                        <td class="status-cell">
+                                            @if ($booking->status == 'Pending Review')
+                                                <span class="status-badge pending">Pending</span>
+                                            @elseif ($booking->status == 'Canceled')
+                                                <span class="status-badge canceled">Cancelled</span>
+                                            @elseif ($booking->status == 'Rejected')
+                                                <span class="status-badge rejected">Rejected</span>
+                                            @else
+                                                <span class="status-badge approved">Approved</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if ($booking->total_amount == '0.00' && $booking->position == 'Student')
                                                 FREE

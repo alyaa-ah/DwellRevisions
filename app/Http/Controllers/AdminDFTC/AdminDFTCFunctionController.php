@@ -377,6 +377,9 @@ class AdminDFTCFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminDftc.functions.DFTC.view-bookings', [
@@ -396,6 +399,9 @@ class AdminDFTCFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminDftc.functions.DFTC.view-pendings', [
@@ -454,9 +460,10 @@ class AdminDFTCFunctionController extends Controller
                 case 'Rejected':
                     $bookings = DftcBooking::where('id', $bookingId)->first();
                     if ($bookings) {
+                        $reason = $request->reason === 'Others' ? $request->other_reason : $request->reason;
                         $bookings->update([
                             'status' => 'Rejected',
-                            'reason' => $request->reason,
+                            'reason' => $reason,
                         ]);
 
                         $facility = Facility::where('facility_name', 'DFTC')->first();
@@ -493,6 +500,9 @@ class AdminDFTCFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->gte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminDftc.functions.DFTC.view-history', [
@@ -503,7 +513,10 @@ class AdminDFTCFunctionController extends Controller
     }
     public function goToCanceledBookingsAdminDftc(){
         $bookings = DftcBooking::where('status', 'Canceled')
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminDftc.functions.DFTC.view-cancellations', [
             'bookings' => $bookings,
@@ -512,7 +525,10 @@ class AdminDFTCFunctionController extends Controller
     }
     public function goToRejectedBookingsAdminDftc(){
         $bookings = DftcBooking::where('status', 'Rejected')
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminDftc.functions.DFTC.view-rejections', [
             'bookings' => $bookings,
@@ -583,5 +599,49 @@ class AdminDFTCFunctionController extends Controller
             return response()->json(['status' => '200']);
         }
         return response()->json(['status' => '404']);
+    }
+    public function updateCheckOut(Request $request){
+        $booking = DftcBooking::find($request->booking_id);
+        $orig = $booking->check_out_date;
+        if (!$booking) {
+            return 404;
+        }
+
+        try {
+            if ($request->remarks == 'Early Check Out') {
+                if (!$request->earlyCheckOutDate) {
+                    return 400;
+                }
+
+                $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->earlyCheckOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
+                $booking->check_out_date = $checkOutDate;
+                $booking->remarks = $request->newremarks;
+
+                if ($booking->save()) {
+                    return 200;
+                }
+
+                return 500;
+            }
+
+            if ($request->remarks == 'Extended') {
+                if (!$request->extendedCheckOutDate) {
+                    return 400;
+                }
+                $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->extendedCheckOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
+                $booking->check_out_date = $checkOutDate;
+                $booking->remarks = $request->newremarks;
+
+                if ($booking->save()) {
+                    return 200;
+                }
+
+                return 500;
+            }
+
+            return 400; // Bad Request
+        } catch (\Exception $e) {
+            return 500;
+        }
     }
 }

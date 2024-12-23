@@ -95,6 +95,12 @@
                         </div>
                     </div>
                 </div>
+                @php
+                use Carbon\Carbon;
+                    $bookings = $bookings->sortByDesc(function ($booking) {
+                    return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
+                });
+                @endphp
                 <p class="Montserrat h-12  lg:text-5xl text-3xl font-extrabold textGradient text-center" style="margin-top: 1rem">PRE-BOOKINGS</p>
                 <div class="container card w-12/12 bg-light-white mt-2">
                     <div class="row">
@@ -104,9 +110,10 @@
                                     <th width="30%">Room Name</th>
                                     <th width="15%">Check In Date</th>
                                     <th width="15%">Check Out Date</th>
-                                    <th width="15%">Status</th>
+                                    <th width="15%" class="text-center">Status</th>
                                     <th width="5%">Amount</th>
                                     <th width="20%" class="text-center">Action Taken</th>
+                                    <th style="display:none;">DFTC Date</th>
                                 </thead>
                                 <tbody>
                                     @foreach ($bookings as $booking)
@@ -114,30 +121,37 @@
                                             <td>{{ $booking->room_number}}</td>
                                             <td>{{ $booking->check_in_date }}</td>
                                             <td>{{ $booking->check_out_date }}</td>
-                                            <td>{{ $booking->status }}</td>
+                                            <td class="status-cell">
+                                                @if ($booking->status == 'Pending Review')
+                                                    <span class="status-badge pending">Pending</span>
+                                                @else
+                                                    <span class="status-badge approved">Approved</span>
+                                                @endif
+                                            </td>
                                             @if ($booking->total_amount == "0.00" && $booking->position == "Student")
                                                 <td>FREE</td>
                                             @else
                                                 <td>{{ $booking->total_amount }}</td>
                                             @endif
-                                        </td>
-                                        <td class="text-center">
-                                                @if ($booking->room_type == "Hall")
-                                                    <button type="button" onclick="viewAdminDftcDftcHallBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;" title="View Button for hall"></i></button>
-                                                    <button type="button" onclick="editAdminDftcDftcHallBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;" title="Edit Button for hall"></i></button>
-                                                @else
-                                                    <button type="button" onclick="viewAdminDftcDftcRoomBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;" title="View Button for room"></i></button>
-                                                    <button type="button" onclick="editAdminDftcDftcRoomBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;" title="Edit Button for room"></i></button>
-                                                @endif
-                                                @if ($booking->status == 'Pending Review')
 
-                                                @else
-                                                <button type="button" onclick="generateAdminDftcPdfDftcBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-success"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></button>
-                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                    @if ($booking->room_type == "Hall")
+                                                        <button type="button" onclick="viewAdminDftcDftcHallBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;" title="View Button for hall"></i></button>
+                                                        <button type="button" onclick="editAdminDftcDftcHallBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;" title="Edit Button for hall"></i></button>
+                                                    @else
+                                                        <button type="button" onclick="viewAdminDftcDftcRoomBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;" title="View Button for room"></i></button>
+                                                        <button type="button" onclick="editAdminDftcDftcRoomBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;" title="Edit Button for room"></i></button>
+                                                    @endif
+                                                    @if ($booking->status == 'Pending Review')
 
-                                            <button type="button" onclick="cancelAdminDftcDftcBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-danger"><i class="fa-solid fa-xmark" style="color: #000000;"></i></i></button>
+                                                    @else
+                                                    <button type="button" onclick="generateAdminDftcPdfDftcBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-success"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></button>
+                                                    @endif
 
-                                        </td>
+                                                <button type="button" onclick="cancelAdminDftcDftcBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-danger"><i class="fa-solid fa-xmark" style="color: #000000;"></i></i></button>
+                                            </td>
+                                            <td style="display:none;">{{ $booking->DFTC_date }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

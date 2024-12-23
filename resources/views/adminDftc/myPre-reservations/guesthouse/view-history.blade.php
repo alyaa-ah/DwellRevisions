@@ -14,7 +14,7 @@
                             </a>
                         </li>
                         <li class="border-bottom w-full">
-                            <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">                            
+                            <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">
                                 <i class="fas fa-door-open"></i>
                                 <span class="ms-1 d-none d-sm-inline">ROOMS</span>
                             </a>
@@ -81,7 +81,7 @@
                             <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/view-my-guesthouse-history') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/view-my-guesthouse-history') }}">Guest House</a>
                             <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/view-my-staffhouse-history') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/view-my-staffhouse-history') }}">Staff House</a>
                             <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/view-my-DFTC-history') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/view-my-DFTC-history') }}">DFTC</a>
-                        </div>  
+                        </div>
                     </div>
                 </div>
                 <div class="row justify-content-center">
@@ -104,7 +104,7 @@
                                     <th width="30%">Room Name</th>
                                     <th width="15%">Check In Date</th>
                                     <th width="15%">Check Out Date</th>
-                                    <th width="15%">Status</th>
+                                    <th width="15%" class="text-center">Status</th>
                                     <th width="5%">Amount</th>
                                     <th width="20%" class="text-center">Action Taken</th>
                                 </thead>
@@ -114,7 +114,13 @@
                                             <td>{{ $booking->room_number}}</td>
                                             <td>{{ $booking->check_in_date }}</td>
                                             <td>{{ $booking->check_out_date }}</td>
-                                            <td>{{ $booking->status }}</td>
+                                            <td class="status-cell">
+                                                @if ($booking->status == 'Pending Review')
+                                                    <span class="status-badge pending">Pending</span>
+                                                @else
+                                                    <span class="status-badge approved">Approved</span>
+                                                @endif
+                                            </td>
                                             @if ($booking->total_amount == "0.00" && $booking->position == "Student")
                                                 <td>FREE</td>
                                             @else
@@ -193,7 +199,7 @@
                                 <div class="col-md-4 my-2">
                                     <p id="agencyGuestHouse-modal"></p>
                                 </div>
-                            </div>                            
+                            </div>
                             <!-- Booking Information -->
                             <div class="row">
                                 <div class=" bg-gray-100 text-light-green text-center text-xl font-semibold py-2">
@@ -220,7 +226,7 @@
                                 </div>
                                 <div class="col-md-10 my-2">
                                     <p id="activityGuestHouse-modal"></p>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="row py-1 border-top border-bottom">
                                 <div class="col-md-2 my-2">
@@ -228,7 +234,7 @@
                                 </div>
                                 <div class="col-md-10 my-2">
                                     <p id="roomNumberGuestHouse-modal"></p>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="row bg-gray-100 py-1 border-top border-bottom">
                                 <div class="col-md-2 my-2">
@@ -339,7 +345,7 @@
                                 <div class="text-light-green text-center text-xl font-semibold py-2">
                                     Rates and Computation
                                 </div>
-                            </div>  
+                            </div>
                             <div class="row py-1 border-top border-bottom">
                                 <div class="col-md-2 my-2">
                                     <p class="h6">Rate</p>

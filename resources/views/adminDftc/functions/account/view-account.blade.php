@@ -14,7 +14,7 @@
                         </a>
                     </li>
                     <li class="border-bottom w-full">
-                        <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">                            
+                        <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">
                             <i class="fas fa-door-open"></i>
                             <span class="ms-1 d-none d-sm-inline">ROOMS</span>
                         </a>
@@ -74,7 +74,7 @@
 
         <!-- Main Content -->
         <div class="col-9 col-md-10 content m-3 mx-auto items-center" data-aos="fade-up" data-aos-duration="800">
-            <p class="Montserrat h-12 text-3xl font-extrabold textGradient" style="margin-top: 4rem">ACCOUNT</p> 
+            <p class="Montserrat h-12 text-3xl font-extrabold textGradient" style="margin-top: 4rem">ACCOUNT</p>
             <p class="Montserrat text-3xl lg:text-5xl font-extrabold textGradient text-center mt-3">
                 PROFILE
             </p>
@@ -139,7 +139,7 @@
                                 </div>
                                 <div class="col-md-2 my-2">
                                     <p class="h6">Email</p>
-                                </div>            
+                                </div>
                                 <div class="col-md-4 my-2">
                                     <p id="emailAccount-modal"></p>
                                 </div>
@@ -167,10 +167,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-2 my-2"> 
+                                <div class="col-md-2 my-2">
                                     <p class="h6">Position</p>
                                 </div>
-                                <div class="col-md-4 my-2"> 
+                                <div class="col-md-4 my-2">
                                     <p id="positionAccount-modal"></p>
                                 </div>
                                 <div class="col-md-2 my-2">
@@ -194,13 +194,13 @@
                                     <p id="roleAccount-modal"></p>
                                 </div>
                             </div>
-                        </div>   
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 <div class="modal fade" id="edit-account-modal">
     <div class="modal-dialog modal-lg">
@@ -225,13 +225,13 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                             <label for="fullname">Full Name</label>
-                                            <input type="text" class="form-control" name="fullname" id="edit-fullname-account">
+                                            <input type="text" class="form-control" name="fullname" id="edit-fullname-account" style="background-color:#d3d3d3;" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                             <label for="email">Email</label>
-                                            <input type="email" class="form-control" name="email" id="edit-email-account" readonly>
+                                            <input type="email" class="form-control" name="email" id="edit-email-account" style="background-color:#d3d3d3;" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -239,7 +239,7 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                             <label for="position">Position</label>
-                                            <select name="position" id="edit-position-account" class="form-control">
+                                            <select name="position" id="edit-position-account" class="form-control readonly-select" style="background-color:#d3d3d3;">
                                                 <option value="">Select Position</option>
                                                 <option value="Guest">Guest</option>
                                                 <option value="Student">Student</option>
@@ -250,7 +250,7 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                             <label for="agency">Department/Agency/College</label>
-                                            <input type="text" class="form-control" name="agency" id="edit-agency-account">
+                                            <input type="text" class="form-control" name="agency" id="edit-agency-account" style="background-color:#d3d3d3;" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -258,13 +258,13 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                             <label for="contact">Contact</label>
-                                            <input type="text" class="form-control" name="contact" id="edit-contact-account">
+                                            <input type="text" class="form-control" name="contact" id="edit-contact-account" style="background-color:#d3d3d3;" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                             <label for="address">Address</label>
-                                            <input type="text" class="form-control" name="address" id="edit-address-account">
+                                            <input type="text" class="form-control" name="address" id="edit-address-account" style="background-color:#d3d3d3;" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -272,7 +272,7 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                             <label for="username">Username</label>
-                                            <input type="text" class="form-control" name="username" id="edit-username-account">
+                                            <input type="text" class="form-control" name="username" id="edit-username-account" style="background-color:#d3d3d3;" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-2">
@@ -301,8 +301,8 @@
                                         <button type="submit" class="btn bg-light-green Montserrat text-white hover:bg-dark-green">Submit</button>
                                     </div>
                                 </div>
-                            </form>                                    
-                        </div>                           
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

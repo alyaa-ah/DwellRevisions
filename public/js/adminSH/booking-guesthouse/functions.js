@@ -47,21 +47,21 @@ $(document).ready(function() {
         var minDateString = minDate.toISOString().split('T')[0];
 
         $('#checkInDate').attr('min', minDateString);
-    $('#checkOutDate').prop('disabled', true);
+        $('#checkOutDate').prop('disabled', true);
 
-    $('#checkInDate').on('change', function() {
-        $('#checkOutDate').val('').prop('disabled', true);
+        $('#checkInDate').on('change', function() {
+            $('#checkOutDate').val('').prop('disabled', true);
 
-        var selectedDate = new Date($(this).val());
+            var selectedDate = new Date($(this).val());
 
-        if ($(this).val()) {
-            $('#checkOutDate').prop('disabled', false);  // Enable check-out field if check-in date is set
+            if ($(this).val()) {
+                $('#checkOutDate').prop('disabled', false);  // Enable check-out field if check-in date is set
+                var minCheckOutDate = new Date(selectedDate.getTime());
+                $('#checkOutDate').attr('min', minCheckOutDate.toISOString().split('T')[0]);
+            }
             var minCheckOutDate = new Date(selectedDate.getTime());
             $('#checkOutDate').attr('min', minCheckOutDate.toISOString().split('T')[0]);
-        }
-        var minCheckOutDate = new Date(selectedDate.getTime());
-        $('#checkOutDate').attr('min', minCheckOutDate.toISOString().split('T')[0]);
-    });
+        });
 
     $('#checkInDate, #checkOutDate, #arrival, #departure').on('change', computeDaysAndNightsAdminSH);
         $('#checkInDate').on('change', function() {

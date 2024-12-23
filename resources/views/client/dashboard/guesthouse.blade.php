@@ -73,10 +73,10 @@
                         <thead>
                             <tr>
                                 <th width="30%">Room Name</th>
-                                <th width="15%">Check In Date</th>
-                                <th width="15%">Check Out Date</th>
+                                <th width="22%">Check In Date</th>
+                                <th width="23%">Check Out Date</th>
                                 <th width="5%">Amount</th>
-                                <th width="20%" class="text-center">To Rate</th>
+                                <th width="10%" class="text-center">To Rate</th>
                             </tr>
                         </thead>
                         <tbody>

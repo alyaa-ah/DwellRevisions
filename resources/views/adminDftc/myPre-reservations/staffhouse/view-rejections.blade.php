@@ -14,7 +14,7 @@
                             </a>
                         </li>
                         <li class="border-bottom w-full">
-                            <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">                            
+                            <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">
                                 <i class="fas fa-door-open"></i>
                                 <span class="ms-1 d-none d-sm-inline">ROOMS</span>
                             </a>
@@ -81,7 +81,7 @@
                         <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/view-my-staffhouse-canceled-pre-reservations') || Request::is('adminDFTC/view-my-staffhouse-rejected-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/view-my-staffhouse-canceled-pre-reservations') }}">Staff House</a>
                         <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/view-my-DFTC-canceled-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/view-my-DFTC-canceled-pre-reservations') }}">DFTC</a>
                     </div>
-                </div>  
+                </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-12 mt-2">
@@ -94,7 +94,7 @@
                         </select>
                     </div>
                 </div>
-            </div>  
+            </div>
             <div class="row justify-content-center">
                 <div class="col-md-12 d-flex justify-content-center" style="margin-top: 1rem;">
                     <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/view-my-guesthouse-canceled-pre-reservations') || Request::is('adminDFTC/view-my-staffhouse-canceled-pre-reservations') || Request::is('adminDFTC/view-my-DFTC-canceled-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/view-my-staffhouse-canceled-pre-reservations') }}">Canceled</a>
@@ -102,7 +102,7 @@
                 </div>
             </div>
             <p class="Montserrat h-12  lg:text-5xl text-3xl font-extrabold textGradient text-center" style="margin-top: 1rem">REJECTED</p>
-            <div class="container card w-100 bg-light-white mt-2">  
+            <div class="container card w-100 bg-light-white mt-2">
                 <div class="row">
                     <div class="col-md-12">
                         <table class="table table-responsive table-striped table-hover w-auto" id="myStaffHouseRejectedTableAdminDftc">
@@ -110,7 +110,7 @@
                                 <th width="20%">Room Name</th>
                                 <th width="15%">Check In Date</th>
                                 <th width="15%">Check Out Date</th>
-                                <th width="15%">Status</th>
+                                <th width="15%" class="text-center">Status</th>
                                 <th width="5%">Amount</th>
                                 <th width="30%" style="text-align: left;">Reason</th>
                             </thead>
@@ -120,7 +120,17 @@
                                         <td>{{ $booking->room_number }}</td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
-                                        <td>{{ $booking->status }}</td>
+                                        <td class="status-cell">
+                                            @if ($booking->status == 'Pending Review')
+                                                <span class="status-badge pending">Pending</span>
+                                            @elseif ($booking->status == 'Canceled')
+                                                <span class="status-badge canceled">Cancelled</span>
+                                            @elseif ($booking->status == 'Rejected')
+                                                <span class="status-badge rejected">Rejected</span>
+                                            @else
+                                                <span class="status-badge approved">Approved</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if ($booking->total_amount == '0.00' && $booking->position == 'Student')
                                                 FREE

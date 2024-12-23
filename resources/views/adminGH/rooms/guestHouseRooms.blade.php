@@ -124,8 +124,7 @@
                                             @else
                                                 <span>No ratings yet</span>
                                             @endif
-                                        </tr>
-                                    <tr>
+                                    </tr>
                                     <tr>
                                         <td class="w-5 Montserrat text-light-green text-sm font-semibold text-center"><i class="fa-solid fa-list" style="color: #25ec06;"></i></td>
                                         <td class="Montserrat text-light-green text-sm font-semibold">Type: {{ $room->room_type}}</td>

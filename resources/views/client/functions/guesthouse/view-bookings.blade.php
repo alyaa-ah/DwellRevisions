@@ -76,7 +76,7 @@
                                     <th width="30%">Room Name</th>
                                     <th width="15%">Check In Date</th>
                                     <th width="15%">Check Out Date</th>
-                                    <th width="15%">Status</th>
+                                    <th width="15%" class="text-center">Status</th>
                                     <th width="5%">Amount</th>
                                     <th width="20%" class="text-center">Action Taken</th>
                                 </tr>
@@ -87,7 +87,17 @@
                                         <td>{{ $booking->room_number }}</td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
-                                        <td>{{ $booking->status }}</td>
+                                        <td class="status-cell">
+                                            @if ($booking->status == 'Pending Review')
+                                                <span class="status-badge pending">
+                                                    <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                            @else
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-check-circle"></i> Approved
+                                                </span>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if ($booking->total_amount == '0.00' && $booking->position == 'Student')
                                                 FREE
@@ -97,9 +107,8 @@
                                         </td>
                                         <td class="text-center">
                                             <button type="button" onclick="viewGuestHouseBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
-                                            <button type="button" onclick="editGuestHouseBooking('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;"></i></button>
                                                 @if ($booking->status == 'Pending Review')
-
+                                                <button type="button" onclick="editGuestHouseBooking('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;"></i></button>
                                                 @else
                                                     <button id="guesthouse-generatepdf-client" type="button" onclick="generateClientPdfGuestHouseBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-success"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></button>
                                                 @endif

@@ -67,6 +67,24 @@ function reviewDftcBookingAdmin(data){
     $('#booking_status_id').val(data.id);
     $('#reviewModal').modal('show');
 }
+function checkDftcBookingAdminDFTC(booking) {
+    var data = JSON.parse(booking);
+
+    // Function to convert date from "December 17, 2024" to "17/12/2024"
+    function formatDateToDDMMYYYY(dateStr) {
+        const date = new Date(dateStr);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
+        return `${day}/${month}/${year}`;
+    }
+
+    $('#booking_check_id').val(data.id);
+    $('#originalDate').val(data.check_out_date);
+    $('#originalCheckIn').val(formatDateToDDMMYYYY(data.check_in_date));
+    $('#checkModal').modal('show');
+}
 $(document).ready(function(){
     $(document).on('submit', '#status-clientbooking-form', function(event){
         event.preventDefault();
@@ -113,6 +131,70 @@ $(document).ready(function(){
                     }).then(function(){
                         window.location.reload();
                     });
+                }
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    });
+});
+$(document).ready(function(){
+    $(document).on('submit', '#check-clientbooking-form', function(event){
+        event.preventDefault();
+        var id = $('#booking_check_id').val();
+        console.log(id);
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'POST',
+            url: '/adminDftcCheckClientBooking',
+            data: $(this).serialize(),
+            beforeSend: function() {
+                Swal.fire({
+                    title: 'Loading...',
+                    text: 'Please wait while we process your review.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            },
+            success: function(response){
+                if(response == 0){
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error!",
+                        text: "Could not change status at this time!",
+                        showConfirmButton: true,
+                    })
+                }else if(response == 404){
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error!",
+                        text: "Changes were made on the client side therefore, the webpage needs to be refreshed.",
+                        showConfirmButton: true,
+                    }).then(function(){
+                        window.location.reload();
+                    });
+                }else if(response == 200){
+                    Swal.fire({
+                        icon: "success",
+                        title: "All set!",
+                        text: "Staff House pre-reservation successfully changed check out!",
+                        showConfirmButton: true,
+                    }).then(function(){
+                        window.location.reload();
+                    });
+                }else{
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error!",
+                        text: "An error occurred while trying to check out the pre-reservation.",
+                        showConfirmButton: true,
+                    })
                 }
             },
             error: function(error){

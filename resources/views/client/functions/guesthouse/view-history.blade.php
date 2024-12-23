@@ -47,7 +47,7 @@
                         <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('client/view-staffhouse-history') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/client/view-staffhouse-history') }}">Staff House</a>
                         <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('client/view-DFTC-history') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/client/view-DFTC-history') }}">DFTC</a>
                     </div>
-                 </div>  
+                 </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-12 mt-2">
@@ -70,7 +70,7 @@
                                         <th width="30%">Room Name</th>
                                         <th width="15%">Check In Date</th>
                                         <th width="15%">Check Out Date</th>
-                                        <th width="15%">Status</th>
+                                        <th width="15%" class="text-center">Status</th>
                                         <th width="5%">Amount</th>
                                         <th width="20%" class="text-center">Action Taken</th>
                                     </tr>
@@ -81,7 +81,17 @@
                                             <td>{{ $booking->room_number }}</td>
                                             <td>{{ $booking->check_in_date }}</td>
                                             <td>{{ $booking->check_out_date }}</td>
-                                            <td>{{ $booking->status }}</td>
+                                            <td class="status-cell">
+                                                @if ($booking->status == 'Pending Review')
+                                                    <span class="status-badge pending">
+                                                        <i class="fas fa-clock"></i> Pending
+                                                    </span>
+                                                @else
+                                                    <span class="status-badge approved">
+                                                        <i class="fas fa-check-circle"></i> Approved
+                                                    </span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if ($booking->total_amount == '0.00' && $booking->position == 'Student')
                                                     FREE
@@ -162,7 +172,7 @@
                                 <div class="col-md-4 my-2">
                                     <p id="agencyGuestHouse-modal"></p>
                                 </div>
-                            </div>                            
+                            </div>
                             <!-- Booking Information -->
                             <div class="row">
                                 <div class=" bg-gray-100 text-light-green text-center text-xl font-semibold py-2">
@@ -189,7 +199,7 @@
                                 </div>
                                 <div class="col-md-10 my-2">
                                     <p id="activityGuestHouse-modal"></p>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="row py-1 border-top border-bottom">
                                 <div class="col-md-2 my-2">
@@ -197,7 +207,7 @@
                                 </div>
                                 <div class="col-md-10 my-2">
                                     <p id="roomNumberGuestHouse-modal"></p>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="row bg-gray-100 py-1 border-top border-bottom">
                                 <div class="col-md-2 my-2">
@@ -308,7 +318,7 @@
                                 <div class="text-light-green text-center text-xl font-semibold py-2">
                                     Rates and Computation
                                 </div>
-                            </div>  
+                            </div>
                             <div class="row py-1 border-top border-bottom">
                                 <div class="col-md-2 my-2">
                                     <p class="h6">Rate</p>

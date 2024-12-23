@@ -40,7 +40,15 @@ $(function () {
                 { name: 'sm', width: 768 },
                 { name: 'xs', width: 576 }
             ]
-        }
+        },
+        "columnDefs": [
+            {
+                "targets": 6,
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[6, 'desc']],
     });
 });
 $(function () {
@@ -132,6 +140,29 @@ $(function () {
                 { name: 'xs', width: 576 }
             ]
         }
+    });
+});
+$(function () {
+    var table = $('#historyDftcClient').dataTable({
+        "aLengthMenu": [[10, 15, 25, 50, 75 , 100, -1],[10, 15, 25, 50, 75 , 100, "All"]],
+        "pageLength": 10,
+        "responsive": {
+            breakpoints: [
+                { name: 'xl', width: Infinity },
+                { name: 'lg', width: 1200 },
+                { name: 'md', width: 992 },
+                { name: 'sm', width: 768 },
+                { name: 'xs', width: 576 }
+            ]
+        },
+        "columnDefs": [
+            {
+                "targets": 6,
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[6, 'desc']],
     });
 });
 $(function () {

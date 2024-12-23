@@ -366,6 +366,7 @@ Route::group(['middleware' => 'LoginCheckAdminDftc'], function () {
         Route::get('/adminDFTC/view-rejected-pre-reservations', 'goToRejectedBookingsAdminDftc');
         Route::get('/adminDFTC/view-account', 'goToAccountAdminDftc');
         Route::post('/adminDFTC/adminDftcEditAccount', 'editAdminDftcAccount');
+        Route::post('/adminDftcCheckClientBooking', 'updateCheckOut');
     });
     Route::controller(AdminDFTCPreReservationController::class)->group(function(){
         Route::get('/adminDFTC/view-my-ongoing-guesthouse-pre-reservations', 'goToAdminDftcPreReservation');

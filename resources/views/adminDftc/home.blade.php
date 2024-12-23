@@ -13,15 +13,15 @@
                     <table class="h-48 bg-lime-50 image-home" style="background-color: transparent;">
                         <tr>
                             <td colspan="2" class="p-1" style="width:1000px; height:200px;">
-                                <img src="{{ asset('/public/images/Home/1.JPG') }}" style="width:1000px; height:200px;">
+                                <img src="{{ asset('images/Home/1.JPG') }}" style="width:1000px; height:200px;">
                             </td>
                         </tr>
                         <tr>
                             <td class="p-1" style="width:60%; height:200px;">
-                                <img src="{{ asset('/public/images/Home/2.JPG') }}" style="width:1000px; height:200px;">
+                                <img src="{{ asset('images/Home/2.JPG') }}" style="width:1000px; height:200px;">
                             </td>
                             <td class="p-1" style="width:40%; height:200px;">
-                                <img src="{{ asset('/public/images/Home/3.JPG') }}" style="width:1000px; height:200px;">
+                                <img src="{{ asset('images/Home/3.JPG') }}" style="width:1000px; height:200px;">
                             </td>
                         </tr>
                     </table>

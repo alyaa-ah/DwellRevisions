@@ -31,6 +31,9 @@ class AdminDFTCPreReservationController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.guesthouse.view-bookings', [
@@ -87,6 +90,9 @@ class AdminDFTCPreReservationController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.staffhouse.view-bookings', [
@@ -138,12 +144,14 @@ class AdminDFTCPreReservationController extends Controller
         })
         ->where('client_id', $client_id)
         ->get()
+
         ->filter(function ($booking) use ($now) {
             $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
         })
+
         ->map(function ($booking) use ($rooms, $now) {
             if (isset($rooms[$booking->room_id])) {
                 $booking->room_type = $rooms[$booking->room_id]->room_type;
@@ -156,6 +164,9 @@ class AdminDFTCPreReservationController extends Controller
             $threeDaysBeforeCheckIn = $checkInDateTime->copy()->subDays(3);
             $booking->canCancel = $now->lte($threeDaysBeforeCheckIn);
             return $booking;
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.DFTC.view-bookings' , ['bookings' => $bookings, 'rooms' => $rooms, 'countBookings' => $countBookings]);
@@ -185,6 +196,9 @@ class AdminDFTCPreReservationController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->gte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.guesthouse.view-history', [
@@ -206,6 +220,9 @@ class AdminDFTCPreReservationController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->gte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.staffhouse.view-history', [
@@ -238,6 +255,9 @@ class AdminDFTCPreReservationController extends Controller
                 $booking->room_type = null;
             }
             return $booking;
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.DFTC.view-history', [
@@ -266,7 +286,10 @@ class AdminDFTCPreReservationController extends Controller
         $client_id = session()->get('loggedInAdminDftc')['id'];
         $bookings = GuestHouseBooking::where('status', 'Rejected')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.guesthouse.view-rejections', [
             'rooms' => $rooms,
@@ -280,7 +303,10 @@ class AdminDFTCPreReservationController extends Controller
         $client_id = session()->get('loggedInAdminDftc')['id'];
         $bookings = GuestHouseBooking::where('status', 'Canceled')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.staffhouse.view-cancellations', [
             'rooms' => $rooms,
@@ -292,9 +318,12 @@ class AdminDFTCPreReservationController extends Controller
         $facilityId = Facility::where('facility_name', 'Staff House')->value('id');
         $rooms = Room::where('facility_id', $facilityId)->get();
         $client_id = session()->get('loggedInAdminDftc')['id'];
-        $bookings = GuestHouseBooking::where('status', 'Rejected')
+        $bookings = StaffHouseBooking::where('status', 'Rejected')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.staffhouse.view-rejections', [
             'rooms' => $rooms,
@@ -308,7 +337,10 @@ class AdminDFTCPreReservationController extends Controller
         $client_id = session()->get('loggedInAdminDftc')['id'];
         $bookings = DftcBooking::where('status', 'Canceled')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.DFTC.view-cancellations', [
             'rooms' => $rooms,
@@ -322,7 +354,10 @@ class AdminDFTCPreReservationController extends Controller
         $client_id = session()->get('loggedInAdminDftc')['id'];
         $bookings = DftcBooking::where('status', 'Rejected')
         ->where('client_id', $client_id)
-        ->get();
+        ->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('adminDftc.myPre-reservations.DFTC.view-rejections', [
             'rooms' => $rooms,

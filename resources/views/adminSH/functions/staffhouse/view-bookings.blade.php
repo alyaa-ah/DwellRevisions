@@ -91,7 +91,7 @@
                                 <th width="13%">Check In</th>
                                 <th width="13%">Check Out</th>
                                 <th width="5%">Amount</th>
-                                <th width="15%">Remarks</th>
+                                <th width="15%" class="text-center">Remarks</th>
                                 <th width="10%" class="text-center">Action Taken</th>
                             </thead>
                             <tbody>

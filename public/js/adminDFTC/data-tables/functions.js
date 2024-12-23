@@ -14,8 +14,8 @@ $(function () {
     });
 });
 $(function () {
-    var table = $('#dftcBookingTableAdminDftc').dataTable({
-        "aLengthMenu": [[10, 15, 25, 50, 75 , 100, -1],[10, 15, 25, 50, 75 , 100, "All"]],
+    var table = $('#dftcBookingTableAdminDftcCurrent').dataTable({
+        "aLengthMenu": [[10, 15, 25, 50, 75 , 100, -1],[10, 15, 50, 75 , 100, "All"]],
         "pageLength": 10,
         "responsive": {
             breakpoints: [
@@ -28,6 +28,30 @@ $(function () {
         }
     });
 });
+$(function () {
+    var table = $('#dftcBookingTableAdminDftc').dataTable({
+        "aLengthMenu": [[10, 15, 25, 50, 75 , 100, -1],[10, 15, 25, 50, 75 , 100, "All"]],
+        "pageLength": 10,
+        "responsive": {
+            breakpoints: [
+                { name: 'xl', width: Infinity },
+                { name: 'lg', width: 1200 },
+                { name: 'md', width: 992 },
+                { name: 'sm', width: 768 },
+                { name: 'xs', width: 576 }
+            ]
+        },
+        "columnDefs": [
+            {
+                "targets": 6,
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[6, 'desc']],
+    });
+});
+
 $(function () {
     var table = $('#dftcHistoryBookingTableAdminDftc').dataTable({
         "aLengthMenu": [[10, 15, 25, 50, 75 , 100, -1],[10, 15, 25, 50, 75 , 100, "All"]],
@@ -297,6 +321,8 @@ $(function () {
                     return (data == "0.00" && row.position == "Student") ? 'FREE' : data;
                 }
             },
+            // Add DFTC_date as a hidden column for sorting
+            { "data": "DFTC_date", "visible": false },  // This column will be hidden but used for sorting
             {
                 "data": null,
                 "defaultContent": '<button type="button" class="btn btn-info view-btn"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button> <button type="button" class="btn btn-warning review-btn"><i class="fa-solid fa-book" style="color: #000000;"></i></button>',
@@ -304,15 +330,25 @@ $(function () {
                 "class": "text-center"
             }
         ],
+        // Define the default sorting order based on the hidden column index (index 5 for DFTC_date)
+        "order": [[5, 'desc']], // Use the index of the hidden column (5) to sort by DFTC_date
         "autoWidth": false,
         "processing": true,
-        "serverSide": false
+        "serverSide": false,
+        "columnDefs": [
+            {
+                "targets": 5, // Targeting the hidden DFTC_date column
+                "orderData": [5] // Allow sorting based on the hidden column
+            }
+        ]
     });
 
+    // Refresh the DataTable every 5 seconds
     setInterval(function() {
-        table.ajax.reload(null, false);
+        table.ajax.reload(null, false); // Reload the table without resetting pagination
     }, 5000);
 
+    // Handling click events for view and review buttons
     $('#dftcPendingBookingTableAdminDftc').on('click', '.view-btn', function() {
         var data = table.row($(this).closest('tr')).data();
         viewPendingDftcBookingAdminDftc(data);
@@ -323,4 +359,5 @@ $(function () {
         reviewDftcBookingAdmin(data);
     });
 });
+
 

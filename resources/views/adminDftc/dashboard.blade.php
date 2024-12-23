@@ -14,7 +14,7 @@
                         </a>
                     </li>
                     <li class="border-bottom w-full">
-                        <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">                            
+                        <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">
                             <i class="fas fa-door-open"></i>
                             <span class="ms-1 d-none d-sm-inline">ROOMS</span>
                         </a>
@@ -90,7 +90,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/ongoing.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
+                                                <img src="{{ asset('images/icons/ongoing.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
                                                 <span style="font-size: 18px;">Ongoing</span>
                                             </div>
                                         </div>
@@ -112,7 +112,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/history.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
+                                                <img src="{{ asset('images/icons/history.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
                                                 <span style="font-size: 18px;">History</span>
                                             </div>
                                         </div>
@@ -134,7 +134,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/pending.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
+                                                <img src="{{ asset('images/icons/pending.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
                                                 <span style="font-size: 18px;">Pending</span>
                                             </div>
                                         </div>
@@ -156,7 +156,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/voids.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
+                                                <img src="{{ asset('images/icons/voids.svg') }}" alt="earnings" style="height: 20px; width: 30px; background: none;">
                                                 <span style="font-size: 18px;">Voids</span>
                                             </div>
                                         </div>
@@ -187,7 +187,7 @@
                                                 @endif
                                             </div>
                                             <div class="ml-5 d-flex align-items-center">
-                                                <img src="{{ asset('/public/images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
+                                                <img src="{{ asset('images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
                                                 <span style="font-size: 18px; margin-top: 0.5rem">Earnings</span>
                                             </div>
                                         </div>
