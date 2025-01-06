@@ -138,7 +138,7 @@
                 <div class="row text-dark-white text-left">
                     <div class="col-md-4 mb-6 md:mb-0">
                         <img src="{{ asset('images/FooterLogo.png') }}" class="h-16" alt="Navbar Logo">
-                        <p class="text-xs Montserrat footerText h-3">&copy; 2024 Dwell v1</p>
+                        <p class="text-xs Montserrat footerText h-3">&copy; {{ date('Y') }} Dwell v2</p>
                         <p class="text-xs Montserrat footerText h-3">All Rights Reserved.</p>
                     </div>
                     <div class="col-md-4 mb-6 md:mb-0">

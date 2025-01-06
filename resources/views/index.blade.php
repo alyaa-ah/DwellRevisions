@@ -28,9 +28,6 @@
                         <p class="Montserrat text-sm font-semibold text-justify text-red-500">
                             4. Introduced additional bugs to be fixed in the future.
                         </p><br>
-                        <p class="Montserrat text-sm font-semibold text-justify text-red-500">
-                            5. Removed unnecessary bullshits.
-                        </p><br>
                     </div>
                     <hr>
                 </div>
