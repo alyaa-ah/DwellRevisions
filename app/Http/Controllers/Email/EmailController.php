@@ -50,6 +50,7 @@ class EmailController extends Controller
         $subject = "Pre-Reservation Mail";
         $toEmail = $toEmail;
         $fullname = $fullname;
+        $bookingNumber = $bookingNumber;
         $requestor = $requestor;
         $facility = $facility;
         $roomNumber = $roomNumber;

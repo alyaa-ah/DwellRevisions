@@ -124,8 +124,8 @@ class SuperAdminBookingController extends Controller
                     $guestHouseBooking->room_number,
                     $guestHouseBooking->check_in_date,
                     $guestHouseBooking->arrival,
-                    $guestHouseBooking->departure,
-                    $guestHouseBooking->check_out_date);
+                    $guestHouseBooking->check_out_date,
+                    $guestHouseBooking->departure);
             }
             $clientId = session()->get('loggedInSuperAdmin')['id'];
             $fullname = session()->get('loggedInSuperAdmin')['fullname'];
@@ -270,8 +270,8 @@ class SuperAdminBookingController extends Controller
                     $staffHouseBooking->room_number,
                     $staffHouseBooking->check_in_date,
                     $staffHouseBooking->arrival,
-                    $staffHouseBooking->departure,
-                    $staffHouseBooking->check_out_date);
+                    $staffHouseBooking->check_out_date,
+                    $staffHouseBooking->departure);
             }
             $clientId = session()->get('loggedInSuperAdmin')['id'];
             $fullname = session()->get('loggedInSuperAdmin')['fullname'];
@@ -361,13 +361,13 @@ class SuperAdminBookingController extends Controller
                     $admin->email,
                     $admin->fullname,
                     $dftcBooking->fullname,
-                    $dftcBooking->SH_number,
+                    $dftcBooking->DFTC_number,
                     $facility->facility_name,
                     $dftcBooking->room_number,
                     $dftcBooking->check_in_date,
                     $dftcBooking->arrival,
-                    $dftcBooking->departure,
-                    $dftcBooking->check_out_date);
+                    $dftcBooking->check_out_date,
+                    $dftcBooking->departure);
             }
             $clientId = session()->get('loggedInSuperAdmin')['id'];
             $fullname = session()->get('loggedInSuperAdmin')['fullname'];
@@ -461,13 +461,13 @@ class SuperAdminBookingController extends Controller
                     $admin->email,
                     $admin->fullname,
                     $dftcBooking->fullname,
-                    $dftcBooking->SH_number,
+                    $dftcBooking->DFTC_number,
                     $facility->facility_name,
                     $dftcBooking->room_number,
                     $dftcBooking->check_in_date,
                     $dftcBooking->arrival,
-                    $dftcBooking->departure,
-                    $dftcBooking->check_out_date);
+                    $dftcBooking->check_out_date,
+                    $dftcBooking->departure);
             }
             $clientId = session()->get('loggedInSuperAdmin')['id'];
             $fullname = session()->get('loggedInSuperAdmin')['fullname'];
