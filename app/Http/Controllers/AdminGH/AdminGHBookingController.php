@@ -868,11 +868,18 @@ class AdminGHBookingController extends Controller
             $checkInDate = Carbon::createFromFormat('Y-m-d', $request->checkInDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->checkOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $room = Room::find($request->room_number);
+            $activity = $request->activitySelected;
+            $customActivity = $request->customActivity;
+            if ($activity === 'Others' && !empty($customActivity)) {
+                $finalActivity = $customActivity;
+            } else {
+                $finalActivity = $activity;
+            }
             $dftcHallBooking = DftcBooking::find($request->booking_id);
             if ($dftcHallBooking) {
                 $dftcHallBooking->update([
                     'room_id' => $room->id,
-                    'activity' => ucfirst($request->activity),
+                    'activity' => ucfirst($request->$finalActivity),
                     'number_of_days' => $request->numberOfDays,
                     'number_of_nights' => $request->numberOfNights,
                     'check_in_date' => $checkInDate,

@@ -811,7 +811,7 @@
             document.getElementById('checkboxContainerEditPreBookStaffHouse').style.display = 'block';
         }
     });
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     const numOfMaleInput = document.getElementById('editNumOfMaleStaffHouse');
     const maleGuestsContainer = document.getElementById('maleGuestsContainerStaffHouseEdit');
 

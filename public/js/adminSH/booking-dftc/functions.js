@@ -164,6 +164,20 @@ $(document).ready(function() {
             })
             return;
         }
+        const female = parseInt($('#numOfMaleDftc').val(), 10) || 0;
+        const male = parseInt($('#numOfFemaleDftc').val(), 10) || 0;
+
+        if(male + female == 0){
+            $('#dftcTerms').modal('hide');
+            $('#error-messageDftcRoom').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
+            $('#submitButtonDFTC').attr('disabled', false);
+            setTimeout(function () {
+                $('#error-messageDftcRoom').fadeOut('slow', function () {
+                    $(this).hide();
+                });
+            }, 3000);
+        return;
+        }
         var numOfMale = parseInt($('#numOfMaleDftc').val());
         var numOfFemale = parseInt($('#numOfFemaleDftc').val());
 
@@ -177,6 +191,35 @@ $(document).ready(function() {
                     });
                 }, 3000);
             return;
+        }
+        const hasLetter = $('input[name="hasLetterDftc"]:checked').val();
+        const totalAmount = $('#totalAmountDftc').val();
+        const selectedPosition = $('#positionDftc').val();
+
+        if (selectedPosition === 'Student') {
+            if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
+                $('#dftcTerms').modal('hide');
+                $('#error-messageDftcRoom').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!!").show();
+                $('#submitButtonDFTC').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageDftcRoom').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        } else {
+            if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
+                $('#dftcTerms').modal('hide');
+                $('#error-messageDftcRoom').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
+                $('#submitButtonDFTC').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageDftcRoom').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
         }
         let formData = new FormData($('#dftc-booking-form')[0]);
         $.ajax({
@@ -277,11 +320,9 @@ function fetchRoomDataDftcRoomAdminSH(roomNumber) {
             $('#capacityDftc').val('');
             $('#checkInDateDftc').val('');
             $('#checkOutDateDftc').val('');
-            $('#arrivalDftc').val('');
-            $('#departureDftc').val('');
             $('#numberOfDaysDftc').val('');
-            $('#numOfMaleDftc').val('');
-            $('#numOfFemaleDftc').val('');
+            $('#numOfMaleDftc').val('0');
+            $('#numOfFemaleDftc').val('0');
             $('#numberOfNightsDftc').val('');
             $('#totalAmountDftc').val('');
         }

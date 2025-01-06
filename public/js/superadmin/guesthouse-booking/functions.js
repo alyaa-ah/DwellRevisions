@@ -101,7 +101,6 @@ $(document).ready(function() {
             numberOfDays = 0;
             numberOfNights = 0;
         }
-
         $('#numberOfDays').val(numberOfDays);
         $('#numberOfNights').val(numberOfNights);
     }
@@ -172,6 +171,7 @@ $(document).ready(function() {
             })
             return;
         }
+
         const female = parseInt($('#numOfFemale').val(), 10) || 0;
         const male = parseInt($('#numOfMale').val(), 10) || 0;
 
@@ -216,6 +216,36 @@ $(document).ready(function() {
                 return;
             }
         }
+        const hasLetter = $('input[name="hasLetter"]:checked').val();
+        const totalAmount = $('#totalAmount').val();
+        const selectedPosition = $('#position').val();
+
+        if (selectedPosition === 'Student') {
+            if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
+                $('#guestHouseTerms').modal('hide');
+                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please check your total amount!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-message').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        } else {
+            if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
+                $('#guestHouseTerms').modal('hide');
+                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please check your total amount!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-message').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        }
+
         let formData = new FormData($('#guestHouse-booking-form')[0]);
         $.ajax({
             headers: {
@@ -320,8 +350,6 @@ function fetchRoomDataGuestHouse(roomNumber) {
             $('#checkOutDate').val('');
             $('#numOfMale').val('');
             $('#numOfFemale').val('');
-            $('#arrival').val('');
-            $('#departure').val('');
             $('#totalAmount').val('');
         }
     });
