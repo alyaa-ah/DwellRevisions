@@ -89,9 +89,9 @@
                                         <th width="10%">Position</th>
                                         <th width="20%">Institution</th>
                                         <th style="text-align: left" width="10%">Contact</th>
-                                        <th width="5%">Status</th>
+                                        <th width="15%" class="text-center">Status</th>
                                         <th width="5%">Role</th>
-                                        <th width="15%" class="text-center">Action Taken</th>
+                                        <th width="10%" class="text-center">Action Taken</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -101,7 +101,17 @@
                                             <td>{{ $client->position }}</td>
                                             <td>{{ $client->agency }}</td>
                                             <td style="text-align: left">{{ $client->contact }}</td>
-                                            <td>{{ $client->status }}</td>
+                                            <td class="status-cell">
+                                                @if ($client->status == 'Active')
+                                                    <span class="status-badge approved">
+                                                        <i class="fas fa-smile"></i> Active
+                                                    </span>
+                                                @elseif ($client->status == 'Inactive')
+                                                    <span class="status-badge rejected">
+                                                        <i class="fas fa-frown"></i> Inactive
+                                                    </span>
+                                                @endif
+                                            </td>
                                             <td>{{ $client->role }}</td>
                                             <td class="text-center">
                                                 <button onclick="viewAccountAdminDftc('{{ addslashes(json_encode($client)) }}')" type="button" class="btn btn-info" title="View Button"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
