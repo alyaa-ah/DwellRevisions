@@ -145,7 +145,7 @@
                                             Amenities:
                                             <ul class="amenities-list">
                                                 @foreach (explode(',', $room->room_amenities) as $amenity)
-                                                    <li>{{ trim($amenity) }}</li>
+                                                    <li class="amenity-item">{{ trim($amenity) }}</li>
                                                 @endforeach
                                             </ul>
                                         </td>

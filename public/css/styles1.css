@@ -207,4 +207,22 @@ body {
 .status-badge.no-remarks {
     background-color: #6c757d;
 }
+.amenities-list {
+    list-style-type: none; /* Remove default bullets */
+    padding-left: 0; /* Remove padding */
+    display: flex; /* Use flexbox */
+    flex-wrap: wrap; /* Allow wrapping of items to new lines */
+    gap: 5px; /* Adjust the space between items */
+}
+
+.amenity-item {
+    flex: 0 0 30%; /* Allow 3 items per row (30% width for each item) */
+    background-color: #f0f0f0; /* Optional background color */
+    padding: 5px; /* Padding for each item */
+    border-radius: 5px; /* Optional rounded corners */
+    text-align: left; /* Center the text */
+    margin: 0; /* Remove any margin */
+    box-sizing: border-box; /* Ensures padding and borders are included in width calculation */
+}
+
 

@@ -146,8 +146,17 @@
                                                 <td class="Montserrat text-light-green text-sm font-semibold">Inlucion: {{ $room->room_inclusion }}</td>
                                             </tr>
                                             <tr>
-                                                <td class="w-5 Montserrat text-light-green text-sm font-semibold text-center"><i class="fa-solid fa-ellipsis" style="color: #25ec06;"></i></td>
-                                                <td class="Montserrat text-light-green text-sm font-semibold">Amenities: {{ $room->room_amenities }}</td>
+                                                <td class="w-5 Montserrat text-light-green text-sm font-semibold text-center">
+                                                    <i class="fa-solid fa-ellipsis" style="color: #25ec06;"></i>
+                                                </td>
+                                                <td class="Montserrat text-light-green text-sm font-semibold text-justify">
+                                                    Amenities:
+                                                    <ul class="amenities-list">
+                                                        @foreach (explode(',', $room->room_amenities) as $amenity)
+                                                            <li class="amenity-item">{{ trim($amenity) }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td class="w-5 Montserrat text-light-green text-sm font-semibold text-center"><i class="fa-solid fa-comment" style="color: #25ec06;"></i></td>
