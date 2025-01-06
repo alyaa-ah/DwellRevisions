@@ -80,8 +80,8 @@
                                                 <th width="20%">Type</th>
                                                 <th width="5%">Rate</th>
                                                 <th width="5%">Capacity</th>
-                                                <th width="10%">Status</th>
-                                                <th width="20%" class="text-center">Action Taken</th>
+                                                <th width="15%" class="text-center">Status</th>
+                                                <th width="15%" class="text-center">Action Taken</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -92,7 +92,21 @@
                                                 <td>{{ $room->room_type }}</td>
                                                 <td>{{ $room->room_rate }}</td>
                                                 <td>{{ $room->room_capacity }}</td>
-                                                <td>{{ $room->room_status }}</td>
+                                                <td class="status-cell">
+                                                    @if ($room->room_status == "Available")
+                                                        <span class="status-badge available">
+                                                            <i class="fas fa-check-circle"></i> Available
+                                                        </span>
+                                                    @elseif ($room->room_status == "Unavailable")
+                                                        <span class="status-badge unavailable">
+                                                            <i class="fas fa-times-circle"></i> Unavailable
+                                                        </span>
+                                                    @elseif ($room->room_status == "On-Renovation")
+                                                        <span class="status-badge on-renovation">
+                                                            <i class="fas fa-tools"></i> On-Renovation
+                                                        </span>
+                                                    @endif
+                                                </td>
                                                 <td class="text-center">
                                                     <button type="button" onclick="viewRoom('{{ addslashes(json_encode($room)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
                                                     <button type="button" onclick="editRoom('{{ addslashes(json_encode($room)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;"></i></button>

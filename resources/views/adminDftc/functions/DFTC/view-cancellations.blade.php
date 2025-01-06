@@ -87,38 +87,44 @@
                         <table class="table table-responsive table-striped table-hover w-auto" id="canceledDftcAdminDftc">
                             <thead>
                                 <tr>
-                                    <th width="20%">Full Name</th>
-                                    <th width="22%">Room Name</th>
+                                    <th width="18%">Full Name</th>
+                                    <th width="12%">Room Name</th>
                                     <th width="15%">Check In Date</th>
                                     <th width="15%">Check Out Date</th>
-                                    <th width="7%" class="text-center">Status</th>
-                                    <th width="3%">Amount</th>
-                                    <th width="25%" style="text-align: left;">Reason</th>
+                                    <th width="10%" class="text-center">Status</th>
+                                    <th width="30%" style="text-align: left;">Reason</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($bookings as $booking)
                                     <tr>
                                         <td>{{ $booking->fullname }}</td>
-                                        <td>{{ $booking->room_number }}</td>
+                                        <td>
+                                            @if(strlen($booking->room_number) > 10)
+                                                {{ explode(' ', $booking->room_number)[0] }} HALL
+                                            @else
+                                                {{ $booking->room_number }}
+                                            @endif
+                                        </td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
                                         <td class="status-cell">
                                             @if ($booking->status == 'Pending Review')
-                                                <span class="status-badge pending">Pending</span>
+                                                <span class="status-badge pending">
+                                                    <i class="fas fa-clock"></i> Pending
+                                                </span>
                                             @elseif ($booking->status == 'Canceled')
-                                                <span class="status-badge canceled">Cancelled</span>
+                                                <span class="status-badge canceled">
+                                                    <i class="fas fa-times-circle"></i> Cancelled
+                                                </span>
                                             @elseif ($booking->status == 'Rejected')
-                                                <span class="status-badge rejected">Rejected</span>
+                                                <span class="status-badge rejected">
+                                                    <i class="fas fa-ban"></i> Rejected
+                                                </span>
                                             @else
-                                                <span class="status-badge approved">Approved</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($booking->total_amount == '0.00' && $booking->position == 'Student')
-                                                FREE
-                                            @else
-                                                {{ $booking->total_amount }}
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-check-circle"></i> Approved
+                                                </span>
                                             @endif
                                         </td>
                                         <td>{{ $booking->reason }}</td>

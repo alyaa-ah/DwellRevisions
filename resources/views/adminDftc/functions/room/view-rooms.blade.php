@@ -14,7 +14,7 @@
                         </a>
                     </li>
                     <li class="border-bottom w-full">
-                        <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">                            
+                        <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">
                             <i class="fas fa-door-open"></i>
                             <span class="ms-1 d-none d-sm-inline">ROOMS</span>
                         </a>
@@ -81,7 +81,7 @@
                     <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/create-room') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/create-room') }}"><i class="fa-solid fa-circle-plus">&nbsp;</i>Create</a>
                 </div>
             </div>
- 
+
             <div class="d-flex justify-content-center align-items-center">
                 <div class="card w-100 xl:w-full bg-light-white mt-2 px-2">
                     <div class="row">
@@ -89,11 +89,11 @@
                             <table class="table table-responsive table-hover table-striped w-auto" id="roomsAdminDftcTable">
                                 <thead>
                                     <tr>
-                                        <th width="17%">Name/Number</th>
+                                        <th width="20%">Name/Number</th>
                                         <th width="20%">Type</th>
                                         <th width="5%">Rate</th>
                                         <th width="5%">Capacity</th>
-                                        <th width="10%">Status</th>
+                                        <th width="15%" class="text-center">Status</th>
                                         <th width="20%" class="text-center">Action Taken</th>
                                     </tr>
                                 </thead>
@@ -104,7 +104,21 @@
                                         <td>{{ $room->room_type }}</td>
                                         <td>{{ $room->room_rate }}</td>
                                         <td>{{ $room->room_capacity }}</td>
-                                        <td>{{ $room->room_status }}</td>
+                                        <td class="status-cell">
+                                            @if ($room->room_status == "Available")
+                                                <span class="status-badge available">
+                                                    <i class="fas fa-check-circle"></i> Available
+                                                </span>
+                                            @elseif ($room->room_status == "Unavailable")
+                                                <span class="status-badge unavailable">
+                                                    <i class="fas fa-times-circle"></i> Unavailable
+                                                </span>
+                                            @elseif ($room->room_status == "On-Renovation")
+                                                <span class="status-badge on-renovation">
+                                                    <i class="fas fa-tools"></i> On-Renovation
+                                                </span>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <button type="button" onclick="viewRoom('{{ addslashes(json_encode($room)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
                                             <button type="button" onclick="editRoom('{{ addslashes(json_encode($room)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;"></i></button>

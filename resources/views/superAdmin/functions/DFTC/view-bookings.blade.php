@@ -97,6 +97,7 @@
                                     <th width="15%">Check Out</th>
                                     <th width="5%">Amount</th>
                                     <th width="20%" class="text-center">Action Taken</th>
+                                    <th>DFTC DATE</th>
                                 </thead>
                                 <tbody>
                                     @foreach ($bookings as $booking)
@@ -121,6 +122,7 @@
                                                     <button id="dftc-generatepdf-client" type="button" onclick="generateClientPdfDftc('{{ addslashes(json_encode($booking)) }}')" class="btn btn-success"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></button>
                                                 <button type="button" onclick="cancelDftcBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-danger"><i class="fa-solid fa-xmark" style="color: #000000;"></i></i></button>
                                             </td>
+                                            <td style="display:none;">{{ $booking->DFTC_date }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

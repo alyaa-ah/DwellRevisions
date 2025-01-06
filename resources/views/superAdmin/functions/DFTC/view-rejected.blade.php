@@ -6,33 +6,33 @@
         <div class="col-auto px-sm-2 px-0 min-h-min" @if($countBookings <= 0) style="height: 100vh; background-color: #1ABC02;" @else style="height: auto; background-color: #1ABC02;" @endif>
             <div class="d-flex flex-column align-items-center text-white min-vh-100">
                 <ul class="nav nav-pills flex-column mb-sm-auto align-items-center align-items-sm-start flex-column mt-5 mb-auto Montserrat font-semibold">
-                    <li class="border-top border-bottom w-full mt-5">   
+                    <li class="border-top border-bottom w-full mt-5">
                         <a href="{{ url('superAdminDashboard') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdminDashboard') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-house"></i> 
+                            <i class="fas fa-house"></i>
                             <span class="ms-1 d-none d-sm-inline">DASHBOARD</span>
                         </a>
                     </li>
-                    <li class="border-bottom w-full">   
+                    <li class="border-bottom w-full">
                         <a href="{{ url('/superAdmin/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-rooms') || Request::is('superAdmin/view-create-room') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-door-open"></i> 
+                            <i class="fas fa-door-open"></i>
                             <span class="ms-1 d-none d-sm-inline">ROOMS</span>
                         </a>
                     </li>
                     <li class="border-bottom w-full">
                         <a href="{{ url('/superAdmin/view-guesthouse-preservations') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-guesthouse-preservations') || Request::is('superAdmin/view-staffhouse-preservations') || Request::is('superAdmin/view-DFTC-preservations') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-calendar-alt"></i> 
+                            <i class="fas fa-calendar-alt"></i>
                             <span class="ms-1 d-none d-sm-inline">PRE-BOOKINGS</span>
                         </a>
                     </li>
                     <li class="border-bottom w-full">
                         <a href="{{ url('/superAdmin/view-guesthouse-history') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-guesthouse-history') || Request::is('superAdmin/view-staffhouse-history') || Request::is('superAdmin/view-DFTC-history') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-history"></i> 
+                            <i class="fas fa-history"></i>
                             <span class="ms-1 d-none d-sm-inline">HISTORY</span>
                         </a>
                     </li>
                     <li class="border-bottom w-full">
                         <a href="{{ url('/superAdmin/view-guesthouse-canceled-preservations') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-guesthouse-canceled-preservations') || Request::is('superAdmin/view-staffhouse-canceled-preservations') || Request::is('superAdmin/view-DFTC-canceled-preservations') || Request::is('superAdmin/view-guesthouse-rejected-preservations') || Request::is('superAdmin/view-staffhouse-rejected-preservations') || Request::is('superAdmin/view-DFTC-rejected-preservations') ?  'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-ban"></i> 
+                            <i class="fas fa-ban"></i>
                             <span class="ms-1 d-none d-sm-inline">VOIDS</span>
                         </a>
                     </li>
@@ -44,13 +44,13 @@
                     </li>
                     <li class="border-bottom w-full">
                         <a href="{{ url('/superAdmin/view-activity-logs') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-activity-logs') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-clipboard-list"></i> 
+                            <i class="fas fa-clipboard-list"></i>
                             <span class="ms-1 d-none d-sm-inline">ACTIVITY LOGS</span>
                         </a>
                     </li>
                     <li class="border-b border-gray-300 w-full">
                         <a href="{{ url('/superAdmin/view-account') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-account') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-user"></i> 
+                            <i class="fas fa-user"></i>
                             <span class="ms-1 d-none d-sm-inline">ACCOUNT</span>
                         </a>
                     </li>
@@ -67,7 +67,7 @@
                         <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('superAdmin/view-staffhouse-canceled-preservations') || Request::is('superAdmin/view-staffhouse-rejected-preservations') ? 'bg-light-green text-dark-white' : 'bg-gray-300 text-gray-600' }}" href="{{ url('/superAdmin/view-staffhouse-canceled-preservations') }}">Staff House</a>
                         <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('superAdmin/view-DFTC-canceled-preservations') || Request::is('superAdmin/view-DFTC-rejected-preservations') ? 'bg-light-green text-dark-white' : 'bg-gray-300 text-gray-600' }}" href="{{ url('/superAdmin/view-DFTC-canceled-preservations') }}">DFTC</a>
                     </div>
-                </div>  
+                </div>
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-12 mt-0">
@@ -98,7 +98,7 @@
                                     <th width="20%">Room Name</th>
                                     <th width="15%">Check In Date</th>
                                     <th width="15%">Check Out Date</th>
-                                    <th width="5%">Status</th>
+                                    <th width="15%" class="text-center">Status</th>
                                     <th width="30%" style="text-align: left;">Reason</th>
                                 </thead>
                                 <tbody>
@@ -108,7 +108,25 @@
                                             <td>{{ $booking->room_number }}</td>
                                             <td>{{ $booking->check_in_date }}</td>
                                             <td>{{ $booking->check_out_date }}</td>
-                                            <td>{{ $booking->status }}</td>
+                                            <td class="status-cell">
+                                                @if ($booking->status == 'Pending Review')
+                                                    <span class="status-badge pending">
+                                                        <i class="fas fa-clock"></i> Pending
+                                                    </span>
+                                                @elseif ($booking->status == 'Canceled')
+                                                    <span class="status-badge canceled">
+                                                        <i class="fas fa-times-circle"></i> Cancelled
+                                                    </span>
+                                                @elseif ($booking->status == 'Rejected')
+                                                    <span class="status-badge rejected">
+                                                        <i class="fas fa-ban"></i> Rejected
+                                                    </span>
+                                                @else
+                                                    <span class="status-badge approved">
+                                                        <i class="fas fa-check-circle"></i> Approved
+                                                    </span>
+                                                @endif
+                                            </td>
                                             <td>{{ $booking->reason }}</td>
                                         </tr>
                                     @endforeach
@@ -116,8 +134,8 @@
                             </table>
                         </div>
                     </div>
-                </div>   
+                </div>
             </div>
-        </div>   
+        </div>
 
 @endsection

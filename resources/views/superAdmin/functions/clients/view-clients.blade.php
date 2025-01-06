@@ -73,7 +73,7 @@
                                     <th width="10%">Position</th>
                                     <th width="20%">Institution</th>
                                     <th style="text-align: left" width="10%">Contact</th>
-                                    <th width="5%">Status</th>
+                                    <th width="15%" class="text-center">Status</th>
                                     <th width="5%">Role</th>
                                     <th width="15%" class="text-center">Action Taken</th>
                                 </thead>
@@ -84,7 +84,17 @@
                                         <td>{{ $client->position }}</td>
                                         <td>{{ $client->agency }}</td>
                                         <td style="text-align: left">{{ $client->contact }}</td>
-                                        <td>{{ $client->status }}</td>
+                                        <td class="status-cell">
+                                            @if ($client->status == 'Active')
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-smile"></i> Active
+                                                </span>
+                                            @elseif ($client->status == 'Inactive')
+                                                <span class="status-badge rejected">
+                                                    <i class="fas fa-frown"></i> Inactive
+                                                </span>
+                                            @endif
+                                        </td>
                                         <td>{{ $client->role }}</td>
                                         <td class="text-center">
                                             <button onclick="viewClient('{{ addslashes(json_encode($client)) }}')" type="button" class="btn btn-info" title="View Button"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
@@ -101,7 +111,7 @@
                             </table>
                         </div>
                     </div>
-                </div>   
+                </div>
             </div>
         </div>
 
@@ -177,10 +187,10 @@
                         <div class="col-md-12 border-4 rounded-md border-green-600">
                             <div class="row">
                                 <div class="col-md-2 mb-1">
-                                    <p class="h6">Full Name</p>                                          
+                                    <p class="h6">Full Name</p>
                                 </div>
                                 <div class="col-md-4 mb-1">
-                                    <p id="fullNameClient-modal"></p>                                    
+                                    <p id="fullNameClient-modal"></p>
                                 </div>
                                 <div class="col-md-2 mb-1">
                                     <p class="h6">Email</p>
@@ -191,13 +201,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-2 mb-1">
-                                    <p class="h6">Contact</p>                                            
+                                    <p class="h6">Contact</p>
                                 </div>
                                 <div class="col-md-4 mb-1">
-                                    <p id="contactClient-modal"></p>                                          
+                                    <p id="contactClient-modal"></p>
                                 </div>
                                 <div class="col-md-2 mb-1">
-                                    <p class="h6">Home Address</p>                              
+                                    <p class="h6">Home Address</p>
                                 </div>
                                 <div class="col-md-4 mb-1">
                                     <p id="homeAddressClient-modal"></p>

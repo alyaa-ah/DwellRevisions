@@ -49,14 +49,15 @@ $(document).ready(function() {
     $('#checkOutDateHallDftc').prop('disabled', true);
 
     $('#checkInDateHallDftc').on('change', function() {
+        $('#checkOutDateHallDftc').val('').prop('disabled', true);
+
         var selectedDate = new Date($(this).val());
 
         if ($(this).val()) {
-            $('#checkOutDateHallDftc').prop('disabled', false);
-        } else {
-            $('#checkOutDateHallDftc').prop('disabled', true);
+            $('#checkOutDateHallDftc').prop('disabled', false);  // Enable check-out field if check-in date is set
+            var minCheckOutDate = new Date(selectedDate.getTime());
+            $('#checkOutDateHallDftc').attr('min', minCheckOutDate.toISOString().split('T')[0]);
         }
-
         var minCheckOutDate = new Date(selectedDate.getTime());
         $('#checkOutDateHallDftc').attr('min', minCheckOutDate.toISOString().split('T')[0]);
     });
@@ -141,6 +142,7 @@ $(document).ready(function() {
         var totalRate = 0;
         var checkInTime = checkInDate.getTime();
         var checkOutTime = checkOutDate.getTime();
+        var hasLetterDftcHall = $('input[name="hasLetterHallDftc"]:checked').val();
         var numberOfDays = Math.ceil((checkOutTime - checkInTime) / oneDay);
         if (numberOfDays === 0) {
             numberOfDays = 1;
@@ -243,14 +245,15 @@ $(document).ready(function() {
         $('#avservices').val(totalAvServices.toFixed(2));
         $('#extracharge').val(wholeTotalTimeLimit.toFixed(2));
 
-        if ($('#hasLetterHallDftc').val() === "Yes") {
+        if (hasLetterDftcHall === "Yes") {
             $('#totalAmountHallDftc').val('FREE');
+            return; // Exit calculation
         }else{
             $('#totalAmountHallDftc').val(totalRate.toFixed(2));
         }
     }
     $('#rateHallDftc, #capacityHallDftc, #checkInDateHallDftc, #checkOutDateHallDftc, #arrivalHallDftc, #departureHallDftc, #hasLetterHallDftc').on('change', computeTotalAmount);
-
+    $('input[name="hasLetterHallDftc"]').on('change', computeTotalAmount);
     $(document).on('click', '#submitButtonDftcHall', function(event){
         event.preventDefault();
         const agreeCheckbox = $('#flexCheckDefaultDftcHall')[0];
@@ -266,13 +269,14 @@ $(document).ready(function() {
         var numOfMale = parseInt($('#numOfMaleHallDftc').val());
         var numOfFemale = parseInt($('#numOfFemaleHallDftc').val());
         if(numOfFemale == 0 && numOfMale == 0){
-            Swal.fire({
-                icon: "error",
-                title: "Error!",
-                text: "You must have at least one female guest or male guest!",
-                showConfirmButton: true,
-            })
-            $('#dftcHallTerms').modal('hide');
+            $('#error-messageDftcHall').html("<strong>Validation Error!</strong> <br><br> You must have at least one female guest or male guest!").show();
+                $('#submitButtonDFTCHall').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageDftcHall').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                $('#dftcHallTerms').modal('hide');
             return;
         }
         let formData = new FormData($('#dftcHall-booking-form')[0]);
@@ -305,16 +309,21 @@ $(document).ready(function() {
                         showConfirmButton: true,
                     })
                 }else if(response.message){
-                    var errorMessages = Object.values(response.message).join('<br>');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Pre-reservation validation failed!',
-                        html: errorMessages,
-                        showConfirmButton: true,
-                    }).then(function() {
-                        $('#submitButtonDftcHall').attr('disabled', false);
-                        $('#dftcHallTerms').modal('hide');
-                    });
+                    $('#dftcHallTerms').modal('hide');
+                    Swal.close();
+                    let errorMessages = '';
+                    for (let key in response.message) {
+                        if (response.message[key] && Array.isArray(response.message[key])) {
+                            errorMessages += response.message[key].join('<br>') + '<br>';
+                        }
+                    }
+                    $('#error-messageDftcHall').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#submitButtonDFTCHall').attr('disabled', false);
+                    setTimeout(function () {
+                        $('#error-messageDftcHall').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
                 }else{
                     Swal.fire({
                     icon: "success",

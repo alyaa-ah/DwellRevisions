@@ -80,25 +80,36 @@
                         <table class="table table-responsive table-striped table-hover w-auto" id="dftcHistoryBookingTableAdminDftc">
                             <thead>
                                 <th width="25%">Full Name</th>
-                                <th width="20%">Room Name</th>
-                                <th width="15%">Check In</th>
-                                <th width="15%">Check Out</th>
-                                <th width="5%">Amount</th>
-                                <th width="20%" class="text-center">Action Taken</th>
+                                <th width="15%">Room Name</th>
+                                <th width="15%">Check-in</th>
+                                <th width="15%">Check-out</th>
+                                <th width="15%" class="text-center">Status</th>
+                                <th width="15%" class="text-center">Action Taken</th>
                             </thead>
                             <tbody>
                                 @foreach ($bookings as $booking)
                                     <tr>
                                         <td>{{ $booking->fullname }}</td>
-                                        <td>{{ $booking->room_number}}</td>
+                                        <td>
+                                            @if(strlen($booking->room_number) > 10)
+                                                {{ explode(' ', $booking->room_number)[0] }} HALL
+                                            @else
+                                                {{ $booking->room_number }}
+                                            @endif
+                                        </td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
-                                        @if ($booking->total_amount == "0.00" && $booking->position == "Student")
-                                            <td>FREE</td>
-                                        @else
-                                            <td>{{ $booking->total_amount }}</td>
-                                        @endif
-
+                                        <td class="status-cell">
+                                            @if ($booking->status == 'Pending Review')
+                                                <span class="status-badge pending">
+                                                    <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                            @else
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-check-circle"></i> Approved
+                                                </span>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <button type="button" onclick="viewDftcBookingAdminDftc('{{ addslashes(json_encode($booking) )}}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
                                         </td>

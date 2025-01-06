@@ -105,7 +105,6 @@
                                     <th width="15%">Check In Date</th>
                                     <th width="15%">Check Out Date</th>
                                     <th width="15%" class="text-center">Status</th>
-                                    <th width="5%">Amount</th>
                                     <th width="20%" class="text-center">Action Taken</th>
                                 </thead>
                                 <tbody>
@@ -116,16 +115,15 @@
                                             <td>{{ $booking->check_out_date }}</td>
                                             <td class="status-cell">
                                                 @if ($booking->status == 'Pending Review')
-                                                    <span class="status-badge pending">Pending</span>
+                                                    <span class="status-badge pending">
+                                                        <i class="fas fa-clock"></i> Pending
+                                                    </span>
                                                 @else
-                                                    <span class="status-badge approved">Approved</span>
+                                                    <span class="status-badge approved">
+                                                        <i class="fas fa-check-circle"></i> Approved
+                                                    </span>
                                                 @endif
                                             </td>
-                                            @if ($booking->total_amount == "0.00" && $booking->position == "Student")
-                                                <td>FREE</td>
-                                            @else
-                                                <td>{{ $booking->total_amount }}</td>
-                                            @endif
                                             <td class="text-center">
                                                 @if ($booking->room_type == "Hall")
                                                     <button type="button" onclick="viewAdminDftcDftcHallBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;" title="View Button for hall"></i></button>
@@ -143,5 +141,399 @@
             </div>
         </div>
         </div>
+</div>
+<div class="modal fade" id="view-DftcHall-modal" >
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" >
+            <div class="modal-header bg-light-green">
+                <h1 class="modal-title fs-5 Montserrat text-white font-semibold fs-5">Pre-Reservation Information</h1>
+                <button type="button" class="btn-close text-white bg-lightest-green" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="border-4 rounded-md border-green-600">
+                            <!-- Account Information -->
+                            <div class="row bg-gray-100 ">
+                                <div class="Montserrat text-xl font-semibold text-light-green text-center">
+                                    Account Information
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Full Name</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="fullNameDftcHall-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Email</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p id="emailDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row  bg-gray-100 ">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Contact</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="contactDftcHall-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Home Address</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="homeAddressDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Position</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="positionDftcHall-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Agency</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="agencyDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row bg-gray-100 ">
+                                <div class="Montserrat text-xl font-semibold text-light-green text-center">
+                                    Booking Information
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Date/Time Filled Up</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="datetimeFilledUpDftcHall-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Booking Number</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="bookingNumberDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row bg-gray-100">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Activity</p>
+                                </div>
+                                <div class="col-md-10 mb-2">
+                                    <p colspan="3" id="activityDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-2">
+                                    <p colspan="1" class="h6">Room Name/Number</p>
+                                </div>
+                                <div class="col-md-10 mb-2">
+                                    <p colspan="3" id="roomNumberDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row bg-gray-100">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Check In Date</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="checkInDateDftcHall-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Check Out Date</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="checkOutDateDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Number of Day(s)</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="numOfDaysDftcHall-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Number of Night(s)</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="numOfNightsDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row bg-gray-100">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Time Arrival</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="arrivalDftcHall-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Time Departure</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="departureDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Number of Male(s)</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="numOfMalesDftcHall-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Number of Female(s)</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="numOfFemalesDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-2 bg-gray-100 ">
+                                <div class="Montserrat text-xl font-semibold text-light-green text-center">
+                                    Optional Preferences
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Special Request</p>
+                                </div>
+                                <div class="col-md-10 mb-2">
+                                    <p colspan="3" id="specialRequestDftcHall-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row mb-2 bg-gray-100 ">
+                                <div class="Montserrat text-xl font-semibold text-light-green text-center">
+                                    Rates and Computation
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Janitor Services</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="janitorServices-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">AV Services</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="avServices-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row bg-gray-100">
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Rate</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="rateDftcHall-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-2">
+                                    <p class="h6">Total Amount</p>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <p id="totalAmountDftcHall-modal"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="view-DftcRoom-modal" >
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content" >
+            <div class="modal-header bg-light-green">
+                <h1 class="modal-title fs-5 Montserrat text-white font-semibold fs-5">Pre-Reservation Information</h1>
+                <button type="button" class="btn-close text-white bg-lightest-green" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 border-4 rounded-md border-green-600">
+                            <!-- Account Information -->
+                            <div class="row">
+                                <div class=" bg-gray-100 text-light-green text-center text-xl font-semibold py-2">
+                                    Account Information
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Full Name</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="fullNameDftcRoom-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Email</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="emailDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row bg-gray-100">
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Contact</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="contactDftcRoom-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Home Address</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="homeAddressDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Position</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="positionDftcRoom-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Agency</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="agencyDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <!-- Booking Information -->
+                            <div class="row">
+                                <div class=" bg-gray-100 text-light-green text-center text-xl font-semibold py-2">
+                                        Booking Information
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Date/Time Filled Up</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="datetimeFilledUpDftcRoom-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Booking Number</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="bookingNumberDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row bg-gray-100">
+                                <div class="col-md-2 mb-1">
+                                    <p colspan="1" class="h6">Activity</p>
+                                </div>
+                                <div class="col-md-10 mb-1">
+                                    <p colspan="3" id="activityDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-1">
+                                    <p colspan="1" class="h6">Room Name/Number</p>
+                                </div>
+                                <div class="col-md-10 mb-1">
+                                    <p colspan="3" id="roomNumberDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-1">
+                                <p class="h6">Check In Date</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="checkInDateDftcRoom-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Check Out Date</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="checkOutDateDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row bg-gray-100">
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Number of Day(s)</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="numOfDaysDftcRoom-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Number of Night(s)</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="numOfNightsDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Time Arrival</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="arrivalDftcRoom-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Time Departure</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="departureDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row bg-gray-100">
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Number of Male(s)</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="numOfMalesDftcRoom-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Number of Female(s)</p>
+                                </div>
+                                    <div class="col-md-4 mb-1">
+                                <p id="numOfFemalesDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <!-- Optional Preferences -->
+                            <div class="row">
+                                <div class="text-light-green text-center text-xl font-semibold py-2">
+                                        Optional Preferences
+                                </div>
+                            </div>
+                            <div class="row bg-gray-100">
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Special Request</p>
+                                </div>
+                                <div class="col-md-10 mb-1">
+                                    <p colspan="3" id="specialRequestDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="text-light-green text-center text-xl font-semibold py-2">
+                                    Rates and Computation
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Rate</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="rateDftcRoom-modal"></p>
+                                </div>
+                                <div class="col-md-2 mb-1">
+                                    <p class="h6">Total Amount</p>
+                                </div>
+                                <div class="col-md-4 mb-1">
+                                    <p id="totalAmountDftcRoom-modal"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

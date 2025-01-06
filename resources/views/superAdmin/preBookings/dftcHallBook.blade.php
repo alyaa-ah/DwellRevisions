@@ -9,7 +9,7 @@
                 <div class="button-group d-none d-md-flex mt-3">
                     <a class="btn btn-nav h-9 Montserrat {{ Request::is('superAdmin/view-guesthouse-form') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/superAdmin/view-guesthouse-form') }}">Guest House</a>
                     <a class="btn btn-nav h-9 Montserrat {{ Request::is('superAdmin/view-staffhouse-form') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/superAdmin/view-staffhouse-form') }}">Staff House</a>
-                    <a class="btn btn-nav h-9 Montserrat {{ Request::is('superAdmin/view-dftc-room-form')  || Request::is('superAdmin/view-DFTC-halls') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/superAdmin/view-dftc-room-form') }}">DFTC</a>
+                    <a class="btn btn-nav h-9 Montserrat {{ Request::is('superAdmin/view-dftc-room-form')  || Request::is('superAdmin/view-dftc-hall-form') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/superAdmin/view-dftc-room-form') }}">DFTC</a>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
                     <a class="btn btn-nav h-9 Montserrat {{ Request::is('superAdmin/view-dftc-room-form') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/superAdmin/view-dftc-room-form') }}">Room</a>
                     <a class="btn btn-nav h-9 Montserrat {{ Request::is('superAdmin/view-dftc-hall-form') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/superAdmin/view-dftc-hall-form') }}">Hall</a>
                 </div>
-            </div>  
+            </div>
         </div>
         <div class="row justify-content-center text-center"  data-aos="fade-up" data-aos-duration="800">
             <p class="Montserrat h-12 mt-2 sm:h-14 md:h-16 lg:h-20 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold textGradient">
@@ -79,17 +79,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-2" id="letterInputCellHallDftc" style="display: none;">
-                            <div class="col-12">
-                                <div class="form-group text-light-green">
-                                    <label for="hasLetter" class="Montserrat text-sm font-semibold">Please present and attach the letter, duly approved by either the President or the Campus Administrator, to avail services. (Exclusive to students)</label>
-                                    <select name="hasLetter" id="hasLetterHallDftc" class="form-control">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row mb-2">
                             <div class="col-md-4">
                                 <div class="form-group text-light-green">
@@ -110,11 +99,51 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-2">
+                        <div class="row mb-2" id="letterInputCellHallDftc" style="display: none;">
                             <div class="col-12">
                                 <div class="form-group text-light-green">
-                                    <label for="activity" class="Montserrat text-sm font-semibold">Activity<span class="text-red-600">*</span></label>
-                                    <textarea type="text" class="form-control" cols=5 rows=5 name="activity" id="activity" placeholder="Please add your activity here." required></textarea>
+                                    <label for="hasLetter" class="Montserrat text-sm font-semibold">
+                                        Do you have the letter approved by the President or Campus Administrator to access services? (Exclusive to students)
+                                    </label>
+                                    <div class="mt-2">
+                                        <!-- Radio button for "No" option -->
+                                        <label class="Montserrat text-sm font-semibold">
+                                            <input type="radio" name="hasLetterHallDftc" value="Yes"> Yes
+                                        </label>
+
+                                        <!-- Radio button for "Yes" option -->
+                                        <label class="Montserrat text-sm font-semibold ml-3">
+                                            <input type="radio" name="hasLetterHallDftc" value="No" checked> No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="form-group text-light-green">
+                                    <label for="activity" class="Montserrat text-sm font-semibold">
+                                        Activity <span class="text-red-600">*</span>
+                                    </label>
+
+                                    <!-- Dropdown with predefined options -->
+                                    <select class="form-control" id="activitySelect" name="activitySelected" required>
+                                        <option value="">Select an activity...</option>
+                                        <option value="Meeting">Meeting</option>
+                                        <option value="Workshop">Workshop</option>
+                                        <option value="Seminar">Seminar</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+
+                                    <!-- Hidden textarea for custom activity -->
+                                    <textarea
+                                        class="form-control mt-2"
+                                        id="activityTextArea"
+                                        name="customActivity"
+                                        placeholder="Please describe the custom activity here..."
+                                        style="display: none;"
+                                        rows="4"
+                                    ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -270,6 +299,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="error-messageDftcHall" class="alert alert-danger mt-2" style="display: none;">
+
+                        </div>
                         <div class="row my-2">
                             <div class="col-12 text-right my-2">
                                 <button type="button" class="btn bg-light-green Montserrat text-white hover:bg-dark-green" data-bs-toggle="modal" data-bs-target="#dftcHallTerms">Submit</button>
@@ -330,12 +362,34 @@
     </div>
 </div>
 <script>
-    document.getElementById('modalBodyPreBookDftcHall').addEventListener('scroll', function() {
-        const scrollable = this.scrollHeight - this.clientHeight;
+document.getElementById('modalBodyPreBookDftcHall').addEventListener('scroll', function() {
+    const scrollable = this.scrollHeight - this.clientHeight;
 
-        if (Math.ceil(this.scrollTop) >= scrollable - 10) {
-            document.getElementById('checkboxContainerPreBookDftcHall').style.display = 'block';
+    if (Math.ceil(this.scrollTop) >= scrollable - 10) {
+        document.getElementById('checkboxContainerPreBookDftcHall').style.display = 'block';
+    }
+});
+document.addEventListener("DOMContentLoaded", function() {
+    const activitySelect = document.getElementById("activitySelect");
+    const activityTextArea = document.getElementById("activityTextArea");
+
+
+activitySelect.addEventListener("change", function() {
+        if (activitySelect.value === "Others") {
+
+            activityTextArea.style.display = "block";
+            activityTextArea.required = true;
+            activityTextArea.focus();
+        } else {
+
+            activityTextArea.style.display = "none";
+            activityTextArea.value = "";
+            activityTextArea.required = false;
         }
     });
+        activityTextArea.addEventListener("input", function() {
+        activitySelect.value = "Others";
+    });
+});
 </script>
 @endsection

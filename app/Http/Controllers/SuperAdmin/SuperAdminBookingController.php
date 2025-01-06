@@ -23,10 +23,11 @@ class SuperAdminBookingController extends Controller
             'fullname' => 'required|min:6|max:100',
             'position' => 'required',
             'agency' => 'required',
-            'contactnumber' => 'required|min:9|max:13',
+            'contactnumber' => 'required|min:9|max:15',
             'address' => 'required|min:6|max:100',
             'email' => 'required',
-            'activity' => 'required|min:6|max:255',
+            'activitySelected' => 'required|string|max:255',
+            'customActivity' => 'nullable|string',
             'room_number' => 'required',
             'numberOfDays' => 'required',
             'numberOfNights' => 'required',
@@ -53,6 +54,29 @@ class SuperAdminBookingController extends Controller
             $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->checkOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $room = Room::find($request->room_number);
             $client_id = session()->get('loggedInSuperAdmin')['id'];
+            $activity = $request->activitySelected;
+            $customActivity = $request->customActivity;
+            if ($activity === 'Others' && !empty($customActivity)) {
+                $finalActivity = $customActivity;
+            } else {
+                $finalActivity = $activity;
+            }
+            $maleGuestsArray = isset($request->maleGuests) && $request->maleGuests
+            ? (is_array($request->maleGuests)
+                ? array_map('trim', $request->maleGuests)
+                : array_map('trim', explode(',', $request->maleGuests)))
+            : []; // Default empty if null/empty
+
+            // Process female guests safely - handle null & clean data
+            $femaleGuestsArray = isset($request->femaleGuests) && $request->femaleGuests
+            ? (is_array($request->femaleGuests)
+                ? array_map('trim', $request->femaleGuests)
+                : array_map('trim', explode(',', $request->femaleGuests)))
+            : []; // Default empty if null/empty
+
+            // Remove empty strings
+            $maleGuestsArray = array_filter($maleGuestsArray, fn($val) => $val !== '');
+            $femaleGuestsArray = array_filter($femaleGuestsArray, fn($val) => $val !== '');
             $guestHouseBooking = new GuestHouseBooking();
             $guestHouseBooking->client_id = $client_id;
             $guestHouseBooking->room_id = $room->id;
@@ -65,7 +89,7 @@ class SuperAdminBookingController extends Controller
             $guestHouseBooking->contact = $request->contactnumber;
             $guestHouseBooking->address = ucwords($request->address);
             $guestHouseBooking->email = $request->email;
-            $guestHouseBooking->activity = ucfirst($request->activity);
+            $guestHouseBooking->activity = ucfirst($finalActivity);
             $guestHouseBooking->number_of_days = $request->numberOfDays;
             $guestHouseBooking->number_of_nights = $request->numberOfNights;
             $guestHouseBooking->check_in_date = $checkInDate;
@@ -84,8 +108,8 @@ class SuperAdminBookingController extends Controller
             $guestHouseBooking->num_of_male = $request->numOfMale;
             $guestHouseBooking->num_of_female = $request->numOfFemale;
             $guestHouseBooking->total_lodgers = $request->numOfMale + $request->numOfFemale;
-            $guestHouseBooking->male_guest = ucwords($request->maleGuests);
-            $guestHouseBooking->female_guest = ucwords($request->femaleGuests);
+            $guestHouseBooking->male_guest = implode(',', array_values($maleGuestsArray));
+            $guestHouseBooking->female_guest = implode(',', array_values($femaleGuestsArray));
             $guestHouseBooking->special_request = ucfirst($request->specialRequests);
             $guestHouseBooking->save();
             $facility = Facility::where('facility_name', 'Guest House')->first();
@@ -142,10 +166,11 @@ class SuperAdminBookingController extends Controller
             'fullname' => 'required|min:6|max:100',
             'position' => 'required',
             'agency' => 'required',
-            'contactnumber' => 'required|min:9|max:13',
+            'contactnumber' => 'required|min:9|max:15',
             'address' => 'required|min:6|max:100',
             'email' => 'required',
-            'activity' => 'required|min:6|max:255',
+            'activitySelected' => 'required|string|max:255',
+            'customActivity' => 'nullable|string',
             'room_numberStaffHouse' => 'required',
             'numberOfDays' => 'required',
             'numberOfNights' => 'required',
@@ -173,6 +198,29 @@ class SuperAdminBookingController extends Controller
             $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->checkOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $room = Room::find($request->room_numberStaffHouse);
             $client_id = session()->get('loggedInSuperAdmin')['id'];
+            $activity = $request->activitySelected;
+            $customActivity = $request->customActivity;
+            if ($activity === 'Others' && !empty($customActivity)) {
+                $finalActivity = $customActivity;
+            } else {
+                $finalActivity = $activity;
+            }
+            $maleGuestsArray = isset($request->maleGuests) && $request->maleGuests
+            ? (is_array($request->maleGuests)
+                ? array_map('trim', $request->maleGuests)
+                : array_map('trim', explode(',', $request->maleGuests)))
+            : []; // Default empty if null/empty
+
+            // Process female guests safely - handle null & clean data
+            $femaleGuestsArray = isset($request->femaleGuests) && $request->femaleGuests
+            ? (is_array($request->femaleGuests)
+                ? array_map('trim', $request->femaleGuests)
+                : array_map('trim', explode(',', $request->femaleGuests)))
+            : []; // Default empty if null/empty
+
+            // Remove empty strings
+            $maleGuestsArray = array_filter($maleGuestsArray, fn($val) => $val !== '');
+            $femaleGuestsArray = array_filter($femaleGuestsArray, fn($val) => $val !== '');
             $staffHouseBooking = new StaffHouseBooking();
             $staffHouseBooking->client_id = $client_id;
             $staffHouseBooking->room_id = $room->id;
@@ -186,7 +234,7 @@ class SuperAdminBookingController extends Controller
             $staffHouseBooking->address = ucwords($request->address);
             $staffHouseBooking->room_number = $room->room_number;
             $staffHouseBooking->email = $request->email;
-            $staffHouseBooking->activity = ucfirst($request->activity);
+            $staffHouseBooking->activity = ucfirst($finalActivity);
             $staffHouseBooking->number_of_days = $request->numberOfDays;
             $staffHouseBooking->number_of_nights = $request->numberOfNights;
             $staffHouseBooking->check_in_date = $checkInDate;
@@ -205,8 +253,8 @@ class SuperAdminBookingController extends Controller
             $staffHouseBooking->num_of_male = $request->numOfMale;
             $staffHouseBooking->num_of_female = $request->numOfFemale;
             $staffHouseBooking->total_lodgers = $request->numOfMale + $request->numOfFemale;
-            $staffHouseBooking->male_guest = ucwords($request->maleGuests);
-            $staffHouseBooking->female_guest = ucwords($request->femaleGuests);
+            $staffHouseBooking->male_guest = implode(',', array_values($maleGuestsArray));
+            $staffHouseBooking->female_guest = implode(',', array_values($femaleGuestsArray));
             $staffHouseBooking->special_request = ucfirst($request->specialRequests);
             $staffHouseBooking->payment = $request->payment;
             $staffHouseBooking->save();
@@ -238,10 +286,11 @@ class SuperAdminBookingController extends Controller
             'fullname' => 'required|min:6|max:100',
             'position' => 'required',
             'agency' => 'required',
-            'contactnumber' => 'required|min:9|max:13',
+            'contactnumber' => 'required|min:9|max:15',
             'address' => 'required|min:6|max:100',
             'email' => 'required',
-            'activity' => 'required|min:6|max:255',
+            'activitySelected' => 'required|string',
+            'customActivity' => 'nullable|string',
             'room_number' => 'required',
             'numberOfDays' => 'required',
             'numberOfNights' => 'required',
@@ -266,6 +315,13 @@ class SuperAdminBookingController extends Controller
             $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->checkOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $room = Room::find($request->room_number);
             $client_id = session()->get('loggedInSuperAdmin')['id'];
+            $activity = $request->activitySelected;
+            $customActivity = $request->customActivity;
+            if ($activity === 'Others' && !empty($customActivity)) {
+                $finalActivity = $customActivity;
+            } else {
+                $finalActivity = $activity;
+            }
             $dftcBooking = new DftcBooking();
             $dftcBooking->client_id = $client_id;
             $dftcBooking->room_id = $room->id;
@@ -279,7 +335,7 @@ class SuperAdminBookingController extends Controller
             $dftcBooking->address = ucwords($request->address);
             $dftcBooking->room_number = $room->room_number;
             $dftcBooking->email = $request->email;
-            $dftcBooking->activity = ucfirst($request->activity);
+            $dftcBooking->activity = ucfirst($finalActivity);
             $dftcBooking->number_of_days = $request->numberOfDays;
             $dftcBooking->number_of_nights = $request->numberOfNights;
             $dftcBooking->check_in_date = $checkInDate;
@@ -326,10 +382,11 @@ class SuperAdminBookingController extends Controller
             'fullname' => 'required|min:6|max:100',
             'position' => 'required',
             'agency' => 'required',
-            'contactnumber' => 'required|min:9|max:13',
+            'contactnumber' => 'required|min:9|max:15',
             'address' => 'required|min:6|max:100',
             'email' => 'required',
-            'activity' => 'required|min:6|max:255',
+            'activitySelected' => 'required|string',
+            'customActivity' => 'nullable|string',
             'room_number' => 'required',
             'numberOfDays' => 'required',
             'numberOfNights' => 'required',
@@ -356,6 +413,13 @@ class SuperAdminBookingController extends Controller
             $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->checkOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $room = Room::find($request->room_number);
             $client_id = session()->get('loggedInSuperAdmin')['id'];
+            $activity = $request->activitySelected;
+            $customActivity = $request->customActivity;
+            if ($activity === 'Others' && !empty($customActivity)) {
+                $finalActivity = $customActivity;
+            } else {
+                $finalActivity = $activity;
+            }
             $dftcBooking = new DftcBooking();
             $dftcBooking->client_id = $client_id;
             $dftcBooking->room_id = $room->id;
@@ -369,7 +433,7 @@ class SuperAdminBookingController extends Controller
             $dftcBooking->address = ucwords($request->address);
             $dftcBooking->room_number = $room->room_number;
             $dftcBooking->email = $request->email;
-            $dftcBooking->activity = ucfirst($request->activity);
+            $dftcBooking->activity = ucfirst($finalActivity);
             $dftcBooking->number_of_days = $request->numberOfDays;
             $dftcBooking->number_of_nights = $request->numberOfNights;
             $dftcBooking->check_in_date = $checkInDate;

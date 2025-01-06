@@ -43,12 +43,12 @@
                         <div id="carouselExampleControls{{$index}}" class="carousel slide" data-bs-ride="carousel" style="max-height: 320px; overflow: hidden;">
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="{{ asset('/public/photos/rooms/' . $room->room_photo1) }}" class="d-block" style="max-height: 100%; width: 100%;  object-fit: cover;" alt="Room Photo 1">                                    </div>
+                                    <img src="{{ asset('photos/rooms/' . $room->room_photo1) }}" class="d-block" style="max-height: 100%; width: 100%;  object-fit: cover;" alt="Room Photo 1">                                    </div>
                                     <div class="carousel-item">
-                                        <img src="{{ asset('/public/photos/rooms/' . $room->room_photo2) }}" class="d-block" style="max-height: 100%; width: 100%;  object-fit: cover;" alt="Room Photo 2">
+                                        <img src="{{ asset('photos/rooms/' . $room->room_photo2) }}" class="d-block" style="max-height: 100%; width: 100%;  object-fit: cover;" alt="Room Photo 2">
                                     </div>
                                     <div class="carousel-item">
-                                        <img src="{{ asset('/public/photos/rooms/' . $room->room_photo3) }}" class="d-block" style="max-height: 100%; width: 100%;  object-fit: cover;" alt="Room Photo 3">
+                                        <img src="{{ asset('photos/rooms/' . $room->room_photo3) }}" class="d-block" style="max-height: 100%; width: 100%;  object-fit: cover;" alt="Room Photo 3">
                                     </div>
 
                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls{{$index}}" data-bs-slide="prev">
@@ -72,14 +72,60 @@
                             </div>
                         </div>
 
+                        @php
+                            $bookingCount = $bookings->where('room_id', $room->id)->count();
+                            $bookingFeedbacks = $feedbacks->where('room_id', $room->id);
+                        @endphp
                         <span class="Montserrat text-sm font-bold textGradient text-left">Guest House | </span>
-                        <span class="Montserrat text-sm font-semibold text-light-green text-left">Status: {{ $room->room_status }}</span>
+                        <span class="Montserrat text-sm font-semibold text-light-green text-left">
+                            Status:
+                            @if($bookingCount > 0)
+                                <span class="inline-flex items-center">
+                                    <i class="fa fa-calendar-check-o" style="color: orange; margin-right: 5px;"></i>
+                                    <span style="color: orange; font-weight: bold;">Pre-Booked</span>
+                                </span>
+                            @elseif($room->room_status === 'Available')
+                                <span class="inline-flex items-center mt-3">
+                                    <i class="fa fa-check-circle" style="color: green; margin-right: 5px;"></i>
+                                    <span style="color: green; font-weight: bold;">Available</span>
+                                </span>
+                            @else
+                                <span class="inline-flex items-center">
+                                    <i class="fa fa-times-circle" style="color: red; margin-right: 5px;"></i>
+                                    <span style="color: red; font-weight: bold;">Unavailable</span>
+                                </span>
+                            @endif
+
 
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <p class="Montserrat text-light-green text-sm font-semibold" style="text-align: justify;">{{ $room->room_description }}</p><br>
 
                                 <table class="table table-borderless">
+                                    <tr>
+                                        <td class="w-5 Montserrat text-light-green text-sm font-semibold text-center"><i class="fa-solid fa-star" style="color: #25ec06;"></i></td>
+                                        <td class="Montserrat text-light-green text-sm font-semibold">Ratings:
+                                            @if($room->averageRating > 0)
+                                                    <span>
+                                                        {{ number_format($room->averageRating, 2) }}
+                                                    </span>
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        @if ($room->averageRating >= $i)
+                                                            <!-- Full star -->
+                                                            <i class="fa fa-star" style="color: #FFD700;"></i>
+                                                        @elseif ($room->averageRating > ($i - 1) && $room->averageRating < $i)
+                                                            <!-- Half star -->
+                                                            <i class="fa fa-star-half-o" style="color: #FFD700;"></i>
+                                                        @else
+                                                            <!-- Empty star -->
+                                                            <i class="fa fa-star-o" style="color: #FFD700;"></i>
+                                                        @endif
+                                                    @endfor
+                                            @else
+                                                <span>No ratings yet</span>
+                                            @endif
+                                        </tr>
+                                    <tr>
                                     <tr>
                                         <td class="w-5 Montserrat text-light-green text-sm font-semibold text-center"><i class="fa-solid fa-list" style="color: #25ec06;"></i></td>
                                         <td class="Montserrat text-light-green text-sm font-semibold">Type: {{ $room->room_type}}</td>
@@ -96,9 +142,53 @@
                                         <td class="w-5 Montserrat text-light-green text-sm font-semibold text-center"><i class="fa-solid fa-ellipsis" style="color: #25ec06;"></i></td>
                                         <td class="Montserrat text-light-green text-sm font-semibold text-justify">Amenities: {{ $room->room_amenities }}</td>
                                     </tr>
-                                    @php
-                                        $bookingCount = $bookings->where('room_id', $room->id)->count();
-                                    @endphp
+                                    <tr>
+                                        <td class="w-5 Montserrat text-light-green text-sm font-semibold text-center"><i class="fa-solid fa-comment" style="color: #25ec06;"></i></td>
+                                        <td class="Montserrat text-light-green text-sm font-semibold text-justify">
+                                            Comments:
+                                            <div style="max-height: 150px; overflow-y: auto; padding: 5px;">
+                                                @php
+                                                    $filteredFeedbacks = $bookingFeedbacks->filter(function ($feedback) {
+                                                        return !is_null($feedback->ratings) && !is_null($feedback->feedbacks);
+                                                    });
+                                                @endphp
+
+                                                @foreach ($filteredFeedbacks as $feedback)
+                                                    @php
+                                                        $firstName = explode(' ', $feedback->fullname)[0];
+                                                        $rating = (int)$feedback->ratings;
+                                                    @endphp
+                                                    <div class="feedback-item" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                                                        <div style="flex: 1;">
+                                                            <div>
+                                                                <strong class="Montserrat text-light-green text-sm font-semibold">{{ $firstName }}</strong><br>
+                                                                <span style="font-weight: 500;">
+                                                                    @for ($i = 1; $i <= 5; $i++)
+                                                                        @if ($i <= $rating)
+                                                                            <i class="fa fa-star" style="color: #FFD700;"></i> <!-- Filled star -->
+                                                                        @else
+                                                                            <i class="fa fa-star-o" style="color: #FFD700;"></i> <!-- Empty star -->
+                                                                        @endif
+                                                                    @endfor
+                                                                </span>
+                                                            </div>
+                                                            <div style="font-weight: 380; margin-top: 5px;">
+                                                                {{ $feedback->feedbacks }}
+                                                            </div>
+                                                        </div>
+                                                        <div style="text-align: right; flex-shrink: 0;">
+                                                            <span style="font-weight: 500;">{{ $feedback->comment_date }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <hr style="color: #1ABC02">
+                                                @endforeach
+
+                                                @if ($bookingFeedbacks->isEmpty())
+                                                    <span style="font-weight: 500;">No comments yet</span>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
@@ -108,10 +198,6 @@
                                 @if(session()->has('loggedInCustomer') || session()->has('loggedInSuperAdmin') || session()->has('loggedInAdmin'))
                                     @if($room->room_status != 'Unavailable' && $room->room_status != 'On-Renovation')
                                         <div class="d-flex justify-content-end">
-                                            <button onclick="viewGuestHousePreBookings('{{ $room->id }}')" class="mt-[1 rem] btn lg:rounded-full md:rounded bg-light-green text-white Montserrat hover:bg-dark-green transition ease-in-out duration-500 mr-2 flex items-center space-x-1">
-                                                <span class="hidden sm:inline">Pre-Booking(s) |</span>
-                                                <span class="flex items-center">{{ $bookingCount }} &nbsp;<i class="fa-solid fa-user fa-sm" style="color: #EAEAEA;"></i></span>
-                                            </button>
                                             <button type="button" id="guestHouse-booking"
                                                 onclick="bookGuestHouse('{{ addslashes(json_encode($room)) }}', '{{ addslashes(json_encode(session('loggedInSuperAdmin'))) }}')"
                                                 class="btn rounded-full mr-3 bg-light-green text-white Montserrat hover:bg-dark-green transition ease-in-out duration-500">

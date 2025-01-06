@@ -40,7 +40,15 @@ $(function () {
                 { name: 'sm', width: 768 },
                 { name: 'xs', width: 576 }
             ]
-        }
+        },
+        "columnDefs": [
+            {
+                "targets": 6,
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[6, 'desc']],
     });
 });
 $(function () {

@@ -67,15 +67,6 @@
                                     <input type="text" class="form-control" name="email" id="email" placeholder="Please insert your gmail address here." value="{{ isset($user['email']) ? $user['email'] : '' }}" @if(isset($user['email'])) readonly required @endif>
                                 </div>
                             </div>
-                            <div class="col-12 mb-2" id="letterInputCell" style="display: none;">
-                                <div id="letterInput" class="form-group text-light-green">
-                                    <label for="hasLetter" class="Montserrat text-sm font-semibold">Please attach the letter approved by the President or the Campus Administrator to avail of free services (exclusive to students only).</label>
-                                    <select name="hasLetter" id="hasLetter" class="form-control">
-                                        <option value="No">No</option>
-                                        <option value="Yes">Yes</option>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="col-md-4 mb-2">
                                 <div class="form-group text-light-green">
                                     <label for="homeAddress" class="Montserrat text-sm font-semibold">Home Address <span class="text-red-600">*</span></label>
@@ -94,10 +85,45 @@
                                     <input type="text" class="form-control" name="contactnumber" id="contactNumber" placeholder="Please insert your contact number here." value="{{ isset($user['contact']) ? $user['contact'] : '' }}" @if(isset($user['contact'])) readonly required @endif>
                                 </div>
                             </div>
-                            <div class="col-12 mb-2">
+                            <div class="col-12 mb-2" id="letterInputCell" style="display: none;">
+                                <div id="letterInput" class="form-group text-light-green">
+                                    <label for="hasLetter" class="Montserrat text-sm font-semibold">
+                                        Do you have the letter approved by the President or Campus Administrator to access services? (Exclusive to students)
+                                    </label>
+                                    <div class="mt-2">
+                                        <label class="Montserrat text-sm font-semibold">
+                                            <input type="radio" name="hasLetter" value="Yes"> Yes
+                                        </label>
+                                        <label class="Montserrat text-sm font-semibold ml-3">
+                                            <input type="radio" name="hasLetter" value="No" checked> No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
                                 <div class="form-group text-light-green">
-                                    <label for="activity" class="Montserrat text-sm font-semibold">Activity <span class="text-red-600">*</span></label>
-                                    <textarea type="text" class="form-control" cols=5 rows=5 name="activity" id="activity" placeholder="Please add your activity here." required></textarea>
+                                    <label for="activity" class="Montserrat text-sm font-semibold">
+                                        Activity <span class="text-red-600">*</span>
+                                    </label>
+
+                                    <!-- Dropdown with predefined options -->
+                                    <select class="form-control" id="activitySelect" name="activitySelected" required>
+                                        <option value="">Select an activity...</option>
+                                        <option value="Meeting">Meeting</option>
+                                        <option value="Workshop">Workshop</option>
+                                        <option value="Seminar">Seminar</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+
+                                    <!-- Hidden textarea for custom activity -->
+                                    <textarea
+                                        class="form-control mt-2"
+                                        id="activityTextArea"
+                                        name="customActivity"
+                                        placeholder="Please describe the custom activity here..."
+                                        style="display: none;"
+                                        rows="4"
+                                    ></textarea>
                                 </div>
                             </div>
                         </div>
@@ -148,8 +174,8 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group text-light-green">
-                                            <label for="arrival" class="Montserrat text-sm font-semibold">Time Arrival <span class="text-red-600">*</span></label>
-                                            <input type="time" class="form-control" name="arrival" id="arrival" required>
+                                            <label for="arrival" class="Montserrat text-sm font-semibold">Time Arrival <span class="text-red-600">(Fixed based on regulations)</span></label>
+                                            <input type="time" class="form-control" name="arrival" id="arrival" style="background-color:#d3d3d3;" readonly  required>
                                         </div>
                                     </div>
                                 </div>
@@ -162,8 +188,8 @@
                                     </div>
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group text-light-green">
-                                            <label for="departure" class="Montserrat text-sm font-semibold">Time Departure <span class="text-red-600">*</span></label>
-                                            <input type="time" class="form-control" name="departure" id="departure" required>
+                                            <label for="departure" class="Montserrat text-sm font-semibold">Time Departure <span class="text-red-600">(Fixed based on regulations)</span></label>
+                                            <input type="time" class="form-control" name="departure" id="departure" style="background-color:#d3d3d3;" readonly  required>
                                         </div>
                                     </div>
                                 </div>
@@ -242,14 +268,18 @@
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <div class="form-group text-light-green">
-                                        <label for="maleGuests" class="Montserrat text-sm font-semibold">Name of Guest/s (Male)</label>
-                                        <textarea name="maleGuests" id="maleGuests" cols="5" rows="5" class="form-control" placeholder="Note: For every name, please include a comma in between and enter the name(s) of male guest(s), including yourself if necessary." disabled></textarea>
+                                        <label class="Montserrat text-sm font-semibold">Name of Guest/s (Male)</label>
+                                        <div id="maleGuestsContainer" class="dynamic-input-container">
+                                            <!-- Dynamic textboxes will appear here -->
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <div class="form-group text-light-green">
-                                        <label for="femaleGuests" class="Montserrat text-sm font-semibold">Name of Guest/s (Female)</label>
-                                        <textarea name="femaleGuests" id="femaleGuests" cols="5" rows="5" class="form-control" placeholder="Note: For every name, please include a comma in between and enter the name(s) of female guest(s), including yourself if necessary." disabled></textarea>
+                                        <label class="Montserrat text-sm font-semibold">Name of Guest/s (Female)</label>
+                                        <div id="femaleGuestsContainer" class="dynamic-input-container">
+                                            <!-- Female textboxes will dynamically appear here -->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -261,6 +291,9 @@
                             </div>
                             </div>
                         </div>
+                    </div>
+                    <div id="error-message" class="alert alert-danger mt-2" style="display: none;">
+
                     </div>
                     <div class="row my-2">
                         <div class="col-12 text-right my-2">
@@ -325,14 +358,128 @@
             document.getElementById('checkboxContainerPreBookGuestHouse').style.display = 'block';
         }
     });
-    document.getElementById('numOfMale').addEventListener('input', function() {
-        var maleGuestField = document.getElementById('maleGuests');
-        maleGuestField.disabled = this.value <= 0;
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+    const numOfMaleInput = document.getElementById('numOfMale');
+    const maleGuestsContainer = document.getElementById('maleGuestsContainer');
 
-    document.getElementById('numOfFemale').addEventListener('input', function() {
-        var femaleGuestField = document.getElementById('femaleGuests');
-        femaleGuestField.disabled = this.value <= 0;
+    numOfMaleInput.addEventListener('input', function () {
+        let numOfMales = parseInt(numOfMaleInput.value, 10);
+        if (isNaN(numOfMales) || numOfMales < 0) {
+        numOfMales = 0;
+        } else if (numOfMales > 10) {
+        numOfMales = 10;
+        numOfMaleInput.value = numOfMales;
+        }
+        maleGuestsContainer.innerHTML = '';
+        for (let i = 0; i < numOfMales; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'maleGuests[]';
+        input.className = 'form-control';
+        input.placeholder = `Guest ${i + 1}`;
+        maleGuestsContainer.appendChild(input);
+        }
     });
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const numOfMalesInput = document.getElementById('numOfMale');
+    const numOfFemalesInput = document.getElementById('numOfFemale');
+    const maleGuestsContainer = document.getElementById('maleGuestsContainer');
+    const femaleGuestsContainer = document.getElementById('femaleGuestsContainer');
+
+    numOfMalesInput.addEventListener('input', function () {
+    let numOfMales = parseInt(numOfMalesInput.value, 10);
+
+    if (isNaN(numOfMales) || numOfMales < 0) numOfMales = 0;
+
+    maleGuestsContainer.innerHTML = '';
+
+    for (let i = 0; i < numOfMales; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'maleGuests[]';
+        input.className = 'form-control';
+        input.placeholder = `Guest ${i + 1}`;
+        maleGuestsContainer.appendChild(input);
+    }
+});
+
+
+numOfFemalesInput.addEventListener('input', function () {
+    let numOfFemales = parseInt(numOfFemalesInput.value, 10);
+
+    if (isNaN(numOfFemales) || numOfFemales < 0) numOfFemales = 0;
+
+    femaleGuestsContainer.innerHTML = '';
+
+        for (let i = 0; i < numOfFemales; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'femaleGuests[]';
+            input.className = 'form-control';
+            input.placeholder = `Guest ${i + 1}`;
+            femaleGuestsContainer.appendChild(input);
+        }
+    });
+});
+document.addEventListener('DOMContentLoaded', function () {
+    const numOfFemaleInput = document.getElementById('numOfFemale');
+    const femaleGuestsContainer = document.getElementById('femaleGuestsContainer');
+
+    numOfFemaleInput.addEventListener('input', function () {
+        let numOfFemales = parseInt(numOfFemaleInput.value, 10);
+
+
+        if (isNaN(numOfFemales) || numOfFemales < 0) {
+            numOfFemales = 0;
+        } else if (numOfFemales > 10) {
+            numOfFemales = 10;
+            numOfFemaleInput.value = numOfFemales;
+        }
+
+
+        femaleGuestsContainer.innerHTML = '';
+
+        for (let i = 0; i < numOfFemales; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'femaleGuests[]';
+            input.className = 'form-control';
+            input.placeholder = `Guest ${i + 1}`;
+            femaleGuestsContainer.appendChild(input);
+        }
+    });
+});
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+       const arrivalInput = document.getElementById("arrival");
+       const departureInput = document.getElementById("departure");
+
+       arrivalInput.value = "14:00";
+       departureInput.value = "12:00";
+   });
+   document.addEventListener("DOMContentLoaded", function() {
+    const activitySelect = document.getElementById("activitySelect");
+    const activityTextArea = document.getElementById("activityTextArea");
+
+
+    activitySelect.addEventListener("change", function() {
+        if (activitySelect.value === "Others") {
+
+        activityTextArea.style.display = "block";
+        activityTextArea.required = true;
+        activityTextArea.focus();
+        } else {
+
+        activityTextArea.style.display = "none";
+        activityTextArea.value = "";
+        activityTextArea.required = false;
+        }
+    });
+    activityTextArea.addEventListener("input", function() {
+        activitySelect.value = "Others";
+    });
+});
 </script>
 @endsection

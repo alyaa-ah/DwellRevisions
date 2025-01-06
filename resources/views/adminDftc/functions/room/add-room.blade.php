@@ -14,7 +14,7 @@
                         </a>
                     </li>
                     <li class="border-bottom w-full">
-                        <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">                            
+                        <a href="{{ url('/adminDFTC/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('adminDFTC/view-rooms') || Request::is('adminDFTC/create-room') ? 'bg-dark-green text-dark-white' : '' }}">
                             <i class="fas fa-door-open"></i>
                             <span class="ms-1 d-none d-sm-inline">ROOMS</span>
                         </a>
@@ -81,7 +81,7 @@
                     <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/create-room') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/create-room') }}"><i class="fa-solid fa-circle-plus">&nbsp;</i>Create</a>
                 </div>
             </div>
- 
+
             <div class="d-flex justify-content-center align-items-center">
                 <div class="card w-100 xl:w-full bg-light-white mt-2 px-2">
                     <div class="row">
@@ -153,7 +153,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group text-light-green">
                                             <label for="room_amenities" style="font-weight: bold;">Room Amenities</label>
-                                            <textarea name="room_amenities" id="room_amenities" cols="5" rows="5" class="form-control" placeholder="Type the room amenities here. If there is no amenities, type None"></textarea>
+                                            <textarea name="room_amenities" id="room_amenities" cols="5" rows="5" class="form-control" placeholder="Type your amenities here. If there are multiple amenities, separate them with commas. If there are no amenities, type None"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-4">

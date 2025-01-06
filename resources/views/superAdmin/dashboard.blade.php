@@ -82,7 +82,7 @@
                                                     @endif
                                                 </div>
                                                 <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('/public/images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
+                                                    <img src="{{ asset('images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
                                                     <span class="d-sm-inline" style="font-size: 18px;">Earnings</span>
                                                 </div>
                                             </div>
@@ -107,7 +107,7 @@
                                                     @endif
                                                 </div>
                                                 <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('/public/images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
+                                                    <img src="{{ asset('images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
                                                     <span class="d-sm-inline" style="font-size: 18px;">Earnings</span>
                                                 </div>
                                             </div>
@@ -132,7 +132,7 @@
                                                     @endif
                                                 </div>
                                                 <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('/public/images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px;" class="mr-1">
+                                                    <img src="{{ asset('images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px;" class="mr-1">
                                                     <span class="d-sm-inline" style="font-size: 18px;">Earnings</span>
                                                 </div>
                                             </div>
@@ -164,7 +164,7 @@
                                                     @endif
                                                 </div>
                                                 <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('/public/images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
+                                                    <img src="{{ asset('images/icons/earnings.svg') }}" alt="earnings" style="height: 20px; width: 30px" class="mr-1">
                                                     <span style="font-size: 18px; margin-top: 0.5rem">Total Earnings</span>
                                                 </div>
                                             </div>

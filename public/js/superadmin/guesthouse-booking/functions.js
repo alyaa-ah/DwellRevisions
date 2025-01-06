@@ -47,19 +47,20 @@ $(document).ready(function() {
 
         $('#checkInDate').attr('min', minDateString);
         $('#checkOutDate').prop('disabled', true);
+
         $('#checkInDate').on('change', function() {
+            $('#checkOutDate').val('').prop('disabled', true);
+
             var selectedDate = new Date($(this).val());
 
             if ($(this).val()) {
-                $('#checkOutDate').prop('disabled', false);
-            } else {
-                $('#checkOutDate').prop('disabled', true);
+                $('#checkOutDate').prop('disabled', false);  // Enable check-out field if check-in date is set
+                var minCheckOutDate = new Date(selectedDate.getTime());
+                $('#checkOutDate').attr('min', minCheckOutDate.toISOString().split('T')[0]);
             }
-
             var minCheckOutDate = new Date(selectedDate.getTime());
             $('#checkOutDate').attr('min', minCheckOutDate.toISOString().split('T')[0]);
         });
-
         $('#checkInDate, #checkOutDate, #arrival, #departure').on('change', computeDaysAndNights);
         $('#checkInDate').on('change', function() {
             var selectedDate = new Date($(this).val());
@@ -115,7 +116,7 @@ $(document).ready(function() {
         var bedding = parseInt($('#bedding').val());
         var checkInDate = new Date($('#checkInDate').val());
         var checkOutDate = new Date($('#checkOutDate').val());
-
+        var hasLetter = $('input[name="hasLetter"]:checked').val();
         if (isNaN(rate) || isNaN(capacity) || isNaN(numOfMale) || isNaN(numOfFemale)) {
             $('#totalAmount').val('0.00');
             return;
@@ -139,10 +140,11 @@ $(document).ready(function() {
 
         var totalAmount = 0;
 
-        if ($('#hasLetter').val() === "Yes") {
+        if (hasLetter=== "Yes") {
             $('#totalAmount').val('FREE');
             return;
         }
+
 
         totalAmount = rate * totalLodgers * numberOfNights;
 
@@ -157,6 +159,7 @@ $(document).ready(function() {
         $('#totalAmount').val(totalAmount.toFixed(2));
     }
     $('#rate, #capacity, #numOfMale, #numOfFemale, #rent, #bedding, #checkInDate, #checkOutDate, #hasLetter').on('change', computeTotalAmount);
+    $('input[name="hasLetter"]').on('change', computeTotalAmount);
     $(document).on('click', '#submitButton', function(event){
         event.preventDefault();
         const agreeCheckbox = $('#flexCheckDefault')[0];
@@ -169,17 +172,49 @@ $(document).ready(function() {
             })
             return;
         }
-        var numOfMale = parseInt($('#numOfMale').val());
-        var numOfFemale = parseInt($('#numOfFemale').val());
-        if(numOfFemale === 0 && numOfMale === 0){
-            Swal.fire({
-                icon: "error",
-                title: "Can't proceed!",
-                text: "You must have at least one female guest or male guest!",
-                showConfirmButton: true,
-            })
+        const female = parseInt($('#numOfFemale').val(), 10) || 0;
+        const male = parseInt($('#numOfMale').val(), 10) || 0;
+
+        if(male + female == 0){
             $('#guestHouseTerms').modal('hide');
-            return;
+            $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
+            $('#submitButton').attr('disabled', false);
+            setTimeout(function () {
+                $('#error-message').fadeOut('slow', function () {
+                    $(this).hide();
+                });
+            }, 3000);
+        return;
+        }
+        const maleGuestsInputs = $('input[name="maleGuests[]"]');
+        const femaleGuestsInputs = $('input[name="femaleGuests[]"]');
+
+        for (let input of maleGuestsInputs) {
+            if (!input.value.trim()) {
+                $('#guestHouseTerms').modal('hide');
+                    $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please input male guests!").show();
+                    $('#submitButton').attr('disabled', false);
+                    setTimeout(function () {
+                        $('#error-message').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
+                return;
+            }
+        }
+
+        for (let input of femaleGuestsInputs) {
+            if (!input.value.trim()) {
+                $('#guestHouseTerms').modal('hide');
+                    $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please input female guests!").show();
+                    $('#submitButton').attr('disabled', false);
+                    setTimeout(function () {
+                        $('#error-message').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
+                return;
+            }
         }
         let formData = new FormData($('#guestHouse-booking-form')[0]);
         $.ajax({
@@ -211,16 +246,21 @@ $(document).ready(function() {
                         showConfirmButton: true,
                     })
                 }else if(response.message){
-                    var errorMessages = Object.values(response.message).join('<br>');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Pre-reservation validation failed!',
-                        html: errorMessages,
-                        showConfirmButton: true,
-                    }).then(function() {
-                        $('#submitButton').attr('disabled', false);
-                        $('#guestHouseTerms').modal('hide');
-                    });
+                    $('#guestHouseTerms').modal('hide');
+                    Swal.close();
+                    let errorMessages = '';
+                    for (let key in response.message) {
+                        if (response.message[key] && Array.isArray(response.message[key])) {
+                            errorMessages += response.message[key].join('<br>') + '<br>';
+                        }
+                    }
+                    $('#error-message').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#submitButton').attr('disabled', false);
+                    setTimeout(function () {
+                        $('#error-message').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
                 }else{
                     Swal.fire({
                     icon: "success",
@@ -229,7 +269,7 @@ $(document).ready(function() {
                     showConfirmButton: true,
                 }).then(function(){
                     $('#submitButton').attr('disabled', false);
-                    window.location.reload();
+                    window.location = "/superAdmin/view-guesthouse-preservations";
                 });
                 }
             },

@@ -107,25 +107,25 @@
                                             <td>{{ $booking->total_amount }}</td>
                                         @endif
                                         <td class="status-cell">
-                                        @if ($booking->remarks == "Early Check Out")
-                                            <span class="status-badge early-checkout">
-                                                <i class="fas fa-arrow-right"></i> {{ $booking->remarks }}
-                                            </span>
-                                        @elseif (Str::contains($booking->remarks, "Extended"))
-                                            <span class="status-badge extended">
-                                                <i class="fas fa-plus-circle"></i> {{ $booking->remarks }}
-                                            </span>
-                                        @else
-                                            @if ($booking->remarks == "" || $booking->remarks == null)
-                                                <span class="status-badge no-remarks">
-                                                    <i class="fas fa-info-circle"></i> No Remark
+                                            @if ($booking->remarks == "Early Check Out")
+                                                <span class="status-badge early-checkout">
+                                                    <i class="fas fa-arrow-right"></i> {{ $booking->remarks }}
+                                                </span>
+                                            @elseif (Str::contains($booking->remarks, "Extended"))
+                                                <span class="status-badge extended">
+                                                    <i class="fas fa-plus-circle"></i> {{ $booking->remarks }}
                                                 </span>
                                             @else
-                                                <span class="status-badge default">
-                                                    {{ $booking->remarks }}
-                                                </span>
+                                                @if ($booking->remarks == "" || $booking->remarks == null)
+                                                    <span class="status-badge no-remarks">
+                                                        <i class="fas fa-info-circle"></i> No Remark
+                                                    </span>
+                                                @else
+                                                    <span class="status-badge default">
+                                                        {{ $booking->remarks }}
+                                                    </span>
+                                                @endif
                                             @endif
-                                        @endif
                                         </td>
                                         <td class="text-center">
                                             <button type="button" onclick="viewGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>

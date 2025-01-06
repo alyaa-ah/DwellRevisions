@@ -73,7 +73,7 @@
                                     <th width="10%">Position</th>
                                     <th width="20%">Institution</th>
                                     <th style="text-align: left" width="10%">Contact</th>
-                                    <th width="5%">Status</th>
+                                    <th width="15%" class="text-center">Status</th>
                                     <th width="5%">Role</th>
                                     <th width="15%" class="text-center">Action Taken</th>
                                 </thead>
@@ -84,7 +84,17 @@
                                         <td>{{ $client->position }}</td>
                                         <td>{{ $client->agency }}</td>
                                         <td style="text-align: left">{{ $client->contact }}</td>
-                                        <td>{{ $client->status }}</td>
+                                        <td class="status-cell">
+                                            @if ($client->status == 'Active')
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-smile"></i> Active
+                                                </span>
+                                            @elseif ($client->status == 'Inactive')
+                                                <span class="status-badge rejected">
+                                                    <i class="fas fa-frown"></i> Inactive
+                                                </span>
+                                            @endif
+                                        </td>
                                         <td>{{ $client->role }}</td>
                                         <td class="text-center">
                                             <button onclick="viewAccount('{{ addslashes(json_encode($client)) }}')" type="button" class="btn btn-info" title="View Button"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
@@ -96,7 +106,7 @@
                             </table>
                         </div>
                     </div>
-                </div>   
+                </div>
             </div>
         </div>
     </div>
@@ -122,7 +132,7 @@
                                 </div>
                                 <div class="col-md-2 mb-2">
                                     <td class="h6">Email</td>
-                                </div>            
+                                </div>
                                 <div class="col-md-4 mb-2">
                                     <p id="emailAccount-modal"></p>
                                 </div>
@@ -150,10 +160,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-2 mb-2"> 
+                                <div class="col-md-2 mb-2">
                                     <p class="h6">Position</p>
                                 </div>
-                                <div class="col-md-4 mb-2"> 
+                                <div class="col-md-4 mb-2">
                                     <p id="positionAccount-modal"></p>
                                 </div>
                                 <div class="col-md-2 mb-2">
@@ -177,14 +187,14 @@
                                 <p id="roleAccount-modal"></p>
                                 </div>
                             </div>
-                        </div>   
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
- 
+
     <div class="modal fade" id="edit-account-modal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content" >
@@ -276,8 +286,8 @@
                                             <button type="submit" class="btn bg-light-green Montserrat text-white hover:bg-dark-green">Submit</button>
                                         </div>
                                     </div>
-                                </form>                                    
-                            </div>                           
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

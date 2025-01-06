@@ -73,28 +73,28 @@
                         </div>
 
                         @php
-                        $bookingCount = $bookings->where('room_id', $room->id)->count();
-                        $bookingFeedbacks = $feedbacks->where('room_id', $room->id);
-                    @endphp
-                    <span class="Montserrat text-sm font-bold textGradient text-left">Guest House | </span>
-                    <span class="Montserrat text-sm font-semibold text-light-green text-left">
-                        Status:
-                        @if($bookingCount > 0)
-                            <span class="inline-flex items-center">
-                                <i class="fa fa-calendar-check-o" style="color: orange; margin-right: 5px;"></i>
-                                <span style="color: orange; font-weight: bold;">Pre-Booked</span>
-                            </span>
-                        @elseif($room->room_status === 'Available')
-                            <span class="inline-flex items-center mt-3">
-                                <i class="fa fa-check-circle" style="color: green; margin-right: 5px;"></i>
-                                <span style="color: green; font-weight: bold;">Available</span>
-                            </span>
-                        @else
-                            <span class="inline-flex items-center">
-                                <i class="fa fa-times-circle" style="color: red; margin-right: 5px;"></i>
-                                <span style="color: red; font-weight: bold;">Unavailable</span>
-                            </span>
-                        @endif
+                            $bookingCount = $bookings->where('room_id', $room->id)->count();
+                            $bookingFeedbacks = $feedbacks->where('room_id', $room->id);
+                        @endphp
+                        <span class="Montserrat text-sm font-bold textGradient text-left">Guest House | </span>
+                        <span class="Montserrat text-sm font-semibold text-light-green text-left">
+                            Status:
+                            @if($bookingCount > 0)
+                                <span class="inline-flex items-center">
+                                    <i class="fa fa-calendar-check-o" style="color: orange; margin-right: 5px;"></i>
+                                    <span style="color: orange; font-weight: bold;">Pre-Booked</span>
+                                </span>
+                            @elseif($room->room_status === 'Available')
+                                <span class="inline-flex items-center mt-3">
+                                    <i class="fa fa-check-circle" style="color: green; margin-right: 5px;"></i>
+                                    <span style="color: green; font-weight: bold;">Available</span>
+                                </span>
+                            @else
+                                <span class="inline-flex items-center">
+                                    <i class="fa fa-times-circle" style="color: red; margin-right: 5px;"></i>
+                                    <span style="color: red; font-weight: bold;">Unavailable</span>
+                                </span>
+                            @endif
 
                         <div class="row mt-3">
                             <div class="col-md-12">

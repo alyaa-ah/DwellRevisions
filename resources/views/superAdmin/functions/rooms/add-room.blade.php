@@ -7,33 +7,33 @@
             <div class="col-auto px-sm-2 px-0 min-h-min" style="background-color: #1ABC02;">
                 <div class="d-flex flex-column align-items-center text-white min-vh-100">
                 <ul class="nav nav-pills flex-column mb-sm-auto align-items-center align-items-sm-start flex-column mt-5 mb-auto Montserrat font-semibold">
-                    <li class="border-top border-bottom w-full mt-5">   
+                    <li class="border-top border-bottom w-full mt-5">
                         <a href="{{ url('superAdminDashboard') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdminDashboard') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-house"></i> 
+                            <i class="fas fa-house"></i>
                             <span class="ms-1 d-none d-sm-inline">DASHBOARD</span>
                         </a>
                     </li>
-                    <li class="border-bottom w-full">   
+                    <li class="border-bottom w-full">
                         <a href="{{ url('/superAdmin/view-rooms') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-rooms') || Request::is('superAdmin/view-create-room') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-door-open"></i> 
+                            <i class="fas fa-door-open"></i>
                             <span class="ms-1 d-none d-sm-inline">ROOMS</span>
                         </a>
                     </li>
                     <li class="border-bottom w-full">
                         <a href="{{ url('/superAdmin/view-guesthouse-preservations') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-guesthouse-preservations') || Request::is('superAdmin/view-staffhouse-preservations') || Request::is('superAdmin/view-DFTC-preservations') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-calendar-alt"></i> 
+                            <i class="fas fa-calendar-alt"></i>
                             <span class="ms-1 d-none d-sm-inline">PRE-BOOKINGS</span>
                         </a>
                     </li>
                     <li class="border-bottom w-full">
                         <a href="{{ url('/superAdmin/view-guesthouse-history') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-guesthouse-history') || Request::is('superAdmin/view-staffhouse-history') || Request::is('superAdmin/view-DFTC-history') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-history"></i> 
+                            <i class="fas fa-history"></i>
                             <span class="ms-1 d-none d-sm-inline">HISTORY</span>
                         </a>
                     </li>
                     <li class="border-bottom w-full">
                         <a href="{{ url('/superAdmin/view-guesthouse-canceled-preservations') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-guesthouse-canceled-preservations') || Request::is('superAdmin/view-staffhouse-canceled-preservations') || Request::is('superAdmin/view-DFTC-canceled-preservations') || Request::is('superAdmin/view-guesthouse-rejected-preservations') || Request::is('superAdmin/view-staffhouse-rejected-preservations') || Request::is('superAdmin/view-DFTC-rejected-preservations') ?  'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-ban"></i> 
+                            <i class="fas fa-ban"></i>
                             <span class="ms-1 d-none d-sm-inline">VOIDS</span>
                         </a>
                     </li>
@@ -45,13 +45,13 @@
                     </li>
                     <li class="border-bottom w-full">
                         <a href="{{ url('/superAdmin/view-activity-logs') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-activity-logs') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-clipboard-list"></i> 
+                            <i class="fas fa-clipboard-list"></i>
                             <span class="ms-1 d-none d-sm-inline">ACTIVITY LOGS</span>
                         </a>
                     </li>
                     <li class="border-b border-gray-300 w-full">
                         <a href="{{ url('/superAdmin/view-account') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('superAdmin/view-account') ? 'bg-dark-green text-dark-white' : '' }}">
-                            <i class="fas fa-user"></i> 
+                            <i class="fas fa-user"></i>
                             <span class="ms-1 d-none d-sm-inline">ACCOUNT</span>
                         </a>
                     </li>
@@ -136,7 +136,7 @@
                                         <div class="col-md-4 col-12 mb-2">
                                             <div class="form-group text-light-green">
                                                 <label for="room_amenities" style="font-weight: bold;">Room Amenities</label>
-                                                <textarea name="room_amenities" id="room_amenities" cols="5" rows="5" class="form-control" placeholder="Type the room amenities here. If there is no amenities, type None"></textarea>
+                                                <textarea name="room_amenities" id="room_amenities" cols="5" rows="5" class="form-control" placeholder="Type your amenities here. If there are multiple amenities, separate them with commas. If there are no amenities, type None"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-12 mb-2">
@@ -179,7 +179,7 @@
         </div>
     </div>
 </div>
-  
+
 <script>
     document.getElementById('facility').addEventListener('change', function() {
     var roomTypeSelect = document.getElementById('room_type');

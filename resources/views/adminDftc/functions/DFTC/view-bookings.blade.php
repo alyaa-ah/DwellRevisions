@@ -97,7 +97,14 @@
                                 @foreach ($bookings as $booking)
                                     <tr>
                                         <td>{{ $booking->fullname }}</td>
-                                        <td>{{ $booking->room_number}}</td>
+                                        <td>
+                                            @if(strlen($booking->room_number) > 10)
+                                                {{ explode(' ', $booking->room_number)[0] }} HALL
+                                            @else
+                                                {{ $booking->room_number }}
+                                            @endif
+                                        </td>
+
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
                                         <td class="text-center">{{ $booking->total_amount }}</td>
@@ -111,14 +118,22 @@
                                                     <i class="fas fa-plus-circle"></i> {{ $booking->remarks }}
                                                 </span>
                                             @else
-                                                <span class="status-badge default">
-                                                    {{ $booking->remarks }}
-                                                </span>
+                                                @if ($booking->remarks == "" || $booking->remarks == null)
+                                                    <span class="status-badge no-remarks">
+                                                        <i class="fas fa-info-circle"></i> No Remark
+                                                    </span>
+                                                @else
+                                                    <span class="status-badge default">
+                                                        {{ $booking->remarks }}
+                                                    </span>
+                                                @endif
                                             @endif
                                         </td>
                                         <td class="text-center">
                                             <button type="button" onclick="viewDftcBookingAdminDftc('{{ addslashes(json_encode($booking) )}}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
-                                            <button type="button" onclick="checkDftcBookingAdminDFTC('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: BLACK;"></i></button>
+                                            @if ($booking->remarks == null || $booking->remarks == '')
+                                                <button type="button" onclick="checkDftcBookingAdminDFTC('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: BLACK;"></i></button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

@@ -285,6 +285,9 @@ class SuperAdminFunctionController extends Controller
                 $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
                 $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
                 return $now->lte($checkOutDateTime);
+            })
+            ->sortByDesc(function ($booking) {
+                return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
             });
         $countBookings = count($bookings);
 
@@ -301,6 +304,9 @@ class SuperAdminFunctionController extends Controller
                 $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
                 $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
                 return $now->lte($checkOutDateTime);
+            })
+            ->sortByDesc(function ($booking) {
+                return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
             });
         $countBookings = count($bookings);
         return view('superAdmin.functions.staffhouse.view-bookings' , ['bookings' => $bookings] , ['rooms' => $rooms, 'countBookings' => $countBookings]);
@@ -338,6 +344,9 @@ class SuperAdminFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->gte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
         return view('superAdmin.functions.guesthouse.view-history', [
@@ -360,6 +369,9 @@ class SuperAdminFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->gte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
         });
         $countBookings = count($bookings);
 
@@ -394,12 +406,18 @@ class SuperAdminFunctionController extends Controller
         );
     }
     public function goToVoidGuestHouseBookings(){
-        $bookings = GuestHouseBooking::where('status', 'Canceled')->get();
+        $bookings = GuestHouseBooking::where('status', 'Canceled')->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
+        });;
         $countBookings = count($bookings);
         return view('superAdmin.functions.guesthouse.view-voided', ['bookings' => $bookings , 'countBookings' => $countBookings]);
     }
     public function goToVoidStaffHouseBookings(){
-        $bookings = StaffHouseBooking::where('status', 'Canceled')->get();
+        $bookings = StaffHouseBooking::where('status', 'Canceled')->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('superAdmin.functions.staffhouse.view-voided', ['bookings' => $bookings, 'countBookings' => $countBookings]);
     }
@@ -409,12 +427,18 @@ class SuperAdminFunctionController extends Controller
         return view('superAdmin.functions.DFTC.view-voided', ['bookings' => $bookings, 'countBookings' => $countBookings]);
     }
     public function goToRejectedGuestHouseBooking(){
-        $bookings = GuestHouseBooking::where('status', 'Rejected')->get();
+        $bookings = GuestHouseBooking::where('status', 'Rejected')->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('superAdmin.functions.guesthouse.view-rejected', ['bookings' => $bookings, 'countBookings' => $countBookings]);
     }
     public function goToRejectedStaffHouseBooking(){
-        $bookings = StaffHouseBooking::where('status', 'Rejected')->get();
+        $bookings = StaffHouseBooking::where('status', 'Rejected')->get()
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        });
         $countBookings = count($bookings);
         return view('superAdmin.functions.staffhouse.view-rejected', ['bookings' => $bookings, 'countBookings' => $countBookings]);
     }
