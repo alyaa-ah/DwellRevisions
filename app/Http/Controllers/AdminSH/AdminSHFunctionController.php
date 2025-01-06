@@ -639,17 +639,37 @@ class AdminSHFunctionController extends Controller
                 if (!$request->extendedCheckOutDate) {
                     return 400;
                 }
-                $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->extendedCheckOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
+
+
+                preg_match('/\+(\s*\d+)\s*days/', $request->newremarks, $matches);
+
+                $extendedDays = isset($matches[1]) ? (int)trim($matches[1]) : 0;
+
+
+                $additionalCost = 0;
+
+                if ($extendedDays > 0) {
+                    $additionalCost = $extendedDays * $booking->rate;
+                }
+                try {
+                    $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->extendedCheckOutDate)
+                        ->setTimezone('Asia/Manila')
+                        ->format('F j, Y');
+                } catch (\Exception $e) {
+                    return response()->json(['error' => 'Invalid date format'], 400);
+                }
+
                 $booking->check_out_date = $checkOutDate;
                 $booking->remarks = $request->newremarks;
-
+                if ($booking->total_amount != 0.00) {
+                    $booking->total_amount += $additionalCost;
+                }
                 if ($booking->save()) {
                     return 200;
                 }
 
                 return 500;
             }
-
             return 400; // Bad Request
         } catch (\Exception $e) {
             return 500;

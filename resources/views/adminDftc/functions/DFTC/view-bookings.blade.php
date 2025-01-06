@@ -625,7 +625,7 @@
         setMinEarlyCheckOutDate(originalDate);
       } else if (statusSelect === "Extended") {
         extendedCheckOutGroup.style.display = "block";
-        setMinCheckOutDate(originalDate);
+        setMinExtendedCheckOutDate(originalDate);
       }
     }
 
@@ -679,7 +679,23 @@ if (statusSelect === "Early Check Out") {
     setMinEarlyCheckOutDate(originalDate);
 }
 
+function setMinCheckOutDate(originalDate) {
+    const minDate = new Date(originalDate);
+    minDate.setDate(minDate.getDate() + 1);
 
+    const formattedMinDate = minDate.toISOString().split('T')[0];
+    document.getElementById('earlyCheckOutDate').setAttribute('min', formattedMinDate);
+}
+function setMinExtendedCheckOutDate(originalDate) {
+    const originalCheckoutDate = new Date(originalDate);
+    originalCheckoutDate.setDate(originalCheckoutDate.getDate() + 1);
+    const minDate = originalCheckoutDate.toISOString().split('T')[0];
+    document.getElementById('extendedCheckOutDate').setAttribute('min', minDate);
+    document.getElementById('extendedCheckOutDate').value = minDate;
+}
+window.onload = function() {
+    handleStatusChange();
+}
     function updateEarlyCheckOutRemarks() {
       const earlyCheckOutDateStr = document.getElementById('earlyCheckOutDate').value;
       if (earlyCheckOutDateStr) {

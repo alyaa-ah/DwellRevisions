@@ -440,14 +440,14 @@
     </div>
 </div>
 <script>
-// Handle visibility of groups based on Pre-booking status
+
 function handleStatusChange() {
   const statusSelect = document.getElementById('reviewCheck').value;
   const earlyCheckOutGroup = document.getElementById('earlyCheckOutGroup');
   const extendedCheckOutGroup = document.getElementById('extendedCheckOutGroup');
   const originalDate = document.getElementById('originalDate').value;
 
-  // Reset visibility
+
   earlyCheckOutGroup.style.display = "none";
   extendedCheckOutGroup.style.display = "none";
 
@@ -458,23 +458,21 @@ function handleStatusChange() {
     setMinEarlyCheckOutDate(originalDate);
   } else if (statusSelect === "Extended") {
     extendedCheckOutGroup.style.display = "block";
-    setMinCheckOutDate(originalDate);
+    setMinExtendedCheckOutDate(originalDate);
   }
 }
 
-// Function to dynamically set the minimum date for checkout fields
-// Handle visibility and set the minimum allowed date for Early & Extended checkout fields
+
 function setMinCheckOutDate() {
-  const checkInDateStr = document.getElementById('originalCheckIn').value; // e.g., "01/12/2024"
+  const checkInDateStr = document.getElementById('originalCheckIn').value;
 
   if (checkInDateStr) {
-    // Split the date string into day, month, year
+
     const [day, month, year] = checkInDateStr.split('/');
 
-    // Convert to ISO format: yyyy-mm-dd
+
     const isoFormattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 
-    // Set the min attribute dynamically
     document.getElementById('earlyCheckOutDate').setAttribute('min', isoFormattedDate);
     document.getElementById('extendedCheckOutDate').setAttribute('min', isoFormattedDate);
   }
@@ -512,9 +510,33 @@ if (statusSelect === "Early Check Out") {
     setMinCheckOutDate(originalDate);
     setMinEarlyCheckOutDate(originalDate);
 }
+function setMinCheckOutDate(originalDate) {
+    const minDate = new Date(originalDate);
+    minDate.setDate(minDate.getDate() + 1);
+
+    const formattedMinDate = minDate.toISOString().split('T')[0];
+    document.getElementById('earlyCheckOutDate').setAttribute('min', formattedMinDate);
+}
 
 
-// Update remarks for early checkout
+function setMinExtendedCheckOutDate(originalDate) {
+    const originalCheckoutDate = new Date(originalDate);
+    originalCheckoutDate.setDate(originalCheckoutDate.getDate() + 1);
+
+    const minDate = originalCheckoutDate.toISOString().split('T')[0];
+
+
+    document.getElementById('extendedCheckOutDate').setAttribute('min', minDate);
+
+
+    document.getElementById('extendedCheckOutDate').value = minDate;
+}
+
+
+window.onload = function() {
+    handleStatusChange();
+}
+
 function updateEarlyCheckOutRemarks() {
   const earlyCheckOutDateStr = document.getElementById('earlyCheckOutDate').value;
   if (earlyCheckOutDateStr) {
@@ -530,7 +552,7 @@ function updateEarlyCheckOutRemarks() {
   }
 }
 
-// Calculate extended days and update remarks
+
 function calculateExtendedDays() {
   const extendedCheckoutDate = document.getElementById('extendedCheckOutDate').value;
   const originalDateInput = document.getElementById('originalDate').value;
