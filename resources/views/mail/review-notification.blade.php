@@ -63,7 +63,7 @@
 </head>
 <body>
     <div class="container">
-        <h3>Dear {{ $requestor }}!</h3>
+        <h3>Dear {{ $requestor }},</h3>
         <p>
             Your pre-reservation number <strong>{{ $bookingNumber }}</strong> for <strong>{{ $facility }}</strong>
             in room <strong>{{ $roomNumber }}</strong> has been assessed by our administrator. Based on the review, the status has been set to
@@ -72,13 +72,14 @@
             @elseif ($status == 'Reviewed')
                 <span class="status-reviewed">'{{ $status }}.'</span> You are now eligible to download and print the associated PDF, which will need signatures from the Project-In-Charge and Director.
             @endif
-            <br>
-            <div class="footer" style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
-                Should you have any questions or concerns, please reach out to our support team. <br>
-                We’re always happy to assist you!
-                <img src="{{ url('https://dwell.sharvilclass.com/public/images/Logo.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
-            </div>
         </p>
+        <h4>Should you have any questions or concerns, please reach out to our support team. <br>
+            We’re always happy to assist you!<br></h4>
+        <div class="footer" style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
+            Best regards,<br>
+            The Team<br><br>
+            <img src="{{ url('https://dwell.sharvilclass.com/public/images/Logo.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
+        </div>
     </div>
 </body>
 </html>

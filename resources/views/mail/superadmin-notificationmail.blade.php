@@ -72,10 +72,13 @@
             <br><br>
             Kindly prepare the room as per the reservation details above.
             <br><br>
+            <h4>Thank you for your attention to this matter!</h4>
             <div class="footer" style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
-                <br><br>
-                Thank you for your attention to this matter!
+                Best regards,<br>
+                The Team<br>
+                <br>
                 <img src="{{ url('https://dwell.sharvilclass.com/public/images/Logo.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
+                <img src="{{ url('https://dwell.sharvilclass.com/public/images/STREAMLINE2.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
             </div>
         </p>
     </div>

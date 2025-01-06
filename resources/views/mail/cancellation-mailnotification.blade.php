@@ -65,9 +65,13 @@
             canceled. The status has been updated to
             <span class="status-canceled">'{{ $status }}'</span> due to the following reason: <strong>{{ $reason }}</strong>.
             <br>
-            Thank you for your understanding!
+            <h4>Thank you for your understanding!</h4>
             <div class="footer" style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
+                Best regards,<br>
+                The Team<br>
+                <br>
                 <img src="{{ url('https://dwell.sharvilclass.com/public/images/Logo.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
+                <img src="{{ url('https://dwell.sharvilclass.com/public/images/STREAMLINE2.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
             </div>
         </p>
     </div>

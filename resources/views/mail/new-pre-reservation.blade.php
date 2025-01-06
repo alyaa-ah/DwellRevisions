@@ -61,19 +61,22 @@
 </head>
 <body>
     <div class="container">
-        <h3>Hi {{ $fullname }}!</h3>
+        <h3>Dear {{ $fullname }},</h3>
         <p>
-            A pre-reservation of <span class="highlight">{{ $requestor }}</span> with the number <span class="highlight">{{ $bookingNumber }}</span>
-            on <span class="highlight">{{ $facility }}</span> (<span class="highlight">{{ $roomNumber }}</span>) has been reviewed by Admin
-            <span class="highlight">{{ $admin }}</span>. Hence, turning its status to '<span class="highlight">{{ $status }}</span>'.
+            We would like to inform you that a pre-reservation by <span class="highlight">{{ $requestor }}</span> with the booking number <span class="highlight">{{ $bookingNumber }}</span>
+            for <span class="highlight">{{ $facility }}</span> (Room No. <span class="highlight">{{ $roomNumber }}</span>) has been reviewed by Admin <span class="highlight">{{ $admin }}</span>.
+            As a result, the status of this booking has been updated to '<span class="highlight">{{ $status }}</span>'.
         </p>
         <p>
-            This pre-reservation will be added to your current <span class="highlight">{{ $facility }}</span> table. Please contact them immediately for more information.
+            This pre-reservation will be reflected in your current <span class="highlight">{{ $facility }}</span> table. Should you require further details, kindly reach out to the concerned party directly.
         </p>
         <div class="footer" style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
-            Thank you for your attention!
+            Best regards,<br>
+            The Team<br>
             <img src="{{ url('https://dwell.sharvilclass.com/public/images/Logo.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
+            <img src="{{ url('https://dwell.sharvilclass.com/public/images/STREAMLINE2.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
         </div>
     </div>
+
 </body>
 </html>

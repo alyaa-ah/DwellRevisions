@@ -89,11 +89,15 @@
         <h3>Welcome to Our Pre-Reservation Service, {{ $fullname }}!</h3>
         <h4>We are thrilled to have you join our community. Below are your account login credentials:</h4>
         <h1>{{ $password }}</h1>
-        <h4>You can use these credentials to log in and update your password anytime through your account settings.</h4>
+        <h4>You can use these credentials to log in and update your password anytime through your account settings.
+            <br>If you did not create this account or believe this message was sent in error, please contact our support team immediately.
+        </h4>
         <div class="footer" style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
-            If you did not create this account or believe this message was sent in error, please contact our support team immediately.
+            Best regards,<br>
+            The Team<br>
             <br>
             <img src="{{ url('https://dwell.sharvilclass.com/public/images/Logo.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
+            <img src="{{ url('https://dwell.sharvilclass.com/public/images/STREAMLINE2.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
         </div>
     </div>
 </body>

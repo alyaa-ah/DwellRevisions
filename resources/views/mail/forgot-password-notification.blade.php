@@ -60,16 +60,20 @@
 </head>
 <body>
     <div class="container">
-        <h3>Hi {{ $fullname }}!</h3>
-        <h4>We're here to help you stay secure. Your new password is ready:</h4>
+        <h3>Dear {{ $fullname }},</h3>
+        <h4>We are committed to keeping your account secure. Your new password has been successfully generated:</h4>
         <h1>{{ $password }}</h1>
-        <h6>For your security, please memorize this password and keep it safe.</h6>
-        <h4>Thank you for being part of our community. Have a fantastic day ahead!</h4>
+        <h6>For your security, we recommend memorizing this password and storing it safely.</h6>
+        <h4>Thank you for being a valued member of our community. We wish you a wonderful day ahead!</h4>
+        <h4>If you did not request a password reset, please contact our support team immediately.</h4>
         <div class="footer" style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
-            If you did not request this password reset, please contact our support team immediately.
+            Best regards,<br>
+            The Team<br>
             <br>
             <img src="{{ url('https://dwell.sharvilclass.com/public/images/Logo.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
+            <img src="{{ url('https://dwell.sharvilclass.com/public/images/STREAMLINE2.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
         </div>
     </div>
+
 </body>
 </html>

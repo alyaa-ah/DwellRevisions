@@ -71,10 +71,14 @@
             <span class="dates">From: {{ $checkInDate }} {{ $arrival }} To: {{ $checkOutDate }} {{ $departure }}</span>
             <br><br>
             You can now review the details of this pre-reservation through your account.
+            <br>
+            <h4>Thank you for your attention!</h4>
             <div class="footer" style="text-align: center; margin-top: 20px; font-size: 14px; color: #555;">
-                <br><br>
-                Thank you for your attention!
+                Best regards,<br>
+                The Team<br>
+                <br>
                 <img src="{{ url('https://dwell.sharvilclass.com/public/images/Logo.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
+                <img src="{{ url('https://dwell.sharvilclass.com/public/images/STREAMLINE2.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
             </div>
         </p>
     </div>
