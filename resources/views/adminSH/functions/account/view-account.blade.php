@@ -268,7 +268,7 @@
                                 <div class="col-md-6 mb-2">
                                     <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                         <label for="contact">Contact</label>
-                                        <input type="text" class="form-control" name="contact" id="edit-contact-account" style="background-color:#d3d3d3;" readonly>
+                                        <input type="text" class="form-control" name="contact" id="edit-contact-account">
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-2">

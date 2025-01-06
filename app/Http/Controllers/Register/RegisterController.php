@@ -16,7 +16,7 @@ class RegisterController extends Controller
             'fullname' => 'required|min:6|max:100',
             'position' => 'required',
             'agency' => 'required',
-            'contact' => 'required|min:9|max:10',
+            'contact' => 'required|min:10|max:10',
             'address' => 'required|min:6|max:100',
             'email' => [
                 'required',

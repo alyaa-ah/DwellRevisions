@@ -552,9 +552,9 @@ class AdminGHFunctionController extends Controller
         $validator = Validator::make($request->all(), [
             'fullname' =>'required|max:100',
             'agency' =>'required|max:50',
-            'address' =>'required|min:6|max:100',
+            'address' =>'required|max:100',
             'position' =>'required',
-            'contact' =>'required|min:9|max:13',
+            'contact' =>'required|min:13|max:13',
             'old_password' =>'required',
         ]);
         if ($request->filled('username') && $request->username !== $client->username) {

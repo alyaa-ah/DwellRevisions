@@ -210,13 +210,13 @@
                                         <div class="col-md-6 mb-2">
                                             <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                                 <label for="fullname">Full Name</label>
-                                                <input type="text" class="form-control" name="fullname" id="edit-fullname-account">
+                                                <input type="text" class="form-control" name="fullname" id="edit-fullname-account" style="background-color:#d3d3d3;" readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                                 <label for="email">Email</label>
-                                                <input type="email" class="form-control" name="email" id="edit-email-account" readonly>
+                                                <input type="email" class="form-control" name="email" id="edit-email-account" style="background-color:#d3d3d3;" readonly
                                             </div>
                                         </div>
                                     </div>
@@ -224,7 +224,7 @@
                                         <div class="col-md-6 mb-2">
                                             <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                                 <label for="position">Position</label>
-                                                <select name="position" id="edit-position-account" class="form-control">
+                                                <select name="position" id="edit-position-account" class="form-control readonly-select" style="background-color:#d3d3d3;">
                                                     <option value="">Select Position</option>
                                                     <option value="Guest">Guest</option>
                                                     <option value="Student">Student</option>
@@ -235,7 +235,7 @@
                                         <div class="col-md-6 mb-2">
                                             <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                                 <label for="agency">Department/Agency/College</label>
-                                                <input type="text" class="form-control" name="agency" id="edit-agency-account">
+                                                <input type="text" class="form-control" name="agency" id="edit-agency-account" style="background-color:#d3d3d3;" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -249,7 +249,7 @@
                                         <div class="col-md-6 mb-2">
                                             <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                                 <label for="address">Address</label>
-                                                <input type="text" class="form-control" name="address" id="edit-address-account">
+                                                <input type="text" class="form-control" name="address" id="edit-address-account" style="background-color:#d3d3d3;" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -257,7 +257,7 @@
                                         <div class="col-md-6 mb-2">
                                             <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                                 <label for="username">Username</label>
-                                                <input type="text" class="form-control" name="username" id="edit-username-account">
+                                                <input type="text" class="form-control" name="username" id="edit-username-account" style="background-color:#d3d3d3;" readonly>
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-2">
