@@ -79,7 +79,7 @@
                             <span class="Montserrat text-sm font-bold textGradient text-left">Staff House | </span>
                             <span class="Montserrat text-sm font-semibold text-light-green text-left">
                                 Status:
-                            @if($bookingCount > 0 && $room->room_status != "Occupied")
+                                @if($bookingCount > 0 && $room->room_status != "Occupied")
                                 <span class="inline-flex items-center">
                                     <i class="fa fa-calendar-check-o" style="color: orange; margin-right: 5px;"></i>
                                     <span style="color: orange; font-weight: bold;">Pre-Booked</span>
@@ -88,6 +88,11 @@
                                 <span class="inline-flex items-center mt-3">
                                     <i class="fa fa-check-circle" style="color: green; margin-right: 5px;"></i>
                                     <span style="color: green; font-weight: bold;">Available</span>
+                                </span>
+                            @elseif ($room->room_status === 'Occupied')
+                                <span class="inline-flex items-center">
+                                    <i class="fa fa-lock" style="color: #6C757D; margin-right: 5px;"></i>
+                                    <span style="color: #6C757D; font-weight: bold;">Occupied</span>
                                 </span>
                             @else
                                 <span class="inline-flex items-center">
@@ -202,14 +207,14 @@
                                 <div class="col-md-12">
                                     <p class="Montserrat text-light-green text-sm font-medium">Rate: {{ $room->room_rate }}/head</p>
                                     @if(session()->has('loggedInCustomer') || session()->has('loggedInSuperAdmin') || session()->has('loggedInAdminSH'))
-                                        @if($room->room_status != 'Unavailable' && $room->room_status != 'On-Renovation')
-                                        <div class="d-flex justify-content-end">
-                                            <button type="button" id="staffHouse-booking"
-                                                onclick="bookStaffHouse('{{ addslashes(json_encode($room)) }}', '{{ addslashes(json_encode(session('loggedInAdminSH'))) }}')"
-                                                class="btn rounded-full bg-light-green text-white Montserrat hover:bg-dark-green transition ease-in-out duration-500">
-                                                Book Now
-                                            </button>
-                                        </div>
+                                        @if($room->room_status != 'Unavailable' && $room->room_status != 'On-Renovation' && $room->room_status != 'Occupied')
+                                            <div class="d-flex justify-content-end">
+                                                <button type="button" id="staffHouse-booking"
+                                                    onclick="bookStaffHouse('{{ addslashes(json_encode($room)) }}', '{{ addslashes(json_encode(session('loggedInAdminSH'))) }}')"
+                                                    class="btn rounded-full bg-light-green text-white Montserrat hover:bg-dark-green transition ease-in-out duration-500">
+                                                    Book Now
+                                                </button>
+                                            </div>
                                         @else
                                             <h1>Room is currently not available for booking</h1>
                                         @endif
