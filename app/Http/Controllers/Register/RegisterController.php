@@ -40,7 +40,7 @@ class RegisterController extends Controller
             $client->fullname = ucwords($request->get('fullname'));
             $client->position = $request->get('position');
             $client->agency = ucwords($request->get('agency'));
-            $client->contact = "+639" . $request->get('contact');
+            $client->contact = $request->get('country_code') . $request->get('contact');
             $client->address = ucwords($request->get('address'));
             $client->email = $request->get('email');
             $client->username = $request->get('username');

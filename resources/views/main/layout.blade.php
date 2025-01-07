@@ -18,6 +18,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;500&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/styles1.css') }}">
     <link rel="stylesheet" href="{{ url('css/styles/main/styles.css') }}">
     <title>Dwell</title>
@@ -190,6 +192,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.11.1/sweetalert2.min.js" integrity="sha512-Ozu7Km+muKCuIaPcOyNyW8yOw+KvkwsQyehcEnE5nrr0V4IuUqGZUKJDavjSCAA/667Dt2z05WmHHoVVb7Bi+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 
+
 </body>
 </html>
 <div class="modal fade" id="developers">
@@ -308,100 +311,120 @@
 </div>
 <!-- Register Modal -->
 <div class="modal fade" id="registerModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-light-green text-center">
-        <h1 class="modal-title Montserrat text-white font-semibold fs-5">REGISTER</h1>
-        <button type="button" class="btn-close text-white bg-lightest-green" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body Montserrat text-sm font-semibold" style="max-height: 400px; overflow-y: auto;">
-        <form id="registration-form" action="">
-            @csrf
-            <div class="form-group text-light-green">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Please type here your username">
-            </div><br>
-
-            <div class="form-group text-light-green">
-                <label for="fullName">Full Name</label>
-                <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Please type here your fullname">
-            </div><br>
-
-            <div class="form-group text-light-green">
-                <label for="email">Email Address</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Please type here your google email">
-            </div><br>
-
-            <div class="form-group text-light-green">
-                <label class="text-sm">Position/Designation</label><br>
-                <select name="position" id="position" class="form-control">
-                    <option value="">Select Position</option>
-                    <option value="Guest">Guest</option>
-                    <option value="Student">Student</option>
-                    <option value="Employee">Employee</option>
-                </select>
-            </div><br>
-            <div class="form-group text-light-green">
-                <label for="agency">Department/Agency/College</label>
-                <input type="text" class="form-control" id="agency" name="agency" placeholder="Please type here your department/agency/college">
-            </div><br>
-
-            <div class="form-group text-light-green">
-                <label for="contactNumber">Contact Number</label>
-                <div class="input-group">
-                    <span class="input-group-text">+63</span>
-                    <input type="number" class="form-control" id="contact" name="contact" placeholder="Please type your contact number" min="0">
-                </div>
-            </div><br>
-
-            <div class="form-group text-light-green">
-                <label for="address">Home Address</label>
-                <input type="text" class="form-control" id="address" name="address" placeholder="Please type here your home address">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-light-green text-center">
+                <h1 class="modal-title Montserrat text-white font-semibold fs-5">REGISTER</h1>
+                <button type="button" class="btn-close text-white bg-lightest-green" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>
-        <div class="modal-footer">
-        <div class="container d-flex justify-content-center text-align-center">
-            <div class="row">
-                <div class="col-12 d-flex justify-content-center align-items-center">
-                    <input type="checkbox" id="termsCheckbox" required class="me-2">
-                    <label for="termsCheckbox" class="Montserrat text-blue-500 underline text-xs font-medium">
-                        <a href="#termsAndConditions" data-bs-toggle="modal">Terms and Conditions</a>
-                    </label>
-                </div>
-                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
-                    <input type="checkbox" id="privacyCheckbox" required class="me-2">
-                    <label for="privacyCheckbox" class="Montserrat text-blue-500 underline text-xs font-medium">
-                        <a href="#privacypolicy" data-bs-toggle="modal">Privacy Policy Agreement</a>
-                    </label>
-                </div>
-                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
-                    {!! NoCaptcha::renderJs() !!}
-                    {!! NoCaptcha::display() !!}
-                </div>
-            </div>
-        </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col text-center">
-                        <button id="register-btn" type="submit" class="btn bg-light-green Montserrat text-white hover:bg-dark-green">Register</button>
+            <div class="modal-body Montserrat text-sm font-semibold" style="max-height: 400px; overflow-y: auto;">
+            <form id="registration-form" action="">
+                @csrf
+                    <div class="form-group text-light-green">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Please type here your username">
+                    </div><br>
+                    <div class="form-group text-light-green">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Please type here your fullname">
+                    </div><br>
+
+                    <div class="form-group text-light-green">
+                        <label for="email">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Please type here your google email">
+                    </div><br>
+                    <div class="form-group text-light-green">
+                        <label class="text-sm">Position/Designation</label><br>
+                        <select name="position" id="position" class="form-control">
+                            <option value="">Select Position</option>
+                            <option value="Guest">Guest</option>
+                            <option value="Student">Student</option>
+                            <option value="Employee">Employee</option>
+                        </select>
+                    </div><br>
+                    <div class="form-group text-light-green">
+                        <label for="agency">Department/Agency/College</label>
+                        <input type="text" class="form-control" id="agency" name="agency" placeholder="Please type here your department/agency/college">
+                    </div><br>
+                    <div class="form-group text-light-green">
+                        <label for="country_code">Contact Number</label>
+                        <div class="input-group">
+                            <!-- Custom Country Code Dropdown -->
+                            <div class="custom-dropdown">
+                                <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img id="selected-flag" src="{{ asset('icons/ph.png') }}" alt="Philippines" style="width: 18px;">PH (+63)
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" data-value="+63" data-flag="{{ asset('icons/ph.png') }}">
+                                        <img src="{{ asset('icons/ph.png') }}" alt="Philippines" style="width: 18px;">PH (+63)</a></li>
+                                    <li><a class="dropdown-item" href="#" data-value="+1" data-flag="{{ asset('icons/usa.png') }}">
+                                        <img src="{{ asset('icons/usa.png') }}" alt="USA" style="width: 18px;">US (+1)</a></li>
+                                    <li><a class="dropdown-item" href="#" data-value="+44" data-flag="{{ asset('icons/uk.png') }}">
+                                        <img src="{{ asset('icons/uk.png') }}" alt="UK" style="width: 18px;">UK (+44)</a></li>
+                                    <li><a class="dropdown-item" href="#" data-value="+61" data-flag="{{ asset('icons/aus.png') }}">
+                                        <img src="{{ asset('icons/aus.png') }}" alt="Australia" style="width: 18px;">AU (+61)</a></li>
+                                    <li><a class="dropdown-item" href="#" data-value="+81" data-flag="{{ asset('icons/japan.png') }}">
+                                        <img src="{{ asset('icons/japan.png') }}" alt="Japan" style="width: 18px;">JP (+81)</a></li>
+                                    <li><a class="dropdown-item" href="#" data-value="+1" data-flag="{{ asset('icons/canada.png') }}">
+                                        <img src="{{ asset('icons/canada.png') }}" alt="Canada" style="width: 18px;">CA (+1)</a></li>
+                                </ul>
+                            </div>
+
+                            <!-- Hidden input to store the selected country code -->
+                            <input type="hidden" id="country_code" name="country_code" value="+63">
+
+                            <!-- Contact number input -->
+                            <input type="number" class="form-control contact-input" id="contact" name="contact" placeholder="Please type your contact number" min="0">
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col text-center">
-                        <span class="Montserrat text-xs font-medium">Already have an account?</span>
-                        <a  id="btnLogin" data-bs-toggle="modal" data-bs-target="#loginModal" class="Montserrat text-xs font-medium text-light-green hover:text-green-600 hover:underline" style="cursor: pointer;">
-                            Login
-                        </a>
+                    <div class="form-group text-light-green">
+                        <label for="address">Home Address</label>
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Please type here your home address">
                     </div>
-                </div>
-            </div>
-        </form>
-    </div>
+                    <div class="modal-footer">
+                        <div class="container d-flex justify-content-center text-align-center">
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center align-items-center">
+                                    <input type="checkbox" id="termsCheckbox" required class="me-2">
+                                    <label for="termsCheckbox" class="Montserrat text-blue-500 underline text-xs font-medium">
+                                        <a href="#termsAndConditions" data-bs-toggle="modal">Terms and Conditions</a>
+                                    </label>
+                                </div>
+                                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                                    <input type="checkbox" id="privacyCheckbox" required class="me-2">
+                                    <label for="privacyCheckbox" class="Montserrat text-blue-500 underline text-xs font-medium">
+                                        <a href="#privacypolicy" data-bs-toggle="modal">Privacy Policy Agreement</a>
+                                    </label>
+                                </div>
+                                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
+                                    {!! NoCaptcha::renderJs() !!}
+                                    {!! NoCaptcha::display() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col text-center">
+                                <button id="register-btn" type="button" class="btn bg-light-green Montserrat text-white hover:bg-dark-green">Register</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col text-center">
+                                <span class="Montserrat text-xs font-medium">Already have an account?</span>
+                                <a  id="btnLogin" data-bs-toggle="modal" data-bs-target="#loginModal" class="Montserrat text-xs font-medium text-light-green hover:text-green-600 hover:underline" style="cursor: pointer;">
+                                    Login
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+            </form>
         </div>
     </div>
-  </div>
+    </div>
+</div>
 
 <!-- Login Modal -->
 <div class="modal fade" id="loginModal">
@@ -599,4 +622,39 @@
 <script type="text/javascript" src="{{ url('js/login/login.js') }}"></script>
 <script type="text/javascript" src="{{ url('js/login/forgotpassword.js') }}"></script>
 <script type="text/javascript" src="{{ url('js/main/prebook/functions.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Get all the dropdown items
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent the default link behavior
+
+            // Get the selected country code and flag
+            const countryCode = item.getAttribute('data-value');
+            const flagUrl = item.getAttribute('data-flag');
+            const countryText = item.textContent.trim(); // Get country name with code
+
+            // Update the flag image and country code on the button
+            const flagImage = document.getElementById('selected-flag');
+            flagImage.src = flagUrl;
+            flagImage.alt = countryText;
+
+            // Update the button's text content
+            const button = document.querySelector('.dropdown-toggle');
+            button.innerHTML = `<img id="selected-flag" src="${flagUrl}" alt="${countryText}" style="width: 18px;"> ${countryText}`;
+
+            // Update the hidden input field with the country code
+            const countryCodeInput = document.getElementById('country_code');
+            countryCodeInput.value = countryCode;
+
+            // Retrieve the selected country code from the hidden input's value
+            const selectedCountryCode = countryCodeInput.value;
+            console.log(selectedCountryCode); // Outputs: "+63", "+1", etc.
+        });
+    });
+});
+</script>
 

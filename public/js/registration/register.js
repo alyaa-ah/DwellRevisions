@@ -1,13 +1,18 @@
 $(document).ready(function(){
-    $(document).on('submit', '#registration-form', function(event){
+    $(document).on('click', '#register-btn', function(event){
         event.preventDefault();
+        console.log("Submit button clicked");
+
+        var formData = $('#registration-form').serialize();
+        console.log("Form Data: ", formData);
+        // var formData = new FormData($('#registration-form')[0]);
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: '/register-client',
-                method: 'POST',
-                data: $(this).serialize(),
+                type: 'POST',
+                data: formData,
                 beforeSend: function() {
                     $('#register-btn').attr('disabled', true);
                     Swal.fire({

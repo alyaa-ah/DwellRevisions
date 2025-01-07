@@ -365,7 +365,7 @@ document.getElementById('modalBodyPreBookGuestHouse').addEventListener('scroll',
             document.getElementById('checkboxContainerPreBookGuestHouse').style.display = 'block';
         }
     });
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     const numOfMaleInput = document.getElementById('numOfMale');
     const maleGuestsContainer = document.getElementById('maleGuestsContainer');
 
@@ -389,10 +389,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 document.addEventListener('DOMContentLoaded', function () {
-  const numOfMalesInput = document.getElementById('numOfMale');
-  const numOfFemalesInput = document.getElementById('numOfFemale');
-  const maleGuestsContainer = document.getElementById('maleGuestsContainer');
-  const femaleGuestsContainer = document.getElementById('femaleGuestsContainer');
+    const numOfMalesInput = document.getElementById('numOfMale');
+    const numOfFemalesInput = document.getElementById('numOfFemale');
+    const maleGuestsContainer = document.getElementById('maleGuestsContainer');
+    const femaleGuestsContainer = document.getElementById('femaleGuestsContainer');
 
     numOfMalesInput.addEventListener('input', function () {
     let numOfMales = parseInt(numOfMalesInput.value, 10);
@@ -402,41 +402,67 @@ document.addEventListener('DOMContentLoaded', function () {
     maleGuestsContainer.innerHTML = '';
 
     for (let i = 0; i < numOfMales; i++) {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.name = 'maleGuests[]';
-      input.className = 'form-control';
-      input.placeholder = `Guest ${i + 1}`;
-      maleGuestsContainer.appendChild(input);
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = 'maleGuests[]';
+        input.className = 'form-control';
+        input.placeholder = `Guest ${i + 1}`;
+        maleGuestsContainer.appendChild(input);
     }
-  });
+});
 
 
-  numOfFemalesInput.addEventListener('input', function () {
+numOfFemalesInput.addEventListener('input', function () {
     let numOfFemales = parseInt(numOfFemalesInput.value, 10);
 
     if (isNaN(numOfFemales) || numOfFemales < 0) numOfFemales = 0;
 
     femaleGuestsContainer.innerHTML = '';
 
-    for (let i = 0; i < numOfFemales; i++) {
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.name = 'femaleGuests[]';
-      input.className = 'form-control';
-      input.placeholder = `Guest ${i + 1}`;
-      femaleGuestsContainer.appendChild(input);
-    }
-  });
+        for (let i = 0; i < numOfFemales; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'femaleGuests[]';
+            input.className = 'form-control';
+            input.placeholder = `Guest ${i + 1}`;
+            femaleGuestsContainer.appendChild(input);
+        }
+    });
 });
+document.addEventListener('DOMContentLoaded', function () {
+    const numOfFemaleInput = document.getElementById('numOfFemale');
+    const femaleGuestsContainer = document.getElementById('femaleGuestsContainer');
 
+    numOfFemaleInput.addEventListener('input', function () {
+        let numOfFemales = parseInt(numOfFemaleInput.value, 10);
+
+
+        if (isNaN(numOfFemales) || numOfFemales < 0) {
+            numOfFemales = 0;
+        } else if (numOfFemales > 10) {
+            numOfFemales = 10;
+            numOfFemaleInput.value = numOfFemales;
+        }
+
+
+        femaleGuestsContainer.innerHTML = '';
+
+        for (let i = 0; i < numOfFemales; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'femaleGuests[]';
+            input.className = 'form-control';
+            input.placeholder = `Guest ${i + 1}`;
+            femaleGuestsContainer.appendChild(input);
+        }
+    });
+});
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
        const arrivalInput = document.getElementById("arrival");
        const departureInput = document.getElementById("departure");
 
-       // Automatically set the fixed times
        arrivalInput.value = "14:00";
        departureInput.value = "12:00";
    });

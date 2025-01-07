@@ -227,5 +227,23 @@ body {
     margin: 0; /* Remove any margin */
     box-sizing: border-box; /* Ensures padding and borders are included in width calculation */
 }
+/* Reduce the width of the contact number input */
+/* Flag Image Size */
+#selected-flag {
+    width: 18px;
+    height: auto;
+}
+
+/* Input field width */
+.contact-input {
+    width: 70%;
+}
+
+/* Dropdown Alignment */
+.custom-dropdown button {
+    display: flex;
+    align-items: center;
+}
+
 
 
