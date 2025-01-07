@@ -79,7 +79,7 @@
                             <span class="Montserrat text-sm font-bold textGradient text-left">Staff House | </span>
                             <span class="Montserrat text-sm font-semibold text-light-green text-left">
                                 Status:
-                            @if($bookingCount > 0)
+                            @if($bookingCount > 0 && $room->room_status != "Occupied")
                                 <span class="inline-flex items-center">
                                     <i class="fa fa-calendar-check-o" style="color: orange; margin-right: 5px;"></i>
                                     <span style="color: orange; font-weight: bold;">Pre-Booked</span>

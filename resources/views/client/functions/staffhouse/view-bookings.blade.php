@@ -492,8 +492,10 @@
                                                         <label for="room_number">Room Number<span class="text-red-600">*</span></label>
                                                         <select name="room_number" id="editRoomNumberStaffHouse" class="form-control" required>
                                                             <option value="">Select Room Number</option>
-                                                            @foreach ($rooms as $room)
-                                                                <option value="{{$room->id}}">{{$room->room_number}}</option>
+                                                            @foreach($rooms as $room)
+                                                                @if ($room->room_status != 'Occupied' && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable')
+                                                                    <option value="{{ $room->id }}">{{ $room->room_number }}</option>
+                                                                @endif
                                                             @endforeach
                                                         </select>
                                                     </div>

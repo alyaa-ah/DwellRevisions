@@ -264,17 +264,61 @@ $(document).ready(function() {
             $('#dftcHallTerms').modal('hide');
         return;
         }
+        const female = parseInt($('#numOfFemaleHallDftc').val(), 10) || 0;
+        const male = parseInt($('#numOfMaleHallDftc').val(), 10) || 0;
+
+        if(male + female == 0){
+            $('#dftcHallTerms').modal('hide');
+            $('#error-messageDftcHall').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
+            $('#submitButtonDFTCHall').attr('disabled', false);
+            setTimeout(function () {
+                $('#error-messageDftcHall').fadeOut('slow', function () {
+                    $(this).hide();
+                });
+            }, 3000);
+        return;
+        }
         var numOfMale = parseInt($('#numOfMaleHallDftc').val());
         var numOfFemale = parseInt($('#numOfFemaleHallDftc').val());
         if(numOfFemale == 0 && numOfMale == 0){
-            Swal.fire({
-                icon: "error",
-                title: "Error!",
-                text: "You must have at least one female guest or male guest!",
-                showConfirmButton: true,
-            })
             $('#dftcHallTerms').modal('hide');
+                $('#error-messageDftcHall').html("<strong>Validation Error!</strong> <br><br> Please input name of guests!").show();
+                $('#submitButtonDFTCHall').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageDftcHall').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
             return;
+        }
+        const hasLetter = $('input[name="hasLetterHallDftc"]:checked').val();
+        const totalAmount = $('#totalAmountHallDftc').val();
+        const selectedPosition = $('#positionHallDftc').val();
+
+        if (selectedPosition === 'Student') {
+            if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
+                $('#dftcHallTerms').modal('hide');
+                $('#error-messageDftcHall').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!!").show();
+                $('#submitButtonDFTCHall').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageDftcHall').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        } else {
+            if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
+                $('#dftcHallTerms').modal('hide');
+                $('#error-messageDftcHall').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
+                $('#submitButtonDFTCHall').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageDftcHall').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
         }
         let formData = new FormData($('#dftcHall-booking-form')[0]);
         $.ajax({
@@ -314,10 +358,10 @@ $(document).ready(function() {
                             errorMessages += response.message[key].join('<br>') + '<br>';
                         }
                     }
-                    $('#error-message').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#error-messageDftcHall').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
                     $('#submitButtonDFTCHall').attr('disabled', false);
                     setTimeout(function () {
-                        $('#error-message').fadeOut('slow', function () {
+                        $('#error-messageDftcHall').fadeOut('slow', function () {
                             $(this).hide();
                         });
                     }, 3000);
@@ -382,6 +426,8 @@ function fetchRoomData4(roomNumber) {
             $('#numberOfDaysHallDftc').val('');
             $('#numberOfNightsHallDftc').val('');
             $('#totalAmountHallDftc').val('');
+            $('#numOfMaleDftcHall').val('0');
+            $('#numOfFemaleDftcHall').val('0');
         }
     });
 }

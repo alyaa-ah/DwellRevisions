@@ -423,6 +423,8 @@ function fetchRoomDataDftcHallAdminSH(roomNumber) {
             $('#numberOfDaysHallDftc').val('');
             $('#numberOfNightsHallDftc').val('');
             $('#totalAmountHallDftc').val('');
+            $('#numOfMaleDftcHall').val('0');
+            $('#numOfFemaleDftcHall').val('0');
         }
     });
 }

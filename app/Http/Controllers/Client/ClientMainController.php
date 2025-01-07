@@ -316,7 +316,8 @@ class ClientMainController extends Controller
         if ($room) {
             return response()->json([
                 'room_rate' => $room->room_rate,
-                'room_capacity' => $room->room_capacity
+                'room_capacity' => $room->room_capacity,
+                'room_status' => $room->room_status
             ]);
         } else {
             return response()->json(['error' => 'Room not found'], 404);

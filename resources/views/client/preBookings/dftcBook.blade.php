@@ -172,7 +172,7 @@
                                             @else
                                                 <option value="">Select Room</option>
                                                 @foreach($roomnumbers as $room)
-                                                    @if($room->room_type != "Hall")
+                                                    @if($room->room_type != "Hall" && ($room->room_status != 'Occupied' && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable'))
                                                         <option value="{{ $room->id }}">{{ $room->room_number }}</option>
                                                     @endif
                                                 @endforeach
@@ -282,7 +282,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="error-message" class="alert alert-danger mt-2" style="display: none;">
+                    <div id="error-messageDftcRoom" class="alert alert-danger mt-2" style="display: none;">
 
                     </div>
                     <div class="row mb-2">

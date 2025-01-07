@@ -56,7 +56,7 @@
                                         <th style="text-align: left" width="10%">Contact</th>
                                         <th width="15%" class="text-center">Status</th>
                                         <th width="5%">Role</th>
-                                        <th width="1%" class="text-center">Action Taken</th>
+                                        <th width="15%" class="text-center">Action Taken</th>
                                     </tr>
                                 </thead>
                                 <tbody>

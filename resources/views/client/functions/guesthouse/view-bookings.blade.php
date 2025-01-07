@@ -483,8 +483,10 @@
                                                     <label for="room_number">Room Number<span class="text-red-600">*</span></label>
                                                     <select name="room_number" id="editRoomNumberGuestHouse" class="form-control" required>
                                                         <option value="">Select Room</option>
-                                                        @foreach ($rooms as $room)
-                                                            <option value="{{$room->id}}">{{$room->room_number}}</option>
+                                                        @foreach($rooms as $room)
+                                                            @if ($room->room_status != 'Occupied' && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable')
+                                                                <option value="{{ $room->id }}">{{ $room->room_number }}</option>
+                                                            @endif
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -632,8 +634,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="error-messageEditGuestHouse" class="alert alert-danger mt-2" style="display: none;">
+
+                                </div>
                                 <div class="row justify-end">
-                                    <button type="button" class="btn bg-light-green Montserrat text-white hover:bg-dark-green w-fit mr-2" data-bs-toggle="modal" data-bs-target="#guestHouseTerms">Submit</button>
+                                    <button type="button" class="btn bg-light-green Montserrat text-white hover:bg-dark-green w-fit mr-2" data-bs-toggle="modal" data-bs-target="#editGuestHouseTerms">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -705,7 +710,7 @@
     </div>
 </div>
 
-<div class="modal modal-lg fade" id="guestHouseTerms" tabindex="-1" aria-hidden="true">
+<div class="modal modal-lg fade" id="editGuestHouseTerms" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-light-green">

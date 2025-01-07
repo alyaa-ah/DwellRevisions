@@ -161,29 +161,76 @@ $(document).ready(function() {
             })
             return;
         }
+        const female = parseInt($('#numOfFemaleStaffHouse').val(), 10) || 0;
+        const male = parseInt($('#numOfMaleStaffHouse').val(), 10) || 0;
+
+        if(male + female == 0){
+            $('#staffHouseTerms').modal('hide');
+            $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
+            $('#submitButton1').attr('disabled', false);
+            setTimeout(function () {
+                $('#error-messageStaffHouse').fadeOut('slow', function () {
+                    $(this).hide();
+                });
+            }, 3000);
+        return;
+        }
         const maleGuestsInputs = $('input[name="maleGuests[]"]');
         const femaleGuestsInputs = $('input[name="femaleGuests[]"]');
 
         for (let input of maleGuestsInputs) {
             if (!input.value.trim()) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Validation Error",
-                    text: "Please fill in all male guest names before submitting.",
-                    showConfirmButton: true,
-                });
+                $('#staffHouseTerms').modal('hide');
+                $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br> Please input name of male guest!").show();
+                $('#submitButton1').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageStaffHouse').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
                 return;
             }
         }
 
         for (let input of femaleGuestsInputs) {
             if (!input.value.trim()) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Validation Error",
-                    text: "Please fill in all female guest names before submitting.",
-                    showConfirmButton: true,
-                });
+                $('#staffHouseTerms').modal('hide');
+                $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br> Please input name of female guest!").show();
+                $('#submitButton1').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageStaffHouse').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        }
+        const hasLetter = $('#staffHouse-booking-form input[name="hasLetterStaffHouse"]:checked').val();
+        const totalAmount = $('#totalAmountStaffHouse').val();
+        const selectedPosition = $('#positionStaffHouse').val();
+        console.log(hasLetter);
+        if (selectedPosition === 'Student') {
+            if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
+                $('#staffHouseTerms').modal('hide');
+                $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageStaffHouse').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        } else {
+            if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
+                $('#staffHouseTerms').modal('hide');
+                $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageStaffHouse').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
                 return;
             }
         }
@@ -225,10 +272,10 @@ $(document).ready(function() {
                             errorMessages += response.message[key].join('<br>') + '<br>';
                         }
                     }
-                    $('#error-message').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
                     $('#submitButtonStaffHouse').attr('disabled', false);
                     setTimeout(function () {
-                        $('#error-message').fadeOut('slow', function () {
+                        $('#error-messageStaffHouse').fadeOut('slow', function () {
                             $(this).hide();
                         });
                     }, 3000);
@@ -284,15 +331,13 @@ function fetchRoomData1(roomNumber) {
             console.error(error);
             $('#rateStaffHouse').val('');
             $('#capacityStaffHouse').val('');
-            $('#numOfMaleStaffHouse').val('');
-            $('#numOfFemaleStaffHouse').val('');
+            $('#numOfMaleStaffHouse').val('0');
+            $('#numOfFemaleStaffHouse').val('0');
             $('#beddingStaffHouse').val('');
             $('#checkInDateStaffHouse').val('');
             $('#checkOutDateStaffHouse').val('');
             $('#numberOfDaysStaffHouse').val('');
             $('#numberOfNightsStaffHouse').val('');
-            $('#arrivalStaffHouse').val('');
-            $('#departureStaffHouse').val('');
             $('#totalAmountStaffHouse').val('');
         }
     });

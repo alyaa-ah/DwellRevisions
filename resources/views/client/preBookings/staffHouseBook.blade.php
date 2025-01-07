@@ -156,7 +156,9 @@
                                         @else
                                             <option value="">Select Room</option>
                                             @foreach($roomnumbers as $room)
-                                                <option value="{{ $room->id }}">{{ $room->room_number }}</option>
+                                                @if ($room->room_status != 'Occupied' && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable')
+                                                    <option value="{{ $room->id }}">{{ $room->room_number }}</option>
+                                                @endif
                                             @endforeach
                                         @endif
                                     </select>
@@ -326,7 +328,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="error-message" class="alert alert-danger mt-2" style="display: none;">
+                    <div id="error-messageStaffHouse" class="alert alert-danger mt-2" style="display: none;">
 
                     </div>
                     <div class="row my-2">
@@ -516,5 +518,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-<script src="{{ url('public/js/client/booking-staffhouse/payment.js') }}"></script>
+<script src="{{ url('js/client/booking-staffhouse/payment.js') }}"></script>
 @endsection

@@ -184,6 +184,21 @@ $(document).ready(function() {
             })
             return;
         }
+        const female = parseInt($('#editNumOfFemaleDftcRoom').val(), 10) || 0;
+        const male = parseInt($('#editNumOfMaleDftcRoom').val(), 10) || 0;
+
+        if(male + female == 0){
+            $('#dftcTermsEditDftcRoom').modal('hide');
+            $('#edit-dftcroombooking-modal').modal('show')
+            $('#error-messageEditDftcRoom').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
+            $('#submitButtonEditDftcRoom').attr('disabled', false);
+            setTimeout(function () {
+                $('#error-messageEditDftcRoom').fadeOut('slow', function () {
+                    $(this).hide();
+                });
+            }, 3000);
+        return;
+        }
         var numOfMale = parseInt($('#editNumOfMaleDftcRoom').val());
         var numOfFemale = parseInt($('#editNumOfFemaleDftcRoom').val());
         if (numOfMale == 0 && numOfFemale == 0) {
@@ -196,6 +211,37 @@ $(document).ready(function() {
             $('#edit-dftcroombooking-modal').modal('show');
             $('#dftcTermsEditDftcRoom').modal('hide');
             return;
+        }
+        const hasLetter = $('input[name="hasLetterDftcRoomEdit"]:checked').val();
+        const totalAmount = $('#editTotalAmountDftcRoom').val();
+        const selectedPosition = $('#editPositionDftcRoom').val();
+
+        if (selectedPosition === 'Student') {
+            if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
+                $('#dftcTermsEditDftcRoom').modal('hide');
+                $('#edit-dftcroombooking-modal').modal('show');
+                $('#error-messageEditDftcRoom').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!!").show();
+                $('#submitButtonEditDftcRoom').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageEditDftcRoom').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        } else {
+            if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
+                $('#dftcTermsEditDftcRoom').modal('hide');
+                $('#edit-dftcroombooking-modal').modal('show');
+                $('#error-messageEditDftcRoom').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
+                $('#submitButtonEditDftcRoom').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageEditDftcRoom').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
         }
         let formData = new FormData($('#edit-dftcroom-booking-form')[0]);
         $.ajax({
@@ -330,11 +376,9 @@ function fetchRoomDataEditDftcRoomClient(roomNumber) {
             $('#editCapacityDftcRoom').val('');
             $('#editCheckInDateDftcRoom').val('');
             $('#editCheckOutDateDftcRoom').val('');
-            $('#editArrivalDftcRoom').val('');
-            $('#editDepartureDftcRoom').val('');
             $('#editNumOfDaysDftcRoom').val('');
-            $('#editNumOfMaleDftcRoom').val('');
-            $('#editNumOfFemaleDftcRoom').val('');
+            $('#editNumOfMaleDftcRoom').val('0');
+            $('#editNumOfFemaleDftcRoom').val('0');
             $('#editNumOffNightsDftcRoom').val('');
             $('#editTotalAmountDftcRoom').val('');
         }

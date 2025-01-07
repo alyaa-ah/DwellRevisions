@@ -202,29 +202,81 @@ $(document).ready(function() {
             })
             return;
         }
+        const female = parseInt($('#editNumOfFemaleGuestHouse').val(), 10) || 0;
+        const male = parseInt($('#editNumOfMaleGuestHouse').val(), 10) || 0;
+
+        if(male + female == 0){
+            $('#editGuestHouseTerms').modal('hide');
+            $('#edit-guesthousebooking-modal').modal('show')
+            $('#error-messageEditGuestHouse').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
+            $('#submitButtonEditGuestHouse').attr('disabled', false);
+            setTimeout(function () {
+                $('#error-messageEditGuestHouse').fadeOut('slow', function () {
+                    $(this).hide();
+                });
+            }, 3000);
+        return;
+        }
         const maleGuestsInputs = $('input[name="maleGuests[]"]');
         const femaleGuestsInputs = $('input[name="femaleGuests[]"]');
 
         for (let input of maleGuestsInputs) {
             if (!input.value.trim()) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Validation Error",
-                    text: "Please fill in all male guest names before submitting.",
-                    showConfirmButton: true,
-                });
+                $('#editGuestHouseTerms').modal('hide');
+                $('#edit-guesthousebooking-modal').modal('show')
+                $('#error-messageEditGuestHouse').html("<strong>Validation Error!</strong> <br><br>" + "Please input male guest!").show();
+                $('#submitButtonEditGuestHouse').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageEditGuestHouse').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
                 return;
             }
         }
 
         for (let input of femaleGuestsInputs) {
             if (!input.value.trim()) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Validation Error",
-                    text: "Please fill in all female guest names before submitting.",
-                    showConfirmButton: true,
-                });
+                $('#editGuestHouseTerms').modal('hide');
+                $('#edit-guesthousebooking-modal').modal('show')
+                $('#error-messageEditGuestHouse').html("<strong>Validation Error!</strong> <br><br>" + "Please input female guest!").show();
+                $('#submitButtonEditGuestHouse').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageEditGuestHouse').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        }
+        const hasLetter = $('input[name="hasLetter"]:checked').val();
+        const totalAmount = $('#editTotalAmountGuestHouse').val();
+        const selectedPosition = $('#editPositionGuestHouse').val();
+
+        if (selectedPosition === 'Student') {
+            if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
+                $('#editGuestHouseTerms').modal('hide');
+                $('#edit-guesthousebooking-modal').modal('show')
+                $('#error-messageEditGuestHouse').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!!").show();
+                $('#submitButtonEditGuestHouse').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageEditGuestHouse').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        } else {
+            if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
+                $('#editGuestHouseTerms').modal('hide');
+                $('#edit-guesthousebooking-modal').modal('show')
+                $('#error-messageEditGuestHouse').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
+                $('#submitButtonEditGuestHouse').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageEditGuestHouse').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
                 return;
             }
         }
@@ -247,15 +299,23 @@ $(document).ready(function() {
                         showConfirmButton: true,
                     })
                 }else if(response.message){
-                    var errorMessages = Object.values(response.message).join('<br>');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Pre-reservation validation failed!',
-                        html: errorMessages,
-                        showConfirmButton: true,
-                    });
-                    $('#edit-guesthousebooking-modal').modal('show');
-                    $('#guestHouseTerms').modal('hide');
+                    $('#editGuestHouseTerms').modal('hide');
+                    $('#edit-guesthousebooking-modal').modal('show')
+                    Swal.close();
+                    let errorMessages = '';
+                    for (let key in response.message) {
+                        if (response.message[key] && Array.isArray(response.message[key])) {
+                            errorMessages += response.message[key].join('<br>') + '<br>';
+                        }
+                    }
+                    $('#error-messageEditGuestHouse').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    $('#submitButtonEditGuestHouse').attr('disabled', false);
+                    setTimeout(function () {
+                        $('#error-messageEditGuestHouse').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
+                    return;
                     return;
                 }else{
                     Swal.fire({
@@ -357,10 +417,8 @@ function fetchRoomDataEditGuestHouse(roomNumber) {
             $('#editCheckInDateGuestHouse').val('');
             $('#editCheckOutDateGuestHouse').val('');
             $('#editNumofDaysGuestHouse').val('');
-            $('#editNumOfMaleGuestHouse').val('');
-            $('#editNumOfFemaleGuestHouse').val('');
-            $('#editArrivalGuestHouse').val('');
-            $('#editDepartureGuestHouse').val('');
+            $('#editNumOfMaleGuestHouse').val('0');
+            $('#editNumOfFemaleGuestHouse').val('0');
             $('#editBeddingGuestHouse').val('');
             $('#editTotalAmountGuestHouse').val('');
         }
