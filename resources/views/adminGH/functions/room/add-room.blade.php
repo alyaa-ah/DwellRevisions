@@ -131,6 +131,7 @@
                                                     <option value="Available">Available</option>
                                                     <option value="Unavailable">Unavailable</option>
                                                     <option value="On-Renovation">On-Renovation</option>
+                                                    <option value="Occupied">Occupied</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -117,6 +117,10 @@
                                                     <span class="status-badge on-renovation">
                                                         <i class="fas fa-tools"></i> On-Renovation
                                                     </span>
+                                                @elseif ($room->room_status == "Occupied")
+                                                    <span class="status-badge occupied">
+                                                        <i class="fas fa-lock"></i> Occupied
+                                                    </span>
                                                 @endif
                                             </td>
                                             <td class="text-center">

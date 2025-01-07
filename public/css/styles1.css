@@ -183,6 +183,9 @@ body {
 .status-badge.on-renovation {
     background-color: #ffc107;
 }
+.status-badge.occupied {
+    background-color: #6C757D;
+}
 .amenities-list {
     list-style: none;
     margin-left: 20px;

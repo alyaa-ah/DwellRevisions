@@ -90,25 +90,30 @@
                                 <span class="Montserrat text-sm font-bold textGradient text-left">DFTC | </span>
                                 <span class="Montserrat text-sm font-semibold text-light-green text-left">
                                 Status:
-                                @if($bookingCount > 0 && $room->room_status != "Occupied")
-                                    <span class="inline-flex items-center">
-                                        <i class="fa fa-calendar-check-o" style="color: orange; margin-right: 5px;"></i>
-                                        <span style="color: orange; font-weight: bold;">Pre-Booked</span>
+                                @if($bookingCount > 0 && ($room->room_status != "Occupied" && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable'))
+                                    <span class="inline-flex items-center bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 rounded-full text-sm">
+                                        <i class="fa fa-calendar-check-o mr-1"></i>
+                                        <span class="font-semibold">Pre-Booked</span>
                                     </span>
                                 @elseif($room->room_status === 'Available')
-                                    <span class="inline-flex items-center mt-3">
-                                        <i class="fa fa-check-circle" style="color: green; margin-right: 5px;"></i>
-                                        <span style="color: green; font-weight: bold;">Available</span>
+                                    <span class="inline-flex items-center bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded-full text-sm mt-2">
+                                        <i class="fa fa-check-circle mr-1"></i>
+                                        <span class="font-semibold">Available</span>
                                     </span>
                                 @elseif ($room->room_status === 'Occupied')
-                                    <span class="inline-flex items-center">
-                                        <i class="fa fa-lock" style="color: #6C757D; margin-right: 5px;"></i>
-                                        <span style="color: #6C757D; font-weight: bold;">Occupied</span>
+                                    <span class="inline-flex items-center bg-gray-500 hover:bg-gray-600 text-white px-2 py-1 rounded-full text-sm">
+                                        <i class="fa fa-lock mr-1"></i>
+                                        <span class="font-semibold">Occupied</span>
                                     </span>
-                                @else
-                                    <span class="inline-flex items-center">
-                                        <i class="fa fa-times-circle" style="color: red; margin-right: 5px;"></i>
-                                        <span style="color: red; font-weight: bold;">Unavailable</span>
+                                @elseif ($room->room_status === 'On-Renovation')
+                                    <span class="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded-full text-sm">
+                                        <i class="fa fa-tools mr-1"></i>
+                                        <span class="font-semibold">On-Renovation</span>
+                                    </span>
+                                @elseif ($room->room_status === 'Unavailable')
+                                    <span class="inline-flex items-center bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-full text-sm">
+                                        <i class="fa fa-times-circle mr-1"></i>
+                                        <span class="font-semibold">Unavailable</span>
                                     </span>
                                 @endif
                                 <div class="row mt-3">
