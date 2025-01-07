@@ -171,29 +171,76 @@ $(document).ready(function() {
             })
             return;
         }
+        const female = parseInt($('#numOfFemale').val(), 10) || 0;
+        const male = parseInt($('#numOfMale').val(), 10) || 0;
+
+        if(male + female == 0){
+            $('#guestHouseTerms').modal('hide');
+            $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
+            $('#submitButton').attr('disabled', false);
+            setTimeout(function () {
+                $('#error-message').fadeOut('slow', function () {
+                    $(this).hide();
+                });
+            }, 3000);
+        return;
+        }
         const maleGuestsInputs = $('input[name="maleGuests[]"]');
         const femaleGuestsInputs = $('input[name="femaleGuests[]"]');
 
         for (let input of maleGuestsInputs) {
             if (!input.value.trim()) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Validation Error",
-                    text: "Please fill in all male guest names before submitting.",
-                    showConfirmButton: true,
-                });
+                $('#guestHouseTerms').modal('hide');
+                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please input name of male guest!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-message').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
                 return;
             }
         }
 
         for (let input of femaleGuestsInputs) {
             if (!input.value.trim()) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Validation Error",
-                    text: "Please fill in all female guest names before submitting.",
-                    showConfirmButton: true,
-                });
+                $('#guestHouseTerms').modal('hide');
+                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please input name of female guest!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-message').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        }
+        const hasLetter = $('input[name="hasLetter"]:checked').val();
+        const totalAmount = $('#totalAmount').val();
+        const selectedPosition = $('#position').val();
+
+        if (selectedPosition === 'Student') {
+            if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
+                $('#guestHouseTerms').modal('hide');
+                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-message').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        } else {
+            if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
+                $('#guestHouseTerms').modal('hide');
+                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-message').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
                 return;
             }
         }
@@ -286,10 +333,8 @@ function fetchRoomDataAdminGH(roomNumber) {
             $('#numberOfNights').val('');
             $('#checkInDate').val('');
             $('#checkOutDate').val('');
-            $('#numOfMale').val('');
-            $('#numOfFemale').val('');
-            $('#arrival').val('');
-            $('#departure').val('');
+            $('#numOfMale').val('0');
+            $('#numOfFemale').val('0');
             $('#totalAmount').val('');
         }
     });

@@ -428,8 +428,8 @@ function fetchRoomDataEditDftcHallClient(roomNumber) {
             $('#editCheckOutDateDftcHall').val('');
             $('#editNumOfDaysDftcHall').val('');
             $('#editNumOfNightsDftcHall').val('');
-            $('#editNumOfMaleDftcRoom').val('0');
-            $('#editNumOfFemaleDftcRoom').val('0');
+            $('#editNumOfMaleDftcHall').val('0');
+            $('#editNumOfFemaleDftcHall').val('0');
         }
     });
 }

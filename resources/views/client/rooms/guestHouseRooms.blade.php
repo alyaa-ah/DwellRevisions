@@ -205,15 +205,15 @@
                             <div class="col-md-12">
                                 <p class="Montserrat text-light-green text-sm font-medium">Rate: {{ $room->room_rate }} Pesos/Head</p>
                                     @if(session()->has('loggedInCustomer') || session()->has('loggedInSuperAdmin') || session()->has('loggedInAdmin'))
-                                    @if($room->room_status != 'Unavailable' && $room->room_status != 'On-Renovation' && $room->room_status != 'Occupied')
-                                        <div class="d-flex justify-content-end">
-                                            <button type="button" id="guestHouse-booking"
-                                                onclick="bookGuestHouse('{{ addslashes(json_encode($room)) }}', '{{ addslashes(json_encode(session('loggedInCustomer'))) }}')"
-                                                class="btn rounded-full mr-3 bg-light-green text-white Montserrat hover:bg-dark-green transition ease-in-out duration-500">
-                                                Book Now
-                                            </button>
-                                        </div>
-                                    @else
+                                        @if($room->room_status != 'Unavailable' && $room->room_status != 'On-Renovation' && $room->room_status != 'Occupied')
+                                            <div class="d-flex justify-content-end">
+                                                <button type="button" id="guestHouse-booking"
+                                                    onclick="bookGuestHouse('{{ addslashes(json_encode($room)) }}', '{{ addslashes(json_encode(session('loggedInCustomer'))) }}')"
+                                                    class="btn rounded-full mr-3 bg-light-green text-white Montserrat hover:bg-dark-green transition ease-in-out duration-500">
+                                                    Book Now
+                                                </button>
+                                            </div>
+                                        @else
                                         <h1>Room is currently not available for booking</h1>
                                     @endif
                                 @else
