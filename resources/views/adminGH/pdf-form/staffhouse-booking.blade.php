@@ -198,6 +198,7 @@
                             </tr>
                             <tr>
                                 <td style="border: none; vertical-align: top;">
+                                    <!-- Render Male Guests -->
                                     @if ($male_guest != null)
                                         {!! implode('<br>', array_map(function($name) {
                                             return '<span style="text-decoration: underline;">' . trim($name) . ' (M)</span>';
@@ -205,15 +206,16 @@
                                     @endif
                                 </td>
                                 <td style="border: none; vertical-align: top;">
+                                    <!-- Render Female Guests -->
                                     @if ($female_guest != null)
                                         {!! implode('<br>', array_map(function($name) {
                                             return '<span style="text-decoration: underline;">' . trim($name) . ' (F)</span>';
                                         }, explode(',', $female_guest))) !!}
                                     @endif
                                 </td>
-                            </tr>                        </table>
+                            </tr>
+                        </table>
                     </div>
-
                 </div>
             </div>
         </div>
