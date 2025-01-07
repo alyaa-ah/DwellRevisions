@@ -783,7 +783,7 @@
             document.getElementById('checkboxContainerEditPreBookGuestHouse').style.display = 'block';
         }
     });
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const arrivalInput = document.getElementById("editArrivalGuestHouse");
     const departureInput = document.getElementById("editDepartureGuestHouse");
 

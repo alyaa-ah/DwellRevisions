@@ -800,14 +800,14 @@
     </div>
 </div>
 <script>
-    document.getElementById('modalBodyEditPreBookStaffHouse').addEventListener('scroll', function() {
+document.getElementById('modalBodyEditPreBookStaffHouse').addEventListener('scroll', function() {
         const scrollable = this.scrollHeight - this.clientHeight;
 
         if (Math.ceil(this.scrollTop) >= scrollable - 10) {
             document.getElementById('checkboxContainerEditPreBookStaffHouse').style.display = 'block';
         }
     });
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     const numOfMaleInput = document.getElementById('editNumOfMaleStaffHouse');
     const maleGuestsContainer = document.getElementById('maleGuestsContainerStaffHouseEdit');
 

@@ -192,13 +192,13 @@ $(document).ready(function() {
         for (let input of maleGuestsInputs) {
             if (!input.value.trim()) {
                 $('#guestHouseTerms').modal('hide');
-                    $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please input male guests!").show();
-                    $('#submitButton').attr('disabled', false);
-                    setTimeout(function () {
-                        $('#error-message').fadeOut('slow', function () {
-                            $(this).hide();
-                        });
-                    }, 3000);
+                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please input male guest!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-message').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
                 return;
             }
         }
@@ -206,7 +206,7 @@ $(document).ready(function() {
         for (let input of femaleGuestsInputs) {
             if (!input.value.trim()) {
                 $('#guestHouseTerms').modal('hide');
-                    $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please input female guests!").show();
+                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please input female guest!").show();
                     $('#submitButton').attr('disabled', false);
                     setTimeout(function () {
                         $('#error-message').fadeOut('slow', function () {
@@ -223,7 +223,7 @@ $(document).ready(function() {
         if (selectedPosition === 'Student') {
             if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
                 $('#guestHouseTerms').modal('hide');
-                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please check your total amount!").show();
+                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!!").show();
                 $('#submitButton').attr('disabled', false);
                 setTimeout(function () {
                     $('#error-message').fadeOut('slow', function () {
@@ -235,7 +235,7 @@ $(document).ready(function() {
         } else {
             if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
                 $('#guestHouseTerms').modal('hide');
-                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Please check your total amount!").show();
+                $('#error-message').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
                 $('#submitButton').attr('disabled', false);
                 setTimeout(function () {
                     $('#error-message').fadeOut('slow', function () {

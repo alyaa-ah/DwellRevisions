@@ -272,6 +272,7 @@ $(document).ready(function() {
         }
     }
     $('#editRateDftcHall, #editCapacityDftcHall, #editCheckInDateDftcHall, #editCheckOutDateDftcHall, #editArrivalDftcHall, #editDepartureDftcHall, #editHasLetterDftcHall').on('change', computeTotalAmountEditDftcHallAdminDftc);
+    $('input[name="hasLetterDftcHallEdit"]').on('change', computeTotalAmountEditDftcHallAdminDftc);
     $(document).on('click', '#submitButtonEditDftcHall', function(event){
         event.preventDefault();
         const agreeCheckbox = $('#flexCheckDefaultEditDftcHall')[0];

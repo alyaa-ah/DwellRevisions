@@ -172,7 +172,7 @@ $(document).ready(function() {
         if(male + female == 0){
             $('#staffHouseTerms').modal('hide');
             $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
-            $('#submitButtonStaffHouse').attr('disabled', false);
+            $('#submitButton1').attr('disabled', false);
             setTimeout(function () {
                 $('#error-messageStaffHouse').fadeOut('slow', function () {
                     $(this).hide();
@@ -205,6 +205,35 @@ $(document).ready(function() {
                         $('#error-messageStaffHouse').fadeOut('slow', function () {
                             $(this).hide();
                         });
+                }, 3000);
+                return;
+            }
+        }
+        const hasLetter = $('#staffHouse-booking-form input[name="hasLetterStaffHouse"]:checked').val();
+        const totalAmount = $('#totalAmountStaffHouse').val();
+        const selectedPosition = $('#positionStaffHouse').val();
+        console.log(hasLetter);
+        if (selectedPosition === 'Student') {
+            if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
+                $('#staffHouseTerms').modal('hide');
+                $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageStaffHouse').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        } else {
+            if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
+                $('#staffHouseTerms').modal('hide');
+                $('#error-messageStaffHouse').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
+                $('#submitButton').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageStaffHouse').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
                 }, 3000);
                 return;
             }
