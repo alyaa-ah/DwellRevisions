@@ -284,7 +284,7 @@ $(document).ready(function() {
             })
             return;
         }
-        const female = parseInt($('#editNumOfFemaleDftcHall').val(), 10) || 0;
+        const female = parseInt($('#editNumOfFemalesDftcHall').val(), 10) || 0;
         const male = parseInt($('#editNumOfMalesDftcHall').val(), 10) || 0;
 
         if(male + female == 0){
@@ -299,7 +299,7 @@ $(document).ready(function() {
             }, 3000);
         return;
         }
-        var numOfFemale = $('#editNumOfFemaleDftcHall').val();
+        var numOfFemale = $('#editNumOfFemalesDftcHall').val();
         var numOfMale = $('#editNumOfMalesDftcHall').val();
         if(numOfFemale == 0 && numOfMale == 0){
             $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> You must have at least 1 male or female guests!").show();
@@ -318,7 +318,7 @@ $(document).ready(function() {
 
         if (selectedPosition === 'Student') {
             if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
-                $('#dftcTermsEditDftcRoom').modal('hide');
+                $('#dftcTermsEditDftcHall').modal('hide');
                 $('#edit-dftchallbooking-modal').modal('show');
                 $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!!").show();
                 $('#submitButtonEditDftcHall').attr('disabled', false);
@@ -331,7 +331,7 @@ $(document).ready(function() {
             }
         } else {
             if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
-                $('#dftcTermsEditDftcRoom').modal('hide');
+                $('#dftcTermsEditDftcHall').modal('hide');
                 $('#edit-dftchallbooking-modal').modal('show');
                 $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
                 $('#submitButtonEditDftcHall').attr('disabled', false);

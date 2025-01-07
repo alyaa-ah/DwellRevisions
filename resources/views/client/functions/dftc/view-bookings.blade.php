@@ -671,8 +671,8 @@
                                                         <option value="">Select Room</option>
                                                         @foreach ($rooms as $room)
                                                             @if($room->room_type != "Hall" && ($room->room_status != 'Occupied' && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable'))
-                                                            <option value="{{ $room->id }}">{{ $room->room_number }}</option>
-                                                        @endif
+                                                                <option value="{{ $room->id }}">{{ $room->room_number }}</option>
+                                                            @endif
                                                         @endforeach
                                                     </select>
                                                 </div>

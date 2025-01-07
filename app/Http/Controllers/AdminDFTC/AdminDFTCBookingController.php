@@ -592,7 +592,8 @@ class AdminDFTCBookingController extends Controller
             'contactnumber' => 'required|min:9|max:13',
             'address' => 'required|min:6|max:100',
             'email' => 'required',
-            'activity' => 'required|min:6|max:255',
+            'activitySelected' => 'required|string|max:255',
+            'customActivity' => 'nullable|string',
             'room_number' => 'required',
             'numberOfDays' => 'required',
             'numberOfNights' => 'required',
@@ -617,9 +618,32 @@ class AdminDFTCBookingController extends Controller
             $checkInDate = Carbon::createFromFormat('Y-m-d', $request->checkInDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->checkOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $room = Room::find($request->room_number);
+            $activity = $request->activitySelected;
+            $customActivity = $request->customActivity;
+            if ($activity === 'Others' && !empty($customActivity)) {
+                $finalActivity = $customActivity;
+            } else {
+                $finalActivity = $activity;
+            }
+            $maleGuestsArray = isset($request->maleGuests) && $request->maleGuests
+            ? (is_array($request->maleGuests)
+                ? array_map('trim', $request->maleGuests)
+                : array_map('trim', explode(',', $request->maleGuests)))
+            : []; // Default empty if null/empty
+
+            // Process female guests safely - handle null & clean data
+            $femaleGuestsArray = isset($request->femaleGuests) && $request->femaleGuests
+            ? (is_array($request->femaleGuests)
+                ? array_map('trim', $request->femaleGuests)
+                : array_map('trim', explode(',', $request->femaleGuests)))
+            : []; // Default empty if null/empty
+
+            // Remove empty strings
+            $maleGuestsArray = array_filter($maleGuestsArray, fn($val) => $val !== '');
+            $femaleGuestsArray = array_filter($femaleGuestsArray, fn($val) => $val !== '');
             $guestHouseBooking = GuestHouseBooking::where('id', $request->booking_id)->update([
                 'room_id' => $room->id,
-                'activity' => ucfirst($request->activity),
+                'activity' => ucfirst($request->$finalActivity),
                 'number_of_days' => $request->numberOfDays,
                 'number_of_nights' => $request->numberOfNights,
                 'check_in_date' => $checkInDate,
@@ -635,8 +659,8 @@ class AdminDFTCBookingController extends Controller
                 'videoke_rent'  => $request->rent,
                 'additional_bedding' => $request->bedding * 100,
                 'special_request' => $request->specialRequests,
-                'male_guest' => ucwords($request->maleGuests),
-                'female_guest' => ucwords($request->femaleGuests)
+                'male_guest' => implode(',', array_values($maleGuestsArray)),
+                'female_guest' => implode(',', array_values($femaleGuestsArray))
             ]);
             $clientId = session()->get('loggedInAdminDftc')['id'];
             $fullname = session()->get('loggedInAdminDftc')['fullname'];
@@ -654,7 +678,8 @@ class AdminDFTCBookingController extends Controller
             'contactnumber' => 'required|min:9|max:13',
             'address' => 'required|min:6|max:100',
             'email' => 'required',
-            'activity' => 'required|min:6|max:255',
+            'activitySelected' => 'required|string|max:255',
+            'customActivity' => 'nullable|string',
             'room_number' => 'required',
             'numberOfDays' => 'required',
             'numberOfNights' => 'required',
@@ -679,11 +704,34 @@ class AdminDFTCBookingController extends Controller
             $checkInDate = Carbon::createFromFormat('Y-m-d', $request->checkInDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->checkOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $room = Room::find($request->room_number);
+            $activity = $request->activitySelected;
+            $customActivity = $request->customActivity;
+            if ($activity === 'Others' && !empty($customActivity)) {
+                $finalActivity = $customActivity;
+            } else {
+                $finalActivity = $activity;
+            }
+            $maleGuestsArray = isset($request->maleGuests) && $request->maleGuests
+            ? (is_array($request->maleGuests)
+                ? array_map('trim', $request->maleGuests)
+                : array_map('trim', explode(',', $request->maleGuests)))
+            : []; // Default empty if null/empty
+
+            // Process female guests safely - handle null & clean data
+            $femaleGuestsArray = isset($request->femaleGuests) && $request->femaleGuests
+            ? (is_array($request->femaleGuests)
+                ? array_map('trim', $request->femaleGuests)
+                : array_map('trim', explode(',', $request->femaleGuests)))
+            : []; // Default empty if null/empty
+
+            // Remove empty strings
+            $maleGuestsArray = array_filter($maleGuestsArray, fn($val) => $val !== '');
+            $femaleGuestsArray = array_filter($femaleGuestsArray, fn($val) => $val !== '');
             $staffHouseBooking = StaffHouseBooking::find($request->booking_id);
             if ($staffHouseBooking) {
                 $staffHouseBooking->update([
                     'room_id' => $room->id,
-                    'activity' => ucfirst($request->activity),
+                    'activity' => ucfirst($request->$finalActivity),
                     'number_of_days' => $request->numberOfDays,
                     'number_of_nights' => $request->numberOfNights,
                     'check_in_date' => $checkInDate,
@@ -699,8 +747,8 @@ class AdminDFTCBookingController extends Controller
                     'payment'  => $staffHouseBooking->position == 'Student' || $staffHouseBooking->position == 'Guest' ? $request->payment_hidden : $request->payment,
                     'additional_bedding' => $request->bedding * 100,
                     'special_request' => ucfirst($request->specialRequests),
-                    'male_guest' => ucwords($request->maleGuests),
-                    'female_guest' => ucwords($request->femaleGuests)
+                    'male_guest' => implode(',', array_values($maleGuestsArray)),
+                    'female_guest' => implode(',', array_values($femaleGuestsArray))
                 ]);
             }
             $clientId = session()->get('loggedInAdminDftc')['id'];
@@ -719,7 +767,8 @@ class AdminDFTCBookingController extends Controller
             'contactnumber' => 'required|min:9|max:13',
             'address' => 'required|min:6|max:100',
             'email' => 'required',
-            'activity' => 'required|min:6|max:255',
+            'activitySelected' => 'required|string|max:255',
+            'customActivity' => 'nullable|string',
             'room_number' => 'required',
             'numberOfDays' => 'required',
             'numberOfNights' => 'required',
@@ -742,11 +791,18 @@ class AdminDFTCBookingController extends Controller
             $checkInDate = Carbon::createFromFormat('Y-m-d', $request->checkInDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->checkOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $room = Room::find($request->room_number);
+            $activity = $request->activitySelected;
+            $customActivity = $request->customActivity;
+            if ($activity === 'Others' && !empty($customActivity)) {
+                $finalActivity = $customActivity;
+            } else {
+                $finalActivity = $activity;
+            }
             $dftcRoomBooking = DftcBooking::find($request->booking_id);
             if ($dftcRoomBooking) {
                 $dftcRoomBooking->update([
                     'room_id' => $room->id,
-                    'activity' => ucfirst($request->activity),
+                    'activity' => ucfirst($request->$finalActivity),
                     'number_of_days' => $request->numberOfDays,
                     'number_of_nights' => $request->numberOfNights,
                     'check_in_date' => $checkInDate,
@@ -778,7 +834,8 @@ class AdminDFTCBookingController extends Controller
             'contactnumber' => 'required|min:9|max:13',
             'address' => 'required|min:6|max:100',
             'email' => 'required',
-            'activity' => 'required|min:6|max:255',
+            'activitySelected' => 'required|string|max:255',
+            'customActivity' => 'nullable|string',
             'room_number' => 'required',
             'numberOfDays' => 'required',
             'numberOfNights' => 'required',
@@ -801,11 +858,18 @@ class AdminDFTCBookingController extends Controller
             $checkInDate = Carbon::createFromFormat('Y-m-d', $request->checkInDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $checkOutDate = Carbon::createFromFormat('Y-m-d', $request->checkOutDate)->setTimezone('Asia/Manila')->format('F j, Y');
             $room = Room::find($request->room_number);
+            $activity = $request->activitySelected;
+            $customActivity = $request->customActivity;
+            if ($activity === 'Others' && !empty($customActivity)) {
+                $finalActivity = $customActivity;
+            } else {
+                $finalActivity = $activity;
+            }
             $dftcHallBooking = DftcBooking::find($request->booking_id);
             if ($dftcHallBooking) {
                 $dftcHallBooking->update([
                     'room_id' => $room->id,
-                    'activity' => ucfirst($request->activity),
+                    'activity' => ucfirst($request->$finalActivity),
                     'number_of_days' => $request->numberOfDays,
                     'number_of_nights' => $request->numberOfNights,
                     'check_in_date' => $checkInDate,

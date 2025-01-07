@@ -514,7 +514,7 @@
                                                 </div>
                                                 <div class="col-md-6 mb-2">
                                                     <div class="form-group Montserrat text-sm font-semibold text-light-green">
-                                                        <label for="arrival">Time Arrival<span class="text-red-600">(Fixed based on regulations)</span></label>
+                                                        <label for="arrival">Time Arrival<span class="text-red-600"> (Fixed based on regulations)</span></label>
                                                         <input type="time" class="form-control" name="arrival" id="editArrivalGuestHouse" style="background-color:#d3d3d3;" readonly required>
                                                     </div>
                                                 </div>
@@ -528,7 +528,7 @@
                                                 </div>
                                                 <div class="col-md-6 mb-2">
                                                     <div class="form-group Montserrat text-sm font-semibold text-light-green">
-                                                        <label for="departure">Time Departure<span class="text-red-600">(Fixed based on regulations)</span></label>
+                                                        <label for="departure">Time Departure<span class="text-red-600"> (Fixed based on regulations)</span></label>
                                                         <input type="time" class="form-control" name="departure" id="editDepartureGuestHouse" style="background-color:#d3d3d3;" readonly required>
                                                     </div>
                                                 </div>

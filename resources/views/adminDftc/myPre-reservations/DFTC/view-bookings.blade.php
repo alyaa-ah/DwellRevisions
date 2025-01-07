@@ -142,7 +142,7 @@
                                             <td class="text-center">
                                                     @if ($booking->room_type == "Hall")
                                                         <button type="button" onclick="viewAdminDftcDftcHallBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;" title="View Button for hall"></i></button>
-                                                        @if ($booking->room_type == "Pending Review")
+                                                        @if ($booking->status == "Pending Review")
                                                             <button type="button" onclick="editAdminDftcDftcHallBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;" title="Edit Button for hall"></i></button>
                                                         @endif
                                                     @else
@@ -229,17 +229,6 @@
                                                 </td>
                                             </div>
                                         </div>
-                                        <div class="row mb-2">
-                                            <div class="Montserrat text-sm font-semibold" id="editLetterInputCellDftcRoom" style="display: none;">
-                                                <div id="letterInput" class="form-group text-light-green">
-                                                    <label for="hasLetter">Please attach the letter approved by the President or the Campus Administrator to avail of free services (exclusive to students only).</label>
-                                                    <select name="hasLetter" id="editHasLetterDftcRoom" class="form-control">
-                                                        <option value="No">No</option>
-                                                        <option value="Yes">Yes</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="row">
                                             <div class="col-md-4 mb-2">
                                                 <div class="form-group Montserrat text-sm font-semibold text-light-green">
@@ -260,11 +249,49 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row mb-2">
+                                            <div class="Montserrat text-sm font-semibold" id="editLetterInputCellDftcRoom" style="display: none;">
+                                                <div id="letterInput" class="form-group text-light-green">
+                                                    <label for="hasLetter" class="Montserrat text-sm font-semibold">
+                                                        Do you have the letter approved by the President or Campus Administrator to access services? (Exclusive to students)
+                                                    </label>
+                                                    <div class="mt-2">
+                                                        <label class="Montserrat text-sm font-semibold">
+                                                            <input type="radio" name="hasLetterDftcRoomEdit" value="Yes"> Yes
+                                                        </label>
+                                                        <label class="Montserrat text-sm font-semibold ml-3">
+                                                            <input type="radio" name="hasLetterDftcRoomEdit" value="No" checked> No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-12 mb-2">
-                                                <div class="form-group Montserrat text-sm font-semibold text-light-green">
-                                                    <label for="activity">Activity<span class="text-red-600">*</span></label>
-                                                    <textarea type="text" class="form-control" cols=5 rows=5 name="activity" id="editActivityDftcRoom" placeholder="Enter here your new activity." required></textarea>
+                                                <div class="col-md-12">
+                                                    <div class="form-group text-light-green">
+                                                        <label for="activity" class="Montserrat text-sm font-semibold">
+                                                            Activity <span class="text-red-600">*</span>
+                                                        </label>
+                                                      <!-- Dropdown with predefined options -->
+                                                        <select class="form-control" id="activitySelectDftcRoomEdit" name="activitySelected" required>
+                                                            <option value="">Select an activity...</option>
+                                                            <option value="Meeting">Meeting</option>
+                                                            <option value="Workshop">Workshop</option>
+                                                            <option value="Seminar">Seminar</option>
+                                                            <option value="Others">Others</option>
+                                                        </select>
+
+                                                        <!-- Hidden textarea for custom activity -->
+                                                        <textarea
+                                                            class="form-control mt-2"
+                                                            id="activityTextAreaDftcRoomEdit"
+                                                            name="customActivity"
+                                                            placeholder="Please describe the custom activity here..."
+                                                            style="display: none;"
+                                                            rows="4"
+                                                        ></textarea>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -282,8 +309,8 @@
                                                     <select name="room_number" id="editRoomNumberDftcRoom" class="form-control" required>
                                                         <option value="">Select Room</option>
                                                         @foreach ($rooms as $room)
-                                                            @if ($room->room_type != "Hall")
-                                                                <option value="{{$room->id}}">{{$room->room_number}}</option>
+                                                            @if($room->room_type != "Hall" && ($room->room_status != 'Occupied' && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable'))
+                                                                <option value="{{ $room->id }}">{{ $room->room_number }}</option>
                                                             @endif
                                                         @endforeach
                                                     </select>
@@ -311,8 +338,8 @@
                                                     </div>
                                                     <div class="col-md-6 mb-2">
                                                         <div class="form-group Montserrat text-sm font-semibold text-light-green">
-                                                            <label for="arrival">Time Arrival<span class="text-red-600">*</span></label>
-                                                            <input type="time" class="form-control" name="arrival" id="editArrivalDftcRoom" required>
+                                                            <label for="arrival">Time Arrival<span class="text-red-600"> (Fixed based on regulations)</span></label>
+                                                            <input type="time" class="form-control" name="arrival" id="editArrivalDftcRoom" style="background-color:#d3d3d3;" readonly required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -325,8 +352,8 @@
                                                     </div>
                                                     <div class="col-md-6 mb-2">
                                                         <div class="form-group Montserrat text-sm font-semibold text-light-green">
-                                                            <label for="departure">Time Departure<span class="text-red-600">*</span></label>
-                                                            <input type="time" class="form-control" name="departure" id="editDepartureDftcRoom" required>
+                                                            <label for="departure">Time Departure<span class="text-red-600"> (Fixed based on regulations)</span></label>
+                                                            <input type="time" class="form-control" name="departure" id="editDepartureDftcRoom" style="background-color:#d3d3d3;" readonly required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -388,6 +415,9 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div id="error-messageEditDftcRoom" class="alert alert-danger mt-2" style="display: none;">
+
                                     </div>
                                     <div class="row justify-end">
                                         <button type="button" class="btn bg-light-green Montserrat text-white hover:bg-dark-green w-fit mr-2" data-bs-toggle="modal" data-bs-target="#dftcTermsEditDftcRoom">Submit</button>
@@ -452,19 +482,6 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12 mb-2">
-                                            <div class="Montserrat text-sm font-semibold" id="editLetterInputCellDftcHall" style="display: none;">
-                                                <div id="letterInput" class="form-group Montserrat text-sm font-semibold text-light-green">
-                                                    <label for="hasLetter">Please attach the letter approved by the President or the Campus Administrator to avail of free services (exclusive to students only).</label>
-                                                    <select name="hasLetter" id="editHasLetterDftcHall" class="form-control">
-                                                        <option value="No">No</option>
-                                                        <option value="Yes">Yes</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-md-4 mb-2">
                                             <div class="form-group Montserrat text-sm font-semibold text-light-green">
                                                 <label for="homeAddress">Home Address<span class="text-red-600">*</span></label>
@@ -484,12 +501,52 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="row">
                                         <div class="col-md-12 mb-2">
-                                            <div class="form-group Montserrat text-sm font-semibold text-light-green">
-                                                <label for="activity">Activity<span class="text-red-600">*</span></label>
-                                                <textarea type="text" class="form-control" cols=5 rows=5 name="activity" id="editActivityDftcHall" placeholder="Enter here your new activity." required></textarea>
+                                            <div class="Montserrat text-sm font-semibold" id="editLetterInputCellDftcHall" style="display: none;">
+                                                <div id="letterInput" class="form-group Montserrat text-sm font-semibold text-light-green">
+                                                    <label for="hasLetter" class="Montserrat text-sm font-semibold">
+                                                        Do you have the letter approved by the President or Campus Administrator to access services? (Exclusive to students)
+                                                    </label>
+                                                    <div class="mt-2">
+                                                        <label class="Montserrat text-sm font-semibold">
+                                                            <input type="radio" name="hasLetterDftcHallEdit" value="Yes"> Yes
+                                                        </label>
+                                                        <label class="Montserrat text-sm font-semibold ml-3">
+                                                            <input type="radio" name="hasLetterDftcHallEdit" value="No" checked> No
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 mb-2">
+                                            <div class="col-md-12">
+                                                <div class="form-group text-light-green">
+                                                    <label for="activity" class="Montserrat text-sm font-semibold">
+                                                        Activity <span class="text-red-600">*</span>
+                                                    </label>
+
+                                                    <!-- Dropdown with predefined options -->
+                                                    <select class="form-control" id="activitySelectDftcHallEdit" name="activitySelected" required>
+                                                        <option value="">Select an activity...</option>
+                                                        <option value="Meeting">Meeting</option>
+                                                        <option value="Workshop">Workshop</option>
+                                                        <option value="Seminar">Seminar</option>
+                                                        <option value="Others">Others</option>
+                                                    </select>
+
+                                                    <!-- Hidden textarea for custom activity -->
+                                                    <textarea
+                                                        class="form-control mt-2"
+                                                        id="activityTextAreaDftcHallEdit"
+                                                        name="customActivity"
+                                                        placeholder="Please describe the custom activity here..."
+                                                        style="display: none;"
+                                                        rows="4"
+                                                    ></textarea>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -507,7 +564,7 @@
                                                 <select name="room_number" id="editRoomNumberDftcHall" class="form-control"  required>
                                                     <option value="">Select Room</option>
                                                         @foreach($rooms as $room)
-                                                            @if($room->room_type == "Hall")
+                                                            @if($room->room_type == "Hall" && ($room->room_status != 'Occupied' && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable'))
                                                                 <option value="{{ $room->id }}">{{ $room->room_number }}</option>
                                                             @endif
                                                         @endforeach
@@ -659,6 +716,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div id="error-messageEditDftcHall" class="alert alert-danger mt-2" style="display: none;">
+
                                 </div>
                                 <div class="row mb-2 justify-end">
                                     <button type="button" class="btn bg-light-green Montserrat text-white hover:bg-dark-green w-fit mr-2" data-bs-toggle="modal" data-bs-target="#dftcTermsEditDftcHall">Submit</button>
@@ -1220,22 +1280,76 @@
             </div>
         </div>
     </div>
-    <script>
-        document.getElementById('modalBodyEditDftcRoom').addEventListener('scroll', function() {
-        const scrollable = this.scrollHeight - this.clientHeight;
+<script>
+    document.getElementById('modalBodyEditDftcRoom').addEventListener('scroll', function() {
+    const scrollable = this.scrollHeight - this.clientHeight;
 
-            if (Math.ceil(this.scrollTop) >= scrollable - 10) {
-                document.getElementById('checkboxContainerEditDftcRoom').style.display = 'block';
-            }
-        });
-    </script>
-    <script>
-        document.getElementById('modalBodyEditDftcHall').addEventListener('scroll', function() {
-        const scrollable = this.scrollHeight - this.clientHeight;
+        if (Math.ceil(this.scrollTop) >= scrollable - 10) {
+            document.getElementById('checkboxContainerEditDftcRoom').style.display = 'block';
+        }
+    });
+</script>
+<script>
+    document.getElementById('modalBodyEditDftcHall').addEventListener('scroll', function() {
+    const scrollable = this.scrollHeight - this.clientHeight;
 
-            if (Math.ceil(this.scrollTop) >= scrollable - 10) {
-                document.getElementById('checkboxContainerEditDftcHall').style.display = 'block';
-            }
+        if (Math.ceil(this.scrollTop) >= scrollable - 10) {
+            document.getElementById('checkboxContainerEditDftcHall').style.display = 'block';
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const activitySelect = document.getElementById("activitySelectDftcHallEdit");
+    const activityTextArea = document.getElementById("activityTextAreaDftcHallEdit");
+
+
+    activitySelect.addEventListener("change", function() {
+        if (activitySelect.value === "Others") {
+
+        activityTextArea.style.display = "block";
+        activityTextArea.required = true;
+        activityTextArea.focus();
+        } else {
+
+        activityTextArea.style.display = "none";
+        activityTextArea.value = "";
+        activityTextArea.required = false;
+        }
+    });
+        activityTextArea.addEventListener("input", function() {
+        activitySelect.value = "Others";
         });
-    </script>
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+    const activitySelect = document.getElementById("activitySelectDftcRoomEdit");
+    const activityTextArea = document.getElementById("activityTextAreaDftcRoomEdit");
+
+
+    activitySelect.addEventListener("change", function() {
+        if (activitySelect.value === "Others") {
+
+        activityTextArea.style.display = "block";
+        activityTextArea.required = true;
+        activityTextArea.focus();
+        } else {
+
+        activityTextArea.style.display = "none";
+        activityTextArea.value = "";
+        activityTextArea.required = false;
+        }
+    });
+    activityTextArea.addEventListener("input", function() {
+        activitySelect.value = "Others";
+    });
+});
+document.addEventListener("DOMContentLoaded", function () {
+    const arrivalInput = document.getElementById("editArrivalDftcRoom");
+    const departureInput = document.getElementById("editDepartureDftcRoom");
+
+    // Automatically set the fixed times
+    arrivalInput.value = "14:00";
+    departureInput.value = "12:00";
+});
+</script>
 @endsection

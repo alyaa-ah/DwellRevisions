@@ -70,14 +70,15 @@ $(document).ready(function() {
     $('#editCheckOutDateDftcHall').prop('disabled', true);
 
     $('#editCheckInDateDftcHall').on('change', function() {
+        $('#editCheckOutDateDftcHall').val('').prop('disabled', true);
+
         var selectedDate = new Date($(this).val());
 
         if ($(this).val()) {
-            $('#editCheckOutDateDftcHall').prop('disabled', false);
-        } else {
-            $('#editCheckOutDateDftcHall').prop('disabled', true);
+            $('#editCheckOutDateDftcHall').prop('disabled', false);  // Enable check-out field if check-in date is set
+            var minCheckOutDate = new Date(selectedDate.getTime());
+            $('#editCheckOutDateDftcHall').attr('min', minCheckOutDate.toISOString().split('T')[0]);
         }
-
         var minCheckOutDate = new Date(selectedDate.getTime());
         $('#editCheckOutDateDftcHall').attr('min', minCheckOutDate.toISOString().split('T')[0]);
     });
@@ -144,6 +145,7 @@ $(document).ready(function() {
         var checkOutDate = new Date($('#editCheckOutDateDftcHall').val());
         var arrival = $('#editArrivalDftcHall').val();
         var departure = $('#editDepartureDftcHall').val();
+        var hasLetter = $('input[name="hasLetterDftcHallEdit"]:checked').val();
         var timerate = 0;
         var timeRateNonHoliday = 0;
         var jservices = 0;
@@ -262,8 +264,9 @@ $(document).ready(function() {
         $('#editAvServicesDftcHall').val(totalAvServices.toFixed(2));
         $('#extrachargeEditDftc').val(wholeTotalTimeLimit.toFixed(2));
 
-        if ($('#editHasLetterDftcHall').val() === "Yes") {
+        if (hasLetter=== "Yes") {
             $('#editTotalAmountDftcHall').val('FREE');
+            return;
         }else{
             $('#editTotalAmountDftcHall').val(totalRate.toFixed(2));
         }
@@ -281,18 +284,64 @@ $(document).ready(function() {
             })
             return;
         }
+        const female = parseInt($('#editNumOfFemalesDftcHall').val(), 10) || 0;
+        const male = parseInt($('#editNumOfMalesDftcHall').val(), 10) || 0;
+
+        if(male + female == 0){
+            $('#dftcTermsEditDftcHall').modal('hide');
+            $('#edit-dftchallbooking-modal').modal('show')
+            $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
+            $('#submitButtonEditDftcHall').attr('disabled', false);
+            setTimeout(function () {
+                $('#error-messageEditDftcHall').fadeOut('slow', function () {
+                    $(this).hide();
+                });
+            }, 3000);
+        return;
+        }
         var numOfFemale = $('#editNumOfFemalesDftcHall').val();
         var numOfMale = $('#editNumOfMalesDftcHall').val();
         if(numOfFemale == 0 && numOfMale == 0){
-            Swal.fire({
-                icon: "error",
-                title: "Error!",
-                text: "You must have at least one female guest or male guest!",
-                showConfirmButton: true,
-            })
+            $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> You must have at least 1 male or female guests!").show();
+                    setTimeout(function () {
+                        $('#error-messageEditDftcHall').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
             $('#edit-dftchallbooking-modal').modal('show');
             $('#dftcTermsEditDftcHall').modal('hide');
             return;
+        }
+        const hasLetter = $('input[name="hasLetterDftcHallEdit"]:checked').val();
+        const totalAmount = $('#editTotalAmountDftcHall').val();
+        const selectedPosition = $('#editPositionDftcHall').val();
+
+        if (selectedPosition === 'Student') {
+            if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
+                $('#dftcTermsEditDftcHall').modal('hide');
+                $('#edit-dftchallbooking-modal').modal('show');
+                $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!!").show();
+                $('#submitButtonEditDftcHall').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageEditDftcHall').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
+        } else {
+            if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
+                $('#dftcTermsEditDftcHall').modal('hide');
+                $('#edit-dftchallbooking-modal').modal('show');
+                $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
+                $('#submitButtonEditDftcHall').attr('disabled', false);
+                setTimeout(function () {
+                    $('#error-messageEditDftcHall').fadeOut('slow', function () {
+                        $(this).hide();
+                    });
+                }, 3000);
+                return;
+            }
         }
         let formData = new FormData($('#edit-dftchall-booking-form')[0]);
         $.ajax({
@@ -313,15 +362,22 @@ $(document).ready(function() {
                         showConfirmButton: true,
                     })
                 }else if(response.message){
-                    var errorMessages = Object.values(response.message).join('<br>');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Pre-reservation validation failed!',
-                        html: errorMessages,
-                        showConfirmButton: true,
-                    });
-                    $('#edit-dftchallbooking-modal').modal('show');
                     $('#dftcTermsEditDftcHall').modal('hide');
+                    $('#edit-dftchallbooking-modal').modal('show');
+                    Swal.close();
+                    let errorMessages = '';
+                    for (let key in response.message) {
+                        if (response.message[key] && Array.isArray(response.message[key])) {
+                            errorMessages += response.message[key].join('<br>') + '<br>';
+                        }
+                    }
+                    $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br>" + errorMessages).show();
+                    setTimeout(function () {
+                        $('#error-messageEditDftcHall').fadeOut('slow', function () {
+                            $(this).hide();
+                        });
+                    }, 3000);
+                    return;
                 }else{
                     Swal.fire({
                     icon: "success",
@@ -371,6 +427,8 @@ function fetchRoomDataEditDftcHallAdminDftc(roomNumber) {
             $('#editCheckOutDateDftcHall').val('');
             $('#editNumOfDaysDftcHall').val('');
             $('#editNumOfNightsDftcHall').val('');
+            $('#editNumOfMaleDftcHall').val('0');
+            $('#editNumOfFemaleDftcHall').val('0');
         }
     });
 }

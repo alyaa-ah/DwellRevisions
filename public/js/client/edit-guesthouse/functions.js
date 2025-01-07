@@ -316,7 +316,6 @@ $(document).ready(function() {
                         });
                     }, 3000);
                     return;
-                    return;
                 }else{
                     Swal.fire({
                     icon: "success",

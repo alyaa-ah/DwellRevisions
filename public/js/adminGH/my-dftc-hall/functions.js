@@ -285,22 +285,22 @@ $(document).ready(function() {
             })
             return;
         }
-        const female = parseInt($('#editNumOfFemaleDftcRoom').val(), 10) || 0;
-        const male = parseInt($('#editNumOfMaleDftcRoom').val(), 10) || 0;
+        const female = parseInt($('#editNumOfFemalesDftcHall').val(), 10) || 0;
+        const male = parseInt($('#editNumOfMalesDftcHall').val(), 10) || 0;
 
         if(male + female == 0){
-            $('#dftcTermsEditDftcRoom').modal('hide');
-            $('#edit-dftcroombooking-modal').modal('show')
-            $('#error-messageEditDftcRoom').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
-            $('#submitButtonEditDftcRoom').attr('disabled', false);
+            $('#dftcTermsEditDftcHall').modal('hide');
+            $('#edit-dftchallbooking-modal').modal('show')
+            $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> Please input number of guest!").show();
+            $('#submitButtonEditDftcHall').attr('disabled', false);
             setTimeout(function () {
-                $('#error-messageEditDftcRoom').fadeOut('slow', function () {
+                $('#error-messageEditDftcHall').fadeOut('slow', function () {
                     $(this).hide();
                 });
             }, 3000);
         return;
         }
-        var numOfFemale = $('#editNumOfFemaleDftcHall').val();
+        var numOfFemale = $('#editNumOfFemalesDftcHall').val();
         var numOfMale = $('#editNumOfMalesDftcHall').val();
         if(numOfFemale == 0 && numOfMale == 0){
             $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> You must have at least 1 male or female guests!").show();
@@ -313,18 +313,18 @@ $(document).ready(function() {
             $('#dftcTermsEditDftcHall').modal('hide');
             return;
         }
-        const hasLetter = $('input[name="hasLetterDftcRoomEdit"]:checked').val();
-        const totalAmount = $('#editTotalAmountDftcRoom').val();
-        const selectedPosition = $('#editPositionDftcRoom').val();
+        const hasLetter = $('input[name="hasLetterDftcHallEdit"]:checked').val();
+        const totalAmount = $('#editTotalAmountDftcHall').val();
+        const selectedPosition = $('#editPositionDftcHall').val();
 
         if (selectedPosition === 'Student') {
             if (hasLetter === "No" && (totalAmount === '0.00' || isNaN(parseFloat(totalAmount)))) {
-                $('#dftcTermsEditDftcRoom').modal('hide');
-                $('#edit-dftcroombooking-modal').modal('show');
-                $('#error-messageEditDftcRoom').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!!").show();
-                $('#submitButtonEditDftcRoom').attr('disabled', false);
+                $('#dftcTermsEditDftcHall').modal('hide');
+                $('#edit-dftchallbooking-modal').modal('show');
+                $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00 if there is no letter approved!!").show();
+                $('#submitButtonEditDftcHall').attr('disabled', false);
                 setTimeout(function () {
-                    $('#error-messageEditDftcRoom').fadeOut('slow', function () {
+                    $('#error-messageEditDftcHall').fadeOut('slow', function () {
                         $(this).hide();
                     });
                 }, 3000);
@@ -332,12 +332,12 @@ $(document).ready(function() {
             }
         } else {
             if (totalAmount === '0.00' || isNaN(parseFloat(totalAmount))) {
-                $('#dftcTermsEditDftcRoom').modal('hide');
-                $('#edit-dftcroombooking-modal').modal('show');
-                $('#error-messageEditDftcRoom').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
-                $('#submitButtonEditDftcRoom').attr('disabled', false);
+                $('#dftcTermsEditDftcHall').modal('hide');
+                $('#edit-dftchallbooking-modal').modal('show');
+                $('#error-messageEditDftcHall').html("<strong>Validation Error!</strong> <br><br> Total amount should not be 0.00!").show();
+                $('#submitButtonEditDftcHall').attr('disabled', false);
                 setTimeout(function () {
-                    $('#error-messageEditDftcRoom').fadeOut('slow', function () {
+                    $('#error-messageEditDftcHall').fadeOut('slow', function () {
                         $(this).hide();
                     });
                 }, 3000);

@@ -79,7 +79,7 @@
                         <span class="Montserrat text-sm font-bold textGradient text-left">Guest House | </span>
                         <span class="Montserrat text-sm font-semibold text-light-green text-left">
                             Status:
-                            @if($bookingCount > 0)
+                            @if($bookingCount > 0 && $room->room_status != "Occupied")
                                 <span class="inline-flex items-center">
                                     <i class="fa fa-calendar-check-o" style="color: orange; margin-right: 5px;"></i>
                                     <span style="color: orange; font-weight: bold;">Pre-Booked</span>
@@ -89,13 +89,17 @@
                                     <i class="fa fa-check-circle" style="color: green; margin-right: 5px;"></i>
                                     <span style="color: green; font-weight: bold;">Available</span>
                                 </span>
+                            @elseif ($room->room_status === 'Occupied')
+                                <span class="inline-flex items-center">
+                                    <i class="fa fa-lock" style="color: #6C757D; margin-right: 5px;"></i>
+                                    <span style="color: #6C757D; font-weight: bold;">Occupied</span>
+                                </span>
                             @else
                                 <span class="inline-flex items-center">
                                     <i class="fa fa-times-circle" style="color: red; margin-right: 5px;"></i>
                                     <span style="color: red; font-weight: bold;">Unavailable</span>
                                 </span>
                             @endif
-
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <p class="Montserrat text-light-green text-sm font-semibold" style="text-align: justify;">{{ $room->room_description }}</p><br>
@@ -203,7 +207,7 @@
                             <div class="col-md-12">
                                 <p class="Montserrat text-light-green text-sm font-medium">Rate: {{ $room->room_rate }} Head</p>
                                 @if(session()->has('loggedInCustomer') || session()->has('loggedInSuperAdmin') || session()->has('loggedInAdminDftc'))
-                                    @if($room->room_status != 'Unavailable' && $room->room_status != 'On-Renovation')
+                                    @if($room->room_status != 'Unavailable' && $room->room_status != 'On-Renovation' && $room->room_status != 'Occupied')
                                         <div class="d-flex justify-content-end">
                                             <button type="button" id="guestHouse-booking"
                                                 onclick="bookGuestHouse('{{ addslashes(json_encode($room)) }}', '{{ addslashes(json_encode(session('loggedInAdminDftc'))) }}')"
