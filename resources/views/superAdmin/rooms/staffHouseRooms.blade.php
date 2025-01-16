@@ -31,7 +31,7 @@
         </div>
     </div>
 </div>
-@foreach($staffHouse as $index => $room)
+@foreach($staffHouseRooms as $index => $room)
     <div class="container z-1 mt-3 mb-3 d-flex flex-column justify-content-center align-items-center">
         <div class="card lg:w-9/12 md:w-full sm:w-full">
             <div class="card-body">
@@ -171,6 +171,11 @@
                                                     @foreach ($filteredFeedbacks as $feedback)
                                                         @php
                                                             $firstName = explode(' ', $feedback->fullname)[0];
+                                                            if ($feedback->anonymous === 'Yes') {
+                                                                $firstName = substr($firstName, 0, 2) . str_repeat('*', strlen($firstName) - 2);
+                                                            }else if ($feedback->anonymous === 'No'){
+                                                                $firstName = explode(' ', $feedback->fullname)[0];
+                                                            }
                                                             $rating = (int)$feedback->ratings;
                                                         @endphp
                                                         <div class="feedback-item" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">

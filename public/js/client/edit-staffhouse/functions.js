@@ -87,19 +87,38 @@ $(document).ready(function() {
     $('#editCheckInDateStaffHouse').attr('min', minDateString);
     $('#editCheckOutDateStaffHouse').prop('disabled', true);
 
-    $('#editCheckInDateStaffHouse').on('change', function() {
-        $('#editCheckOutDateStaffHouse').val('').prop('disabled', true);
+document.getElementById('editCheckInDateStaffHouse').addEventListener('change', function() {
+    const selectedCheckInDate = this.value;
 
-        var selectedDate = new Date($(this).val());
+    if (selectedCheckInDate) {
 
-        if ($(this).val()) {
-            $('#editCheckOutDateStaffHouse').prop('disabled', false);  // Enable check-out field if check-in date is set
-            var minCheckOutDate = new Date(selectedDate.getTime());
-            $('#editCheckOutDateStaffHouse').attr('min', minCheckOutDate.toISOString().split('T')[0]);
+        const checkInDate = new Date(selectedCheckInDate);
+        const minCheckOutDate = new Date(checkInDate);
+        minCheckOutDate.setDate(checkInDate.getDate() + 1);
+        const minCheckOutDateString = minCheckOutDate.toISOString().split('T')[0];
+        const checkOutDateInput = document.getElementById('editCheckOutDateStaffHouse');
+
+        checkOutDateInput.disabled = false;
+        checkOutDateInput.setAttribute('min', minCheckOutDateString);
+
+        checkOutDateInput.value = '';
+
+    } else {
+        const checkOutDateInput = document.getElementById('editCheckOutDateStaffHouse');
+        checkOutDateInput.value = '';
+        checkOutDateInput.disabled = true;
+    }
+});
+
+    document.getElementById('editCheckOutDateStaffHouse').addEventListener('change', function() {
+        const selectedCheckOutDate = this.value;
+        const checkInDate = document.getElementById('editCheckInDateStaffHouse').value;
+
+        if (selectedCheckOutDate && selectedCheckOutDate === checkInDate) {
+            alert("Check-out date cannot be the same as check-in date!");
+            this.value = '';
         }
-        var minCheckOutDate = new Date(selectedDate.getTime());
-        $('#editCheckOutDateStaffHouse').attr('min', minCheckOutDate.toISOString().split('T')[0]);
-    });
+});
     $('#editCheckInDateStaffHouse, #editCheckOutDateStaffHouse, #editArrivalStaffHouse, #editDepartureStaffHouse').on('change', editComputeDaysAndNights);
     $('#editCheckInDateStaffHouse').on('change', function() {
         var selectedDate = new Date($(this).val());

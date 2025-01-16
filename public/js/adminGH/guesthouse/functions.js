@@ -69,6 +69,7 @@ function viewGuestHouseBookingAdminGH(booking){
 }
 function reviewGuestHouseBookingAdminGH(data){
     $('#booking_status_id').val(data.id);
+    $('#room_status_id').val(data.room_id);
     $('#reviewModal').modal('show');
 }
 function checkGuestHouseBookingAdminGH(booking) {
@@ -83,7 +84,7 @@ function checkGuestHouseBookingAdminGH(booking) {
 
         return `${day}/${month}/${year}`;
     }
-
+    $('#room_check_id').val(data.room_id);
     $('#booking_check_id').val(data.id);
     $('#originalDate').val(data.check_out_date);
     $('#originalCheckIn').val(formatDateToDDMMYYYY(data.check_in_date));
@@ -117,6 +118,14 @@ $(document).ready(function(){
                         icon: "error",
                         title: "Error!",
                         text: "Could not change status at this time!",
+                        showConfirmButton: true,
+                    })
+                }else if(response.message){
+                    var errorMessages = Object.values(response.message).join('<br>');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation failed!',
+                        html: errorMessages,
                         showConfirmButton: true,
                     })
                 }else if(response == 404){
@@ -174,6 +183,13 @@ $(document).ready(function(){
                         text: "Could not change status at this time!",
                         showConfirmButton: true,
                     })
+                }else if(response == 500){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error failed!',
+                        text: 'Could not change status at this time!',
+                        showConfirmButton: true,
+                    })
                 }else if(response == 404){
                     Swal.fire({
                         icon: "error",
@@ -187,11 +203,18 @@ $(document).ready(function(){
                     Swal.fire({
                         icon: "success",
                         title: "All set!",
-                        text: "Guest House pre-reservation successfully changed status!",
+                        text: "Successfully added remarks!",
                         showConfirmButton: true,
                     }).then(function(){
                         window.location.reload();
                     });
+                }else if(response == 400){
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error!",
+                        text: "Current date must be within the check-in and check-out date range!",
+                        showConfirmButton: true,
+                    })
                 }else{
                     Swal.fire({
                         icon: "error",

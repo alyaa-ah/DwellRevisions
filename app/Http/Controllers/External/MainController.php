@@ -287,7 +287,7 @@ class MainController extends Controller
         $facilityId = Facility::where('facility_name', 'DFTC')->value('id');
         $DFTChalls = Room::where('facility_id', $facilityId)->get();
         $now = Carbon::now('Asia/Manila');
-        $bookings = StaffHouseBooking::where('status', 'Reviewed')->get()
+        $bookings = DftcBooking::where('status', 'Reviewed')->get()
         ->filter(function ($booking) use ($now) {
             try {
                 $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
@@ -302,7 +302,7 @@ class MainController extends Controller
             }
             return false;
         });
-        $feedbacks = StaffHouseBooking::where('status', 'Reviewed')
+        $feedbacks = DftcBooking::where('status', 'Reviewed')
         ->get()
         ->filter(function ($booking) use ($now) {
             try {

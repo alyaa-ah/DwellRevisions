@@ -129,7 +129,6 @@
                                         <select name="room_status" id="room_status" class="form-control">
                                             <option value="">Select Room Status</option>
                                             <option value="Available">Available</option>
-                                            <option value="Unavailable">Unavailable</option>
                                             <option value="On-Renovation">On-Renovation</option>
                                             <option value="Occupied">Occupied</option>
                                         </select>

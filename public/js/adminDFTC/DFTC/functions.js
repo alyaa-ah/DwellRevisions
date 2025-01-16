@@ -65,6 +65,7 @@ function viewPendingDftcBookingAdminDftc(data){
 }
 function reviewDftcBookingAdmin(data){
     $('#booking_status_id').val(data.id);
+    $('#room_status_id').val(data.room_id);
     $('#reviewModal').modal('show');
 }
 function checkDftcBookingAdminDFTC(booking) {
@@ -79,7 +80,7 @@ function checkDftcBookingAdminDFTC(booking) {
 
         return `${day}/${month}/${year}`;
     }
-
+    $('#room_check_id').val(data.room_id);
     $('#booking_check_id').val(data.id);
     $('#originalDate').val(data.check_out_date);
     $('#originalCheckIn').val(formatDateToDDMMYYYY(data.check_in_date));
@@ -112,6 +113,14 @@ $(document).ready(function(){
                         icon: "error",
                         title: "Error!",
                         text: "Could not change status at this time!",
+                        showConfirmButton: true,
+                    })
+                }else if(response.message){
+                    var errorMessages = Object.values(response.message).join('<br>');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Registration validation failed!',
+                        html: errorMessages,
                         showConfirmButton: true,
                     })
                 }else if(response == 404){
@@ -184,11 +193,18 @@ $(document).ready(function(){
                     Swal.fire({
                         icon: "success",
                         title: "All set!",
-                        text: "Staff House pre-reservation successfully changed check out!",
+                        text: "Successfully added remarks!",
                         showConfirmButton: true,
                     }).then(function(){
                         window.location.reload();
                     });
+                }else if(response == 400){
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error!",
+                        text: "Current date must be within the check-in and check-out date range!",
+                        showConfirmButton: true,
+                    })
                 }else{
                     Swal.fire({
                         icon: "error",

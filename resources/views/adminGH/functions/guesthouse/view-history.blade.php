@@ -82,11 +82,11 @@
                         <table class="table table-responsive table-striped table-hover" id="guestHouseHistoryAdminGH">
                             <thead>
                                 <th width="25%">Full Name</th>
-                                <th width="20%">Room Name</th>
+                                <th width="15%">Room Name</th>
                                 <th width="15%">Check-in</th>
                                 <th width="15%">Check-out</th>
-                                <th width="5%">Amount</th>
-                                <th width="20%" class="text-center">Action Taken</th>
+                                <th width="10%" class="text-center">Status</th>
+                                <th width="15%" class="text-center">Action Taken</th>
                             </thead>
                             <tbody>
                                 @foreach ($bookings as $booking)
@@ -95,12 +95,17 @@
                                         <td>{{ $booking->room_number}}</td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
-                                        @if ($booking->total_amount == "0.00" && $booking->position == "Student")
-                                            <td>FREE</td>
-                                        @else
-                                            <td>{{ $booking->total_amount }}</td>
-                                        @endif
-
+                                        <td class="status-cell">
+                                            @if ($booking->status == 'Pending Review')
+                                                <span class="status-badge pending">
+                                                    <i class="fas fa-clock"></i> Pending
+                                                </span>
+                                            @else
+                                                <span class="status-badge approved">
+                                                    <i class="fas fa-check-circle"></i> Approved
+                                                </span>
+                                            @endif
+                                        </td>
                                         <td class="text-center">
                                             <button type="button" onclick="viewGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
                                         </td>
@@ -174,7 +179,7 @@
                                 <div class="col-md-4 mb-2">
                                     <p id="agencyGuestHouse-modal"></p>
                                 </div>
-                            </div>                            
+                            </div>
                             <!-- Booking Information -->
                             <div class="row">
                                 <div class=" bg-gray-100 text-light-green text-center text-xl font-semibold py-2">
@@ -201,7 +206,7 @@
                                 </div>
                                 <div class="col-md-10 mb-2">
                                     <p id="activityGuestHouse-modal"></p>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="row py-1 border-top border-bottom">
                                 <div class="col-md-2 mb-2">
@@ -209,7 +214,7 @@
                                 </div>
                                 <div class="col-md-10 mb-2">
                                     <p id="roomNumberGuestHouse-modal"></p>
-                                </div>                                
+                                </div>
                             </div>
                             <div class="row bg-gray-100 py-1 border-top border-bottom">
                                 <div class="col-md-2 mb-2">
@@ -320,7 +325,7 @@
                                 <div class="text-light-green text-center text-xl font-semibold py-2">
                                     Rates and Computation
                                 </div>
-                            </div>  
+                            </div>
                             <div class="row py-1 border-top border-bottom">
                                 <div class="col-md-2 mb-2">
                                     <p class="h6">Rate</p>

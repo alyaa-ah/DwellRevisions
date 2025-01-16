@@ -49,18 +49,25 @@ $(document).ready(function() {
     $('#checkInDate').attr('min', minDateString);
     $('#checkOutDate').prop('disabled', true);
 
-    $('#checkInDate').on('change', function() {
-        $('#checkOutDate').val('').prop('disabled', true);
+    $('#checkInDate').on('change', function () {
+        const selectedCheckInDate = $(this).val();
 
-        var selectedDate = new Date($(this).val());
+        if (selectedCheckInDate) {
+            // Parse the selected check-in date
+            const checkInDate = new Date(selectedCheckInDate);
 
-        if ($(this).val()) {
-            $('#checkOutDate').prop('disabled', false);  // Enable check-out field if check-in date is set
-            var minCheckOutDate = new Date(selectedDate.getTime());
-            $('#checkOutDate').attr('min', minCheckOutDate.toISOString().split('T')[0]);
+            // Set the minimum check-out date (1 day after check-in)
+            const minCheckOutDate = new Date(checkInDate);
+            minCheckOutDate.setDate(checkInDate.getDate() + 1);
+
+            // Enable and update the check-out field
+            const minCheckOutDateString = minCheckOutDate.toISOString().split('T')[0];
+            $('#checkOutDate').prop('disabled', false).attr('min', minCheckOutDateString);
+        } else {
+            // Reset and disable the check-out field if no check-in date is selected
+            $('#checkOutDate').val('').prop('disabled', true);
         }
-        var minCheckOutDate = new Date(selectedDate.getTime());
-        $('#checkOutDate').attr('min', minCheckOutDate.toISOString().split('T')[0]);
+
     });
     $('#checkInDate, #checkOutDate, #arrival, #departure').on('change', computeDaysAndNights);
 

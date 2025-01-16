@@ -19,7 +19,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('css/styles1.css') }}">
     <link rel="stylesheet" href="{{ url('css/styles/main/styles.css') }}">
     <title>Dwell</title>
@@ -363,10 +363,8 @@
                                         <img src="{{ asset('icons/uk.png') }}" alt="UK" style="width: 18px;">UK (+44)</a></li>
                                     <li><a class="dropdown-item" href="#" data-value="+61" data-flag="{{ asset('icons/aus.png') }}">
                                         <img src="{{ asset('icons/aus.png') }}" alt="Australia" style="width: 18px;">AU (+61)</a></li>
-                                    <li><a class="dropdown-item" href="#" data-value="+81" data-flag="{{ asset('icons/japan.png') }}">
-                                        <img src="{{ asset('icons/japan.png') }}" alt="Japan" style="width: 18px;">JP (+81)</a></li>
                                     <li><a class="dropdown-item" href="#" data-value="+1" data-flag="{{ asset('icons/canada.png') }}">
-                                        <img src="{{ asset('icons/canada.png') }}" alt="Canada" style="width: 18px;">CA (+1)</a></li>
+                                        <img src="{{ asset('icons/canada.png') }}" alt="Canada" style="width: 18px;">CA (+81)</a></li>
                                 </ul>
                             </div>
 

@@ -261,7 +261,7 @@
                                     <div class="col-md-12 mb-2">
                                         <div class="form-group text-light-green">
                                             <label for="bedding" class="Montserrat text-sm font-semibold">Additional Bedding <span class="">(200 pesos per bedding)</span></label><br>
-                                            <input type="number" class="form-control" name="bedding" id="beddingStaffHouse" placeholder="Optional" value="0">
+                                            <input type="number" class="form-control" name="bedding" id="beddingStaffHouse" placeholder="Optional" value="0" min="0" max="3">
                                         </div>
                                     </div>
                                 </div>
@@ -400,8 +400,8 @@ document.addEventListener('DOMContentLoaded', function () {
         let numOfMales = parseInt(numOfMaleInput.value, 10);
         if (isNaN(numOfMales) || numOfMales < 0) {
         numOfMales = 0;
-        } else if (numOfMales > 10) {
-        numOfMales = 10;
+        } else if (numOfMales > 8) {
+        numOfMales = 8;
         numOfMaleInput.value = numOfMales;
         }
         maleGuestsContainer.innerHTML = '';
@@ -425,8 +425,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (isNaN(numOfFemales) || numOfFemales < 0) {
             numOfFemales = 0;
-        } else if (numOfFemales > 10) {
-            numOfFemales = 10;
+        } else if (numOfFemales > 8) {
+            numOfFemales = 8;
             numOfFemaleInput.value = numOfFemales;
         }
 
@@ -517,6 +517,33 @@ document.addEventListener('DOMContentLoaded', function () {
         activitySelect.value = "Others";
     });
 });
+document.getElementById('beddingStaffHouse').addEventListener('input', function (e) {
+        const input = e.target;
+        const min = parseInt(input.min, 10);
+        const max = parseInt(input.max, 10);
+        let value = parseInt(input.value, 10);
+
+        // Adjust value if it's out of range
+        if (value < min) {
+            input.value = min;
+        } else if (value > max) {
+            input.value = max;
+        }
+    });
+    const roomNumberSelect = document.getElementById('room_numberStaffHouse');
+    const checkInDate = document.getElementById('checkInDateStaffHouse');
+    const checkOutDate = document.getElementById('checkOutDateStaffHouse');
+    const numOfMale = document.getElementById('numOfMaleStaffHouse');
+    const numOfFemale = document.getElementById('numOfFemaleStaffHouse');
+
+    function toggleFields() {
+        const isRoomSelected = roomNumberSelect.value !== '';
+        checkInDate.disabled = !isRoomSelected;
+        numOfMale.disabled = !isRoomSelected;
+        numOfFemale.disabled = !isRoomSelected;
+    }
+    roomNumberSelect.addEventListener('change', toggleFields);
+    toggleFields();
 </script>
 <script src="{{ url('js/client/booking-staffhouse/payment.js') }}"></script>
 @endsection

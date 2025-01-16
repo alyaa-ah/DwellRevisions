@@ -433,8 +433,8 @@ class ClientBookingController extends Controller
             $dftcBooking->room_number = $room->room_number;
             $dftcBooking->email = $request->email;
             $dftcBooking->activity = ucfirst($finalActivity);
-            $dftcBooking->number_of_days = $request->numberOfDays;
-            $dftcBooking->number_of_nights = $request->numberOfNights;
+            $dftcBooking->number_of_days = $request->numberOfNights;
+            $dftcBooking->number_of_nights = $request->numberOfDays;
             $dftcBooking->check_in_date = $checkInDate;
             $dftcBooking->check_out_date = $checkOutDate;
             $dftcBooking->arrival = $arrival;
@@ -956,8 +956,8 @@ class ClientBookingController extends Controller
                 $dftcHallBooking->update([
                     'room_id' => $room->id,
                     'activity' => ucfirst($finalActivity),
-                    'number_of_days' => $request->numberOfDays,
-                    'number_of_nights' => $request->numberOfNights,
+                    'number_of_days' => $request->numberOfNights,
+                    'number_of_nights' => $request->numberOfDays,
                     'check_in_date' => $checkInDate,
                     'check_out_date' => $checkOutDate,
                     'arrival' => $arrival,

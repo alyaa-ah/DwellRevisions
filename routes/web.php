@@ -437,10 +437,11 @@ Route::group(['middleware' => 'LoginCheckCustomer'], function () {
     Route::controller(ClientMainController::class)->group(function(){
         Route::get('/client/view-home', 'goToHome');
         Route::get('/client/view-dashboard', 'goToDashboard');
-        Route::get('/client/view-dashboard-staffhouse', 'goToDashboardStaffHouse');
+        Route::get('/client/view-guesthouse-ratings', 'goToRatingsGuestHouse');
+        Route::get('/client/view-staffhouse-ratings', 'goToRatingsStaffHouse');
         Route::get('/client/view-guesthouse-rooms', 'goToGuestHouseRooms');
         Route::get('/client/view-staffhouse-rooms', 'goToStaffHouseRooms');
-        Route::get('/client/view-dashboard-DFTC','goToDashboardDftc');
+        Route::get('/client/view-dftc-ratings','goToRatingsDftc');
         Route::get('/client/view-DFTC-rooms', 'goToDftcRooms');
         Route::get('/client/view-DFTC-halls', 'goToDftcHalls');
         Route::get('/client/view-guesthouse-pre-reservation-form', 'goToGuestHousePreBooking');

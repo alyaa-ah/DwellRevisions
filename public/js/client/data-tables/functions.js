@@ -10,7 +10,15 @@ $(function () {
                 { name: 'sm', width: 768 },
                 { name: 'xs', width: 576 }
             ]
-        }
+        },
+        "order": [[6, 'desc']],
+        "columnDefs": [
+            {
+                "targets": 6,
+                "visible": false,
+                "searchable": false
+            }
+        ]
     });
 });
 $(function () {
@@ -25,7 +33,15 @@ $(function () {
                 { name: 'sm', width: 768 },
                 { name: 'xs', width: 576 }
             ]
-        }
+        },
+        "order": [[6, 'desc']],
+        "columnDefs": [
+            {
+                "targets": 6,
+                "visible": false,
+                "searchable": false
+            }
+        ]
     });
 });
 $(function () {
@@ -253,5 +269,74 @@ $(function () {
                 { name: 'xs', width: 576 }
             ]
         }
+    });
+});
+$(function () {
+    var table = $('#guestHouseDashboardTable').dataTable({
+        "aLengthMenu": [[5, 15, 25, 50, 75 , 100, -1],[5, 15, 25, 50, 75 , 100, "All"]],
+        "pageLength": 5,
+        "responsive": {
+            breakpoints: [
+                { name: 'xl', width: Infinity },
+                { name: 'lg', width: 1200 },
+                { name: 'md', width: 992 },
+                { name: 'sm', width: 768 },
+                { name: 'xs', width: 576 }
+            ]
+        },
+        "columnDefs": [
+            {
+                "targets": 3,
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[3, 'desc']],
+    });
+});
+$(function () {
+    var table = $('#staffHouseDashboardTable').dataTable({
+        "aLengthMenu": [[5, 15, 25, 50, 75 , 100, -1],[5, 15, 25, 50, 75 , 100, "All"]],
+        "pageLength": 5,
+        "responsive": {
+            breakpoints: [
+                { name: 'xl', width: Infinity },
+                { name: 'lg', width: 1200 },
+                { name: 'md', width: 992 },
+                { name: 'sm', width: 768 },
+                { name: 'xs', width: 576 }
+            ]
+        },
+        "columnDefs": [
+            {
+                "targets": 3,
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[3, 'desc']],
+    });
+});
+$(function () {
+    var table = $('#dftcDashboardTable').dataTable({
+        "aLengthMenu": [[5, 15, 25, 50, 75 , 100, -1],[5, 15, 25, 50, 75 , 100, "All"]],
+        "pageLength": 5,
+        "responsive": {
+            breakpoints: [
+                { name: 'xl', width: Infinity },
+                { name: 'lg', width: 1200 },
+                { name: 'md', width: 992 },
+                { name: 'sm', width: 768 },
+                { name: 'xs', width: 576 }
+            ]
+        },
+        "columnDefs": [
+            {
+                "targets": 3,
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        "order": [[3, 'desc']],
     });
 });

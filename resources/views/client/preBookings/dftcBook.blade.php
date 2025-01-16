@@ -387,6 +387,20 @@ document.addEventListener("DOMContentLoaded", function() {
        arrivalInput.value = "14:00";
        departureInput.value = "12:00";
    });
-</script>
+   const roomNumberSelect = document.getElementById('room_numberDftc');
+    const checkInDate = document.getElementById('checkInDateDftc');
+    const checkOutDate = document.getElementById('checkOutDateDftc');
+    const numOfMale = document.getElementById('numOfMaleDftc');
+    const numOfFemale = document.getElementById('numOfFemaleDftc');
 
+    function toggleFields() {
+        const isRoomSelected = roomNumberSelect.value !== '';
+        checkInDate.disabled = !isRoomSelected;
+        numOfMale.disabled = !isRoomSelected;
+        numOfFemale.disabled = !isRoomSelected;
+    }
+    roomNumberSelect.addEventListener('change', toggleFields);
+    toggleFields();
+
+</script>
 @endsection

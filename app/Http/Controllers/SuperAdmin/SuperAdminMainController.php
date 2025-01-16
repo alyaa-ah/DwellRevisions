@@ -107,10 +107,11 @@ class SuperAdminMainController extends Controller
             return $booking;
         });
         foreach ($staffHouseRooms as $room) {
-            $room->averageRating = $feedbacks->where('room_id', $room->id)->avg('ratings') ?? 0;
-
+            $roomFeedbacks = $feedbacks->where('room_id', $room->id);
+            $room->averageRating = $roomFeedbacks->avg('ratings') ?? 0;
         }
-        return view('superAdmin.rooms.staffHouseRooms', ['staffHouse' => $staffHouse, 'bookings' => $bookings, 'feedbacks' => $feedbacks]);
+
+        return view('superAdmin.rooms.staffHouseRooms', ['staffHouseRooms' => $staffHouseRooms, 'bookings' => $bookings, 'feedbacks' => $feedbacks]);
     }
     public function goToDftcRooms(){
         $facilityId = Facility::where('facility_name', 'DFTC')->value('id');

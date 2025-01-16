@@ -174,6 +174,11 @@
                                                 @foreach ($filteredFeedbacks as $feedback)
                                                     @php
                                                         $firstName = explode(' ', $feedback->fullname)[0];
+                                                        if ($feedback->anonymous === 'Yes') {
+                                                            $firstName = substr($firstName, 0, 2) . str_repeat('*', strlen($firstName) - 2);
+                                                        }else if ($feedback->anonymous === 'No'){
+                                                            $firstName = explode(' ', $feedback->fullname)[0];
+                                                        }
                                                         $rating = (int)$feedback->ratings;
                                                     @endphp
                                                     <div class="feedback-item" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">

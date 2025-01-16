@@ -40,6 +40,7 @@ class GuestHouseBooking extends Model
             'videoke_rent',
             'additional_bedding',
             'reason',
+            'or_number',
             'created_at',
             'updated_at'
     ];

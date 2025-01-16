@@ -38,6 +38,7 @@ class DftcBooking extends Model
             'special_request',
             'total_lodgers',
             'reason',
+            'or_number',
             'created_at',
             'updated_at'
     ];

@@ -25,7 +25,14 @@ $(function () {
                 { name: 'sm', width: 768 },
                 { name: 'xs', width: 576 }
             ]
-        }
+        },
+        "order": [[6, 'desc']],
+        "columnDefs": [
+            {
+                "targets": 6,
+                "visible": false
+            }
+        ]
     });
 });
 $(function () {
@@ -45,15 +52,10 @@ $(function () {
             "url": "/guestHousePendingBookingRefresh",
             "type": "GET",
             "dataSrc": function (json) {
-            // Log the entire response to the console
-            console.log('Full Response:', json);
-
-            // Log the 'data' property from the response
-            console.log('Data:', json.data);
-
-            // Return the data to DataTables
-            return json.data;
-        }
+                console.log('Full Response:', json);
+                console.log('Data:', json.data);
+                return json.data;
+            }
         },
         "columns": [
             { "data": "fullname" },
@@ -71,8 +73,13 @@ $(function () {
                 "defaultContent": '<button type="button" class="btn btn-info view-btn"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button> <button type="button" class="btn btn-warning review-btn"><i class="fa-solid fa-book" style="color: #000000;"></i></button>',
                 "orderable": false,
                 "class": "text-center"
+            },
+            {
+                "data": "GH_number",
+                "visible": false  // Hide the GH_number column
             }
         ],
+        "order": [[6, 'desc']],  // Sort by GH_number in descending order
         "autoWidth": false,
         "processing": true,
         "serverSide": false
@@ -81,7 +88,6 @@ $(function () {
     setInterval(function() {
         table.ajax.reload(null, false);
     }, 5000);
-
 
     $('#guestHousePendingBookingTableAdminGH').on('click', '.view-btn', function() {
         var data = table.row($(this).closest('tr')).data();
@@ -93,6 +99,7 @@ $(function () {
         reviewGuestHouseBookingAdminGH(data);
     });
 });
+
 
 $(function () {
     var table = $('#guestHouseHistoryAdminGH').dataTable({

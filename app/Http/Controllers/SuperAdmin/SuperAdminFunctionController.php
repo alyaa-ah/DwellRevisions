@@ -511,7 +511,7 @@ class SuperAdminFunctionController extends Controller
         ]);
         if ($request->filled('username') && $request->username !== $client->username) {
             $validator->addRules([
-                'username' => 'required|min:8|max:30|unique:clients,username',
+                'username' => 'required|min:6|max:30|unique:clients,username',
             ]);
         }
         if ($validator->fails()) {

@@ -14,6 +14,11 @@
                         </a>
                     </li>
                     <li class="border-bottom w-full">
+                        <a href="{{ url('/client/view-guesthouse-ratings') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('client/view-guesthouse-ratings') || Request::is('client/view-staffhouse-ratings') || Request::is('client/view-DFTC-ratings') ? 'bg-dark-green text-dark-white' : '' }}"> <i class="fas fa-star"></i>
+                            <span class="ms-1 d-none d-sm-inline">RATINGS</span>
+                        </a>
+                    </li>
+                    <li class="border-bottom w-full">
                         <a href="{{ url('/client/view-guesthouse-prereservations') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('client/view-guesthouse-prereservations') || Request::is('client/view-staffhouse-prereservations') || Request::is('client/view-DFTC-prereservations') ? 'bg-dark-green text-dark-white' : '' }}">
                             <i class="fas fa-calendar-alt"></i>
                             <span class="ms-1 d-none d-sm-inline">PRE-BOOKINGS</span>
@@ -79,6 +84,7 @@
                                     <th width="15%" class="text-center">Status</th>
                                     <th width="5%">Amount</th>
                                     <th width="20%" class="text-center">Action Taken</th>
+                                    <th>GH_number</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -108,14 +114,15 @@
                                         <td class="text-center">
                                             <button type="button" onclick="viewGuestHouseBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
                                                 @if ($booking->status == 'Pending Review')
-                                                <button type="button" onclick="editGuestHouseBooking('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;"></i></button>
-                                                @else
+                                                    <button type="button" onclick="editGuestHouseBooking('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: black;"></i></button>
                                                     <button id="guesthouse-generatepdf-client" type="button" onclick="generateClientPdfGuestHouseBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-success"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></button>
+                                                @else
                                                 @endif
                                                 @if ($booking->canCancel)
                                                     <button type="button" onclick="cancelGuestHouseBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-danger"><i class="fa-solid fa-xmark" style="color: #000000;"></i></i></button>
                                                 @endif
                                         </td>
+                                        <td>{{ $booking->GH_number }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -882,5 +889,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+const roomNumberSelect = document.getElementById('editRoomNumberGuestHouse');
+    const checkInDate = document.getElementById('editCheckInDateGuestHouse');
+    const checkOutDate = document.getElementById('editCheckOutDateGuestHouse');
+    const numOfMale = document.getElementById('editNumOfMaleGuestHouse');
+    const numOfFemale = document.getElementById('editNumOfFemaleGuestHouse');
+
+    function toggleFields() {
+        const isRoomSelected = roomNumberSelect.value !== '';
+        checkInDate.disabled = !isRoomSelected;
+        numOfMale.disabled = !isRoomSelected;
+        numOfFemale.disabled = !isRoomSelected;
+    }
+    roomNumberSelect.addEventListener('change', toggleFields);
+    toggleFields();
 </script>
 @endsection

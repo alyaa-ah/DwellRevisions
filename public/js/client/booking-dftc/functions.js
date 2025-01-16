@@ -31,7 +31,7 @@ function bookDftc(room, user) {
 }
 
 $(document).ready(function() {
-    function getCurrentPhilippineTime() {
+    function getCurrentPhilippineTimeDftc() {
         var now = new Date();
         var utcOffset = now.getTimezoneOffset() / 60;
         var philippineOffset = 8;
@@ -39,7 +39,7 @@ $(document).ready(function() {
         return philippineTime;
     }
 
-    var today = getCurrentPhilippineTime();
+    var today = getCurrentPhilippineTimeDftc();
     var minDate = new Date(today.getTime());
     minDate.setDate(today.getDate() + 14);
 
@@ -49,21 +49,39 @@ $(document).ready(function() {
     $('#checkInDateDftc').attr('min', minDateString);
     $('#checkOutDateDftc').prop('disabled', true);
 
-    $('#checkInDateDftc').on('change', function() {
-        $('#checkOutDateDftc').val('').prop('disabled', true);
+    document.getElementById('checkInDateDftc').addEventListener('change', function() {
+    const selectedCheckInDate = this.value;
 
-        var selectedDate = new Date($(this).val());
+    if (selectedCheckInDate) {
 
-        if ($(this).val()) {
-            $('#checkOutDateDftc').prop('disabled', false);  // Enable check-out field if check-in date is set
-            var minCheckOutDate = new Date(selectedDate.getTime());
-            $('#checkOutDateDftc').attr('min', minCheckOutDate.toISOString().split('T')[0]);
+        const checkInDate = new Date(selectedCheckInDate);
+        const minCheckOutDate = new Date(checkInDate);
+        minCheckOutDate.setDate(checkInDate.getDate() + 1);
+        const minCheckOutDateString = minCheckOutDate.toISOString().split('T')[0];
+        const checkOutDateInput = document.getElementById('checkOutDateDftc');
+
+        checkOutDateInput.disabled = false;
+        checkOutDateInput.setAttribute('min', minCheckOutDateString);
+
+        checkOutDateInput.value = '';
+
+    } else {
+        const checkOutDateInput = document.getElementById('checkOutDateDftc');
+        checkOutDateInput.value = '';
+        checkOutDateInput.disabled = true;
+    }
+});
+
+    document.getElementById('checkOutDateDftc').addEventListener('change', function() {
+        const selectedCheckOutDate = this.value;
+        const checkInDate = document.getElementById('checkInDateDftc').value;
+
+        if (selectedCheckOutDate && selectedCheckOutDate === checkInDate) {
+            alert("Check-out date cannot be the same as check-in date!");
+            this.value = '';
         }
-        var minCheckOutDate = new Date(selectedDate.getTime());
-        $('#checkOutDateDftc').attr('min', minCheckOutDate.toISOString().split('T')[0]);
-    });
-
-    $('#checkInDateDftc, #checkOutDateDftc, #arrivalDftc, #departureDftc').on('change', computeDaysAndNights);
+});
+    $('#checkInDateDftc, #checkOutDateDftc, #arrivalDftc, #departureDftc').on('change', computeDaysAndNightsDftc);
     $('#checkInDateDftc').on('change', function() {
         var selectedDate = new Date($(this).val());
         var minCheckOutDate = new Date(selectedDate.getTime());
@@ -81,7 +99,7 @@ $(document).ready(function() {
             event.preventDefault();
         }
     });
-    function computeDaysAndNights() {
+    function computeDaysAndNightsDftc() {
         var checkInDate = new Date($('#checkInDateDftc').val());
         var checkOutDate = new Date($('#checkOutDateDftc').val());
         var arrivalTime = $('#arrivalDftc').val();
@@ -107,8 +125,8 @@ $(document).ready(function() {
         $('#numberOfDaysDftc').val(numberOfDays);
         $('#numberOfNightsDftc').val(numberOfNights);
     }
-    $('#checkInDateDftc, #checkOutDateDftc, #arrivalDftc, #departureDftc').on('change', computeDaysAndNights);
-    function computeTotalAmount() {
+    $('#checkInDateDftc, #checkOutDateDftc, #arrivalDftc, #departureDftc').on('change', computeDaysAndNightsDftc);
+    function computeTotalAmountDftc() {
         var rate = parseFloat($('#rateDftc').val());
         var capacity = parseInt($('#capacityDftc').val());
         var numOfMale = parseInt($('#numOfMaleDftc').val());
@@ -153,8 +171,8 @@ $(document).ready(function() {
 
         $('#totalAmountDftc').val(totalAmount.toFixed(2));
     }
-    $('#rateDftc, #capacityDftc, #numOfMaleDftc, #numOfFemaleDftc, #beddingDftc, #checkInDateDftc, #checkOutDateDftc, #hasLetterDftc').on('change', computeTotalAmount);
-    $('input[name="hasLetterDftc"]').on('change', computeTotalAmount);
+    $('#rateDftc, #capacityDftc, #numOfMaleDftc, #numOfFemaleDftc, #beddingDftc, #checkInDateDftc, #checkOutDateDftc, #hasLetterDftc').on('change', computeTotalAmountDftc);
+    $('input[name="hasLetterDftc"]').on('change', computeTotalAmountDftc);
     $(document).on('click', '#submitButtonDFTC', function(event){
         event.preventDefault();
         const agreeCheckbox = $('#flexCheckDefaultDFTC')[0];

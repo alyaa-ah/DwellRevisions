@@ -87,11 +87,11 @@
                         <table class="table table-responsive table-striped table-hover w-fit" id="canceledGuestHouseAdminGH">
                             <thead>
                                 <tr>
-                                    <th width="20%">Full Name</th>
-                                    <th width="12%">Room Name</th>
-                                    <th width="15%">Check In Date</th>
-                                    <th width="15%">Check Out Date</th>
-                                    <th width="15%" class="text-center">Status</th>
+                                    <th width="15%">Full Name</th>
+                                    <th width="15%">Room Name</th>
+                                    <th width="20%">Check-in Date</th>
+                                    <th width="20%">Check-out Date</th>
+                                    <th width="" class="text-center">Status</th>
                                     <th width="30%" style="text-align: left;">Reason</th>
                                 </tr>
                             </thead>

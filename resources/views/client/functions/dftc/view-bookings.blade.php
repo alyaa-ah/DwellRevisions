@@ -14,6 +14,11 @@
                         </a>
                     </li>
                     <li class="border-bottom w-full">
+                        <a href="{{ url('/client/view-guesthouse-ratings') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('client/view-guesthouse-ratings') || Request::is('client/view-staffhouse-ratings') || Request::is('client/view-DFTC-ratings') ? 'bg-dark-green text-dark-white' : '' }}"> <i class="fas fa-star"></i>
+                            <span class="ms-1 d-none d-sm-inline">RATINGS</span>
+                        </a>
+                    </li>
+                    <li class="border-bottom w-full">
                         <a href="{{ url('/client/view-guesthouse-prereservations') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('client/view-guesthouse-prereservations') || Request::is('client/view-staffhouse-prereservations') || Request::is('client/view-DFTC-prereservations') ? 'bg-dark-green text-dark-white' : '' }}">
                             <i class="fas fa-calendar-alt"></i>
                             <span class="ms-1 d-none d-sm-inline">PRE-BOOKINGS</span>
@@ -79,7 +84,7 @@
                                         <th width="15%" class="text-center">Status</th>
                                         <th width="5%">Amount</th>
                                         <th width="20%" class="text-center">Action Taken</th>
-                                        <th style="display:none;">DFTC Date</th>
+                                        <th style="display:none;">GH Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -119,14 +124,15 @@
                                                             @endif
                                                     @endif
                                                     @if ($booking->status == 'Pending Review')
-                                                    @else
                                                         <button id="dftc-generatepdf-client" type="button" onclick="generateClientPdfDftcBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-success"><i class="fa-solid fa-file-pdf" style="color: #000000;"></i></button>
+                                                    @else
+
                                                     @endif
                                                 @if ($booking->canCancel)
                                                 <button type="button" onclick="cancelDftcBooking('{{ addslashes(json_encode($booking)) }}')" class="btn btn-danger"><i class="fa-solid fa-xmark" style="color: #000000;"></i></i></button>
                                                 @endif
                                             </td>
-                                            <td style="display:none;">{{ $booking->DFTC_date }}</td>
+                                            <td style="display:none;">{{ $booking->DFTC_number }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -933,14 +939,14 @@
                                             </div>
                                             <div class="row mb-2">
                                                 <div class="form-group Montserrat text-sm font-semibold text-light-green">
-                                                    <label for="numberofDays">Number Of Days</label>
-                                                    <input type="text" class="form-control" name="numberOfDays" id="editNumOfDaysDftcHall" style="background-color:#d3d3d3;" placeholder="0" readonly>
+                                                    <label for="numberofNights">Number Of Days</label>
+                                                    <input type="text" class="form-control" name="numberOfNights" id="editNumOfNightsDftcHall" style="background-color:#d3d3d3;" placeholder="0" readonly>
                                                 </div>
                                             </div>
                                             <div class="row mb-2">
                                                 <div class="form-group Montserrat text-sm font-semibold text-light-green">
-                                                    <label for="numberofNights">Number Of Nights</label>
-                                                    <input type="text" class="form-control" name="numberOfNights" id="editNumOfNightsDftcHall" style="background-color:#d3d3d3;" placeholder="0" readonly>
+                                                    <label for="numberofDays">Number Of Nights</label>
+                                                    <input type="text" class="form-control" name="numberOfDays" id="editNumOfDaysDftcHall" style="background-color:#d3d3d3;" placeholder="0" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -1319,5 +1325,41 @@ document.addEventListener("DOMContentLoaded", function () {
     arrivalInput.value = "14:00";
     departureInput.value = "12:00";
 });
+const roomNumberSelect = document.getElementById('editRoomNumberDftcRoom');
+    const checkInDate = document.getElementById('editCheckInDateDftcRoom');
+    const checkOutDate = document.getElementById('editCheckOutDateDftcRoom');
+    const numOfMale = document.getElementById('editNumOfMaleDftcRoom');
+    const numOfFemale = document.getElementById('editNumOfFemaleDftcRoom');
+
+    function toggleFields() {
+        const isRoomSelected = roomNumberSelect.value !== '';
+        checkInDate.disabled = !isRoomSelected;
+        numOfMale.disabled = !isRoomSelected;
+        numOfFemale.disabled = !isRoomSelected;
+    }
+    roomNumberSelect.addEventListener('change', toggleFields);
+    toggleFields();
+
+    const roomNumberSelectDftcHalls = document.getElementById('editRoomNumberDftcHall');
+const checkInDateDftcHalls = document.getElementById('editCheckInDateDftcHall');
+const checkOutDateDftcHalls = document.getElementById('editCheckOutDateDftcHall');
+const numOfMaleDftcHalls = document.getElementById('editNumOfMalesDftcHall');
+const numOfFemaleDftcHalls = document.getElementById('editNumOfFemalesDftcHall');
+const arrivalDftcHalls = document.getElementById('editArrivalDftcHall');
+const departureDftcHalls = document.getElementById('editDepartureDftcHall');
+
+function toggleFieldsDftcHalls() {
+    const isRoomSelectedDftcHalls = roomNumberSelectDftcHalls.value !== '';
+    checkInDateDftcHalls.disabled = !isRoomSelectedDftcHalls;
+    checkOutDateDftcHalls.disabled = !isRoomSelectedDftcHalls;
+    numOfMaleDftcHalls.disabled = !isRoomSelectedDftcHalls;
+    numOfFemaleDftcHalls.disabled = !isRoomSelectedDftcHalls;
+    arrivalDftcHalls.disabled =!isRoomSelectedDftcHalls;
+    departureDftcHalls.disabled =!isRoomSelectedDftcHalls;
+}
+
+roomNumberSelectDftcHalls.addEventListener('change', toggleFieldsDftcHalls);
+toggleFieldsDftcHalls();
+
 </script>
 @endsection

@@ -25,7 +25,14 @@ $(function () {
                 { name: 'sm', width: 768 },
                 { name: 'xs', width: 576 }
             ]
-        }
+        },
+        "order": [[7, 'desc']],
+        "columnDefs": [
+            {
+                "targets": 7,
+                "visible": false
+            }
+        ]
     });
 });
 $(function () {
@@ -322,7 +329,7 @@ $(function () {
                 }
             },
             // Add DFTC_date as a hidden column for sorting
-            { "data": "DFTC_date", "visible": false },  // This column will be hidden but used for sorting
+            { "data": "DFTC_number", "visible": false },  // This column will be hidden but used for sorting
             {
                 "data": null,
                 "defaultContent": '<button type="button" class="btn btn-info view-btn"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button> <button type="button" class="btn btn-warning review-btn"><i class="fa-solid fa-book" style="color: #000000;"></i></button>',

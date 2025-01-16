@@ -90,7 +90,7 @@
                                 <span class="Montserrat text-sm font-bold textGradient text-left">DFTC | </span>
                                 <span class="Montserrat text-sm font-semibold text-light-green text-left">
                                 Status:
-                                @if($bookingCount > 0 && ($room->room_status != "Occupied" && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable'))
+                                @if ($bookingCount > 0 && !in_array($room->room_status, ['Occupied', 'On-Renovation', 'Unavailable']))
                                     <span class="inline-flex items-center bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 rounded-full text-sm">
                                         <i class="fa fa-calendar-check-o mr-1"></i>
                                         <span class="font-semibold">Pre-Booked</span>
@@ -182,6 +182,11 @@
                                                         @foreach ($filteredFeedbacks as $feedback)
                                                             @php
                                                                 $firstName = explode(' ', $feedback->fullname)[0];
+                                                                if ($feedback->anonymous === 'Yes') {
+                                                                    $firstName = substr($firstName, 0, 2) . str_repeat('*', strlen($firstName) - 2);
+                                                                }else if ($feedback->anonymous === 'No'){
+                                                                    $firstName = explode(' ', $feedback->fullname)[0];
+                                                                }
                                                                 $rating = (int)$feedback->ratings;
                                                             @endphp
                                                             <div class="feedback-item" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">

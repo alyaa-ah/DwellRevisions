@@ -413,50 +413,65 @@ class AdminDFTCFunctionController extends Controller
     public function updateDftcBookingStatusAdminDftc(Request $request){
         $status = $request->status;
         $bookingId = $request->booking_id;
+        $or_number = $request->or_number;
         $bookings = DftcBooking::where('id', $bookingId)->first();
         if($bookings->status != "Pending Review"){
             return 404;
         }else{
             switch ($status) {
                 case 'Reviewed':
-                    $bookings = DftcBooking::where('id', $bookingId)->first();
-                    if ($bookings) {
-                        $bookings->update([
-                            'status' => 'Reviewed',
+                    $room_id = $request->room_id;
+                    $room = Room::where('id', $room_id)->first();
+                    $validator = Validator::make($request->all(), [
+                            'or_number' =>'required|min:3|max:30|unique:dftc_bookings,or_number,'
+                    ]);
+                    if ($validator->fails()) {
+                        return response()->json([
+                            'message' => $validator->errors()
                         ]);
-                        $facility = Facility::where('facility_name', 'DFTC')->first();
-                        (new EmailController)->sendReviewNotification(
-                            $bookings->email,
-                            $bookings->fullname,
-                            $bookings->DFTC_number,
-                            $facility->facility_name,
-                            $bookings->room_number,
-                            'Reviewed',
-                            null
-                        );
-                        $superAdmin = Client::where('role', 'SuperAdmin')->first();
-                        $admin = Client::where('role', 'adminDFTC')->first();
-                        (new EmailController)->newPreReservation(
-                            $superAdmin->email,
-                            $superAdmin->fullname,
-                            $admin->fullname,
-                            $bookings->fullname,
-                            $bookings->DFTC_number,
-                            $facility->facility_name,
-                            $bookings->room_number,
-                            'Reviewed'
-                        );
-                        $clientId = session()->get('loggedInAdminDftc')['id'];
-                        $fullname = session()->get('loggedInAdminDftc')['fullname'];
-                        $role = session()->get('loggedInAdminDftc')['role'];
-                        $activity = "Reviewed a DFTC pre-reservation in the system.";
-                        (new AuditController)->createAuditTrail($fullname ,$clientId, $activity , $role);
-                        return $bookings ? 1 : 0;
-                    } else {
-                        return 0;
+                    }else{
+                        $bookings = DftcBooking::where('id', $bookingId)->first();
+                        if ($bookings) {
+                            $bookings->update([
+                                'status' => 'Reviewed',
+                                'or_number' => $or_number
+                            ]);
+                            $room->update([
+                                'room_status' => 'Occupied',
+                            ]);
+                            $facility = Facility::where('facility_name', 'DFTC')->first();
+                            (new EmailController)->sendReviewNotification(
+                                $bookings->email,
+                                $bookings->fullname,
+                                $bookings->DFTC_number,
+                                $facility->facility_name,
+                                $bookings->room_number,
+                                'Reviewed',
+                                null
+                            );
+                            $superAdmin = Client::where('role', 'SuperAdmin')->first();
+                            $admin = Client::where('role', 'adminDFTC')->first();
+                            (new EmailController)->newPreReservation(
+                                $superAdmin->email,
+                                $superAdmin->fullname,
+                                $admin->fullname,
+                                $bookings->fullname,
+                                $bookings->DFTC_number,
+                                $facility->facility_name,
+                                $bookings->room_number,
+                                'Reviewed'
+                            );
+                            $clientId = session()->get('loggedInAdminDftc')['id'];
+                            $fullname = session()->get('loggedInAdminDftc')['fullname'];
+                            $role = session()->get('loggedInAdminDftc')['role'];
+                            $activity = "Reviewed a DFTC pre-reservation in the system.";
+                            (new AuditController)->createAuditTrail($fullname ,$clientId, $activity , $role);
+                            return $bookings ? 1 : 0;
+                        } else {
+                            return 0;
+                        }
+                        break;
                     }
-                    break;
-
                 case 'Rejected':
                     $bookings = DftcBooking::where('id', $bookingId)->first();
                     if ($bookings) {
@@ -552,7 +567,7 @@ class AdminDFTCFunctionController extends Controller
         ]);
         if ($request->filled('username') && $request->username !== $client->username) {
             $validator->addRules([
-                'username' => 'required|min:8|max:30|unique:clients,username',
+                'username' => 'required|min:6|max:30|unique:clients,username',
             ]);
         }
         if ($validator->fails()) {
@@ -659,7 +674,28 @@ class AdminDFTCFunctionController extends Controller
 
                 return 500;
             }
-
+            if ($request->remarks == 'Checked Out') {
+                $checkInDate = Carbon::createFromFormat('F j, Y', $booking->check_in_date, 'Asia/Manila');
+                $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+                $room = Room::where('id', $request->room_id)->first();
+                $now = Carbon::now('Asia/Manila');
+                if ($now->between($checkInDate, $checkOutDate)) {
+                    $nowPlusTenMinutes = $now->copy()->addMinutes(10);
+                    $formattedNow = $now->format('F j, Y');
+                    $formattedTime = $nowPlusTenMinutes->format('h:i A');
+                    $room->update(['room_status' => 'Available']);
+                    $booking->check_out_date = $formattedNow;
+                    $booking->departure = $formattedTime;
+                    $booking->remarks = 'Checked Out';
+                    if ($booking->save()) {
+                        return 200;
+                    } else {
+                        return 500;
+                    }
+                } else {
+                    return 400;
+                }
+            }
             return 400; // Bad Request
         } catch (\Exception $e) {
             return 500;

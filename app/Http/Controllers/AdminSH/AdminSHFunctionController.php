@@ -426,6 +426,7 @@ class AdminSHFunctionController extends Controller
     public function updateStaffHouseBookingStatusAdminSH(Request $request){
         $status = $request->status;
         $bookingId = $request->booking_id;
+        $or_number = $request->or_number;
         $bookings = StaffHouseBooking::where('id', $bookingId)->first();
         if($bookings->status != "Pending Review"){
             return 404;
@@ -433,9 +434,23 @@ class AdminSHFunctionController extends Controller
             switch ($status) {
                 case 'Reviewed':
                     $bookings = StaffHouseBooking::where('id', $bookingId)->first();
+                    $room_id = $request->room_id;
+                    $room = Room::where('id', $room_id)->first();
+                    $validator = Validator::make($request->all(), [
+                        'or_number' =>'required|min:3|max:30|unique:staff_house_bookings,or_number,'
+                    ]);
+                    if ($validator->fails()) {
+                        return response()->json([
+                            'message' => $validator->errors()
+                        ]);
+                    }else {
                     if ($bookings) {
                         $bookings->update([
                             'status' => 'Reviewed',
+                            'or_number' => $or_number
+                        ]);
+                        $room->update([
+                            'room_status' => 'Occupied',
                         ]);
                         $facility = Facility::where('facility_name', 'Staff House')->first();
                         (new EmailController)->sendReviewNotification(
@@ -468,13 +483,13 @@ class AdminSHFunctionController extends Controller
                     } else {
                         return 0;
                     }
-                    break;
-
+                }
+                break;
                 case 'Rejected':
                     $bookings = StaffHouseBooking::where('id', $bookingId)->first();
                     if ($bookings) {
                         $reason = $request->reason === 'Others' ? $request->other_reason : $request->reason;
-                        $$bookings->update([
+                        $bookings->update([
                             'status' => 'Rejected',
                             'reason' => $reason,
                         ]);
@@ -562,7 +577,7 @@ class AdminSHFunctionController extends Controller
         ]);
         if ($request->filled('username') && $request->username !== $client->username) {
             $validator->addRules([
-                'username' => 'required|min:8|max:30|unique:clients,username',
+                'username' => 'required|min:6|max:30|unique:clients,username',
             ]);
         }
         if ($validator->fails()) {
@@ -667,8 +682,29 @@ class AdminSHFunctionController extends Controller
                 if ($booking->save()) {
                     return 200;
                 }
-
                 return 500;
+            }
+            if ($request->remarks == 'Checked Out') {
+                $checkInDate = Carbon::createFromFormat('F j, Y', $booking->check_in_date, 'Asia/Manila');
+                $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+                $now = Carbon::now('Asia/Manila');
+                $room = Room::where('id', $request->room_id)->first();
+                if ($now->between($checkInDate, $checkOutDate)) {
+                    $nowPlusTenMinutes = $now->copy()->addMinutes(10);
+                    $formattedNow = $now->format('F j, Y');
+                    $formattedTime = $nowPlusTenMinutes->format('h:i A');
+                    $room->update(['room_status' => 'Available']);
+                    $booking->check_out_date = $formattedNow;
+                    $booking->departure = $formattedTime;
+                    $booking->remarks = 'Checked Out';
+                    if ($booking->save()) {
+                        return 200;
+                    } else {
+                        return 500;
+                    }
+                } else {
+                    return 400;
+                }
             }
             return 400; // Bad Request
         } catch (\Exception $e) {

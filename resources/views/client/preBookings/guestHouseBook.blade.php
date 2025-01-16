@@ -177,7 +177,7 @@
                                     <div class="col-md-6 mb-2">
                                         <div class="form-group text-light-green">
                                             <label for="checkInDate" class="Montserrat text-sm font-semibold">Check-In Date <span class="text-red-600">*</span></label>
-                                            <input type="date" class="form-control" name="checkInDate" id="checkInDate" required>
+                                            <input type="date" class="form-control" name="checkInDate" id="checkInDate" required disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-2">
@@ -257,7 +257,7 @@
                                 <div class="col-md-6 mb-2">
                                     <div class="form-group text-light-green">
                                         <label for="bedding" class="Montserrat text-sm font-semibold">Additional Bedding <span class="">(100 pesos per bedding)</span></label>
-                                        <input type="number" class="form-control" name="bedding" id="bedding" placeholder="Optional" value="0">
+                                        <input type="number" class="form-control" name="bedding" id="bedding" placeholder="Optional" value="0" min="0" max="2">
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-2">
@@ -373,8 +373,8 @@ document.getElementById('modalBodyPreBookGuestHouse').addEventListener('scroll',
         let numOfMales = parseInt(numOfMaleInput.value, 10);
         if (isNaN(numOfMales) || numOfMales < 0) {
         numOfMales = 0;
-        } else if (numOfMales > 10) {
-        numOfMales = 10;
+        } else if (numOfMales > 8) {
+        numOfMales = 8;
         numOfMaleInput.value = numOfMales;
         }
         maleGuestsContainer.innerHTML = '';
@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function () {
         input.type = 'text';
         input.name = 'maleGuests[]';
         input.className = 'form-control';
-        input.placeholder = `Guest ${i + 1}`;
+        input.placeholder = `Male Guest ${i + 1}`;
         maleGuestsContainer.appendChild(input);
     }
 });
@@ -424,7 +424,7 @@ numOfFemalesInput.addEventListener('input', function () {
             input.type = 'text';
             input.name = 'femaleGuests[]';
             input.className = 'form-control';
-            input.placeholder = `Guest ${i + 1}`;
+            input.placeholder = `Female Guest ${i + 1}`;
             femaleGuestsContainer.appendChild(input);
         }
     });
@@ -439,8 +439,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (isNaN(numOfFemales) || numOfFemales < 0) {
             numOfFemales = 0;
-        } else if (numOfFemales > 10) {
-            numOfFemales = 10;
+        } else if (numOfFemales > 8) {
+            numOfFemales = 8;
             numOfFemaleInput.value = numOfFemales;
         }
 
@@ -452,7 +452,7 @@ document.addEventListener('DOMContentLoaded', function () {
             input.type = 'text';
             input.name = 'femaleGuests[]';
             input.className = 'form-control';
-            input.placeholder = `Guest ${i + 1}`;
+            input.placeholder = `Female Guest ${i + 1}`;
             femaleGuestsContainer.appendChild(input);
         }
     });
@@ -488,5 +488,32 @@ document.addEventListener('DOMContentLoaded', function () {
         activitySelect.value = "Others";
     });
 });
+document.getElementById('bedding').addEventListener('input', function (e) {
+        const input = e.target;
+        const min = parseInt(input.min, 10);
+        const max = parseInt(input.max, 10);
+        let value = parseInt(input.value, 10);
+
+        if (value < min) {
+            input.value = min;
+        } else if (value > max) {
+            input.value = max;
+        }
+    });
+
+    const roomNumberSelect = document.getElementById('room_number');
+    const checkInDate = document.getElementById('checkInDate');
+    const checkOutDate = document.getElementById('checkOutDate');
+    const numOfMale = document.getElementById('numOfMale');
+    const numOfFemale = document.getElementById('numOfFemale');
+
+    function toggleFields() {
+        const isRoomSelected = roomNumberSelect.value !== '';
+        checkInDate.disabled = !isRoomSelected;
+        numOfMale.disabled = !isRoomSelected;
+        numOfFemale.disabled = !isRoomSelected;
+    }
+    roomNumberSelect.addEventListener('change', toggleFields);
+    toggleFields();
 </script>
 @endsection

@@ -27,8 +27,9 @@ class ClientRatingController extends Controller
         $date = Carbon::now('Asia/Manila')->format('F j, Y');
         $update = GuestHouseBooking::where('id', $request->booking_id)->update([
             'ratings' => $request->rating,
-            'feedbacks' => $request->feedback,
-            'comment_date' => $date
+            'feedbacks' => ucwords($request->feedback),
+            'comment_date' => $date,
+            'anonymous' => $request->anonymous
         ]);
 
         if ($update) {
@@ -56,8 +57,9 @@ class ClientRatingController extends Controller
         $date = Carbon::now('Asia/Manila')->format('F j, Y');
         $update = StaffHouseBooking::where('id', $request->booking_id)->update([
             'ratings' => $request->rating,
-            'feedbacks' => $request->feedback,
-            'comment_date' => $date
+            'feedbacks' => ucwords($request->feedback),
+            'comment_date' => $date,
+            'anonymous' => $request->anonymous
         ]);
 
         if ($update) {
@@ -85,8 +87,9 @@ class ClientRatingController extends Controller
         $date = Carbon::now('Asia/Manila')->format('F j, Y');
         $update = DftcBooking::where('id', $request->booking_id)->update([
             'ratings' => $request->rating,
-            'feedbacks' => $request->feedback,
-            'comment_date' => $date
+            'feedbacks' => ucwords($request->feedback),
+            'comment_date' => $date,
+            'anonymous' => $request->anonymous
         ]);
 
         if ($update) {

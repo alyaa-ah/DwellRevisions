@@ -16,6 +16,7 @@ class Room extends Model
         'room_rate',
         'room_capacity',
         'room_description',
+        'room_status',
         'room_amenities',
         'room_inclusion',
         'room_photo1',

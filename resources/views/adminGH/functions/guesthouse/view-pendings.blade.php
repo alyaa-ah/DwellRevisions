@@ -85,18 +85,21 @@
                     <div class="col-md-12">
                         <table class="table table-responsive table-striped table-hover w-auto" id="guestHousePendingBookingTableAdminGH">
                             <thead>
-                                <th width="25%">Full Name</th>
-                                <th width="20%">Room Name</th>
-                                <th width="15%">Check In</th>
-                                <th width="15%">Check Out</th>
-                                <th width="5%">Amount</th>
-                                <th width="20%" class="text-center">Action Taken</th>
+                                <tr>
+                                    <th width="25%">Full Name</th>
+                                    <th width="20%">Room Name</th>
+                                    <th width="15%">Check In</th>
+                                    <th width="15%">Check Out</th>
+                                    <th width="5%">Amount</th>
+                                    <th width="20%" class="text-center">Action Taken</th>
+                                    <th>GH Number</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach ($bookings as $booking)
                                     <tr>
                                         <td>{{ $booking->fullname }}</td>
-                                        <td>{{ $booking->room_number}}</td>
+                                        <td>{{ $booking->room_number }}</td>
                                         <td>{{ $booking->check_in_date }}</td>
                                         <td>{{ $booking->check_out_date }}</td>
                                         @if ($booking->total_amount == "0.00" && $booking->position == "Student")
@@ -104,15 +107,16 @@
                                         @else
                                             <td>{{ $booking->total_amount }}</td>
                                         @endif
-
                                         <td class="text-center">
-                                            <button type="button" onclick="viewGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
+                                            <button type="button" onclick="viewGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking)) }}')" class="btn btn-info"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button>
                                             <button type="button" onclick="reviewGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking)) }}')" class="btn btn-warning"><i class="fa-solid fa-book" style="color: #000000;"></i></button>
                                         </td>
+                                        <td>{{ $booking->GH_number }}</td> <!-- Make sure this column matches the header -->
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -363,6 +367,10 @@
                                     <label for="reviewStatus" class="form-group text-light-green">Booking ID</label>
                                     <input type="text" class="form-control" name="booking_id" id="booking_status_id">
                                 </div>
+                                <div class="form-group Montserrat text-sm font-semibold" hidden>
+                                    <label for="reviewStatus" class="form-group text-light-green">Room ID</label>
+                                    <input type="text" class="form-control" name="room_id" id="room_status_id">
+                                </div>
                                 <div class="form-group Montserrat text-sm font-semibold">
                                     <label for="reviewStatus" class="form-group text-light-green">Review Status</label>
                                     <select id="reviewStatus" name="status" class="form-control" onchange="toggleReasonSelect()">
@@ -371,13 +379,17 @@
                                         <option value="Rejected">Rejected</option>
                                     </select>
                                 </div>
+                                <div class="form-group Montserrat text-sm font-semibold" id="receiptNumber" style="display:none;">
+                                    <label for="or_number" class="form-group text-light-green">OR number</label>
+                                    <input type="text" name="or_number" id="or_number" class="form-control" />
+                                </div>
                                 <div class="form-group Montserrat text-sm font-semibold" id="reasonGroup" style="display:none;">
                                     <label for="reason" class="form-group text-light-green">Reason</label>
                                     <select name="reason" id="reason" class="form-control" onchange="toggleOtherReason()">
                                         <option value="Conflict of schedule.">Conflict of schedule</option>
                                         <option value="Unclear pre-booking information.">Unclear pre-booking information</option>
                                         <option value="Room is not available at the moment.">Room is not available at the moment</option>
-                                        <option value="No available attendants.">No available attendants</option>
+                                        <option value="This room is already reserved by someone else.">This room is already reserved by someone else</option>
                                         <option value="Others">Others</option>
                                     </select>
                                 </div>
@@ -385,7 +397,6 @@
                                     <label for="other_reason" class="form-group text-light-green">Specify Reason</label>
                                     <input type="text" name="other_reason" id="other_reason" class="form-control" />
                                 </div>
-
                                 <div class="modal-footer">
                                     <button type="submit" class="btn bg-light-green Montserrat text-white hover:bg-dark-green">SUBMIT</button>
                                 </div>
@@ -398,28 +409,36 @@
     </div>
 </div>
 <script>
-    function toggleReasonSelect() {
+function toggleReasonSelect() {
     const reviewStatus = document.getElementById('reviewStatus').value;
     const reasonGroup = document.getElementById('reasonGroup');
-
+    const receiptNumber = document.getElementById('receiptNumber');
+    const otherReasonGroup = document.getElementById('otherReasonGroup');
     if (reviewStatus === 'Rejected') {
-        reasonGroup.style.display = 'block'; // Show reason dropdown
+        reasonGroup.style.display = 'block';
+        receiptNumber.style.display = 'none';
+    } else if (reviewStatus === 'Reviewed') {
+        reasonGroup.style.display = 'none';
+        receiptNumber.style.display = 'block';
+        otherReasonGroup.style.display = 'none';
     } else {
-        reasonGroup.style.display = 'none'; // Hide reason dropdown
-        document.getElementById('reason').value = ''; // Clear the reason dropdown
-        toggleOtherReason(); // Ensure other input is cleared
+        reasonGroup.style.display = 'none';
+        receiptNumber.style.display = 'none';
+        document.getElementById('reason').value = '';
+        toggleOtherReason();
     }
 }
 
 function toggleOtherReason() {
     const reasonSelect = document.getElementById('reason').value;
     const otherReasonGroup = document.getElementById('otherReasonGroup');
-
+    const receiptNumber = document.getElementById('receiptNumber');
     if (reasonSelect === 'Others') {
-        otherReasonGroup.style.display = 'block'; // Show the custom input field
+        otherReasonGroup.style.display = 'block';
+        receiptNumber.style.display = 'none';
     } else {
-        otherReasonGroup.style.display = 'none'; // Hide the custom input field
-        document.getElementById('other_reason').value = ''; // Clear custom input
+        otherReasonGroup.style.display = 'none';
+        document.getElementById('other_reason').value = '';
     }
 }
 </script>

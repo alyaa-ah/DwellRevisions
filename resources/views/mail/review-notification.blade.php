@@ -79,7 +79,7 @@
             Best regards,<br>
             The Team<br><br>
             <img src="{{ url('https://dwell.sharvilclass.com/public/images/Logo.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
-            <img src="{{ url('https://dwell.sharvilclass.com/public/images/STREAMLINE2.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
+            <img src="{{ url('https://dwell.sharvilclass.com/public/images/STREAMLINEFINAL.png') }}" alt="footer-logo" style="max-width: 150px; margin-top: 10px; height: auto;">
         </div>
     </div>
 </body>

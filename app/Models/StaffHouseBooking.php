@@ -40,6 +40,7 @@ class StaffHouseBooking extends Model
         'female_guest',
         'additional_bedding',
         'reason',
+        'or_number',
         'created_at',
         'updated_at'
     ];

@@ -18,6 +18,51 @@ class ClientMainController extends Controller
     public function goToDashboard(){
         $now = Carbon::now('Asia/Manila');
         $client_id = session()->get('loggedInCustomer')['id'];
+        $guesthousebooking = GuestHouseBooking::
+        where('client_id', $client_id)
+        ->get()
+        ->filter(function ($booking) use ($now) {
+            $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+            $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
+            $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
+            return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
+        });
+        $staffhousebooking = StaffHouseBooking::
+        where('client_id', $client_id)
+        ->get()
+        ->filter(function ($booking) use ($now) {
+            $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+            $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
+            $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
+            return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        });
+        $dftcbooking = DftcBooking::
+        where('client_id', $client_id)
+        ->get()
+        ->filter(function ($booking) use ($now) {
+            $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+            $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
+            $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
+            return $now->lte($checkOutDateTime);
+        })
+        ->sortByDesc(function ($booking) {
+            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
+        });
+        return view('client.dashboard.dashboard', [
+            'guesthousebooking' => $guesthousebooking,
+            'staffhousebooking' => $staffhousebooking,
+            'dftcbooking' => $dftcbooking,
+        ]);
+    }
+    public function goToRatingsGuestHouse(){
+        $now = Carbon::now('Asia/Manila');
+        $client_id = session()->get('loggedInCustomer')['id'];
         $guestHouseCurrentBookingsHistory = GuestHouseBooking::where('status', 'Reviewed')
         ->where('client_id', $client_id)
         ->get()
@@ -34,11 +79,11 @@ class ClientMainController extends Controller
         ->sortByDesc(function ($booking) {
             return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
         });
-        return view('client.dashboard.guesthouse', [
+        return view('client.ratings.guesthouse', [
             'guestHouseCurrentBookingsHistory' => $guestHouseCurrentBookingsHistory,
         ]);
     }
-    public function goToDashboardStaffHouse(){
+    public function goToRatingsStaffHouse(){
         $now = Carbon::now('Asia/Manila');
         $client_id = session()->get('loggedInCustomer')['id'];
         $staffHouseCurrentBookingsHistory = StaffHouseBooking::where('status', 'Reviewed')
@@ -57,11 +102,11 @@ class ClientMainController extends Controller
         ->sortByDesc(function ($booking) {
             return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
         });
-        return view('client.dashboard.staffhouse', [
+        return view('client.ratings.staffhouse', [
             'staffHouseCurrentBookingsHistory' => $staffHouseCurrentBookingsHistory,
         ]);
     }
-    public function goToDashboardDftc(){
+    public function goToRatingsDftc(){
         $now = Carbon::now('Asia/Manila');
         $client_id = session()->get('loggedInCustomer')['id'];
         $dftcCurrentBookingsHistory = DftcBooking::where('status', 'Reviewed')
@@ -80,7 +125,7 @@ class ClientMainController extends Controller
         ->sortByDesc(function ($booking) {
             return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
         });
-        return view('client.dashboard.dftc', [
+        return view('client.ratings.dftc', [
             'dftcCurrentBookingsHistory' => $dftcCurrentBookingsHistory,
         ]);
     }
@@ -180,6 +225,7 @@ class ClientMainController extends Controller
         $facilityId = Facility::where('facility_name', 'DFTC')->value('id');
         $dftcRooms = Room::where('facility_id', $facilityId)->get();
         $now = Carbon::now('Asia/Manila');
+        $booking = DftcBooking::where('status', 'Pending Review')->get();
         $bookings = DftcBooking::where('status', 'Reviewed')->get()
         ->filter(function ($booking) use ($now) {
             try {
@@ -220,7 +266,7 @@ class ClientMainController extends Controller
         foreach ($dftcRooms as $room) {
             $room->averageRating = $feedbacks->where('room_id', $room->id)->avg('ratings') ?? 0;
         }
-        return view('client.rooms.dftcRooms', ['dftcRooms' => $dftcRooms , 'bookings' => $bookings, 'feedbacks' => $feedbacks]);
+        return view('client.rooms.dftcRooms', ['dftcRooms' => $dftcRooms , 'bookings' => $bookings, 'feedbacks' => $feedbacks, 'booking' => $booking]);
     }
     public function goToDftcHalls(){
         $facilityId = Facility::where('facility_name', 'DFTC')->value('id');

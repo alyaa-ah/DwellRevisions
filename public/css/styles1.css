@@ -186,6 +186,9 @@ body {
 .status-badge.occupied {
     background-color: #6C757D;
 }
+.checked-out{
+    background-color: #dc3545;
+}
 .amenities-list {
     list-style: none;
     margin-left: 20px;
@@ -211,38 +214,42 @@ body {
     background-color: #6c757d;
 }
 .amenities-list {
-    list-style-type: none; /* Remove default bullets */
-    padding-left: 0; /* Remove padding */
-    display: flex; /* Use flexbox */
-    flex-wrap: wrap; /* Allow wrapping of items to new lines */
-    gap: 5px; /* Adjust the space between items */
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
 .amenity-item {
-    flex: 0 0 30%; /* Allow 3 items per row (30% width for each item) */
-    background-color: #f0f0f0; /* Optional background color */
-    padding: 5px; /* Padding for each item */
-    border-radius: 5px; /* Optional rounded corners */
-    text-align: left; /* Center the text */
-    margin: 0; /* Remove any margin */
-    box-sizing: border-box; /* Ensures padding and borders are included in width calculation */
+    flex: 0 0 30%;
+    background-color: #f0f0f0;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: left;
+    margin: 0;
+    box-sizing: border-box;
 }
-/* Reduce the width of the contact number input */
-/* Flag Image Size */
+
 #selected-flag {
     width: 18px;
     height: auto;
 }
 
-/* Input field width */
+
 .contact-input {
     width: 70%;
 }
 
-/* Dropdown Alignment */
+
 .custom-dropdown button {
     display: flex;
     align-items: center;
+}
+.form-control:disabled,
+.form-control[disabled] {
+    background-color: #d3d3d3 !important;
+    color: black !important;
 }
 
 

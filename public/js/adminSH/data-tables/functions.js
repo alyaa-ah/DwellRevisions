@@ -25,7 +25,14 @@ $(function () {
                 { name: 'sm', width: 768 },
                 { name: 'xs', width: 576 }
             ]
-        }
+        },
+        "order": [[7, 'desc']],
+        "columnDefs": [
+            {
+                "targets": 7,
+                "visible": false
+            }
+        ]
     });
 });
 $(function () {
@@ -62,8 +69,13 @@ $(function () {
                 "defaultContent": '<button type="button" class="btn btn-info view-btn"><i class="fa-solid fa-eye" style="color: BLACK;"></i></button> <button type="button" class="btn btn-warning review-btn"><i class="fa-solid fa-book" style="color: #000000;"></i></button>',
                 "orderable": false,
                 "class": "text-center"
+            },
+            {
+                "data": "SH_number",
+                "visible": false  // Hide the GH_number column
             }
         ],
+        "order": [[6, 'desc']],
         "autoWidth": false,
         "processing": true,
         "serverSide": false

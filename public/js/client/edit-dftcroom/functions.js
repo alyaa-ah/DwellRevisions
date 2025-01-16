@@ -72,19 +72,38 @@ $(document).ready(function() {
     $('#editCheckInDateDftcRoom').attr('min', minDateString);
     $('#editCheckOutDateDftcRoom').prop('disabled', true);
 
-    $('#editCheckInDateDftcRoom').on('change', function() {
-        $('#editCheckOutDateDftcRoom').val('').prop('disabled', true);
+    document.getElementById('editCheckInDateDftcRoom').addEventListener('change', function() {
+        const selectedCheckInDate = this.value;
 
-        var selectedDate = new Date($(this).val());
+        if (selectedCheckInDate) {
 
-        if ($(this).val()) {
-            $('#editCheckOutDateDftcRoom').prop('disabled', false);
-            var minCheckOutDate = new Date(selectedDate.getTime());
-            $('#editCheckOutDateDftcRoom').attr('min', minCheckOutDate.toISOString().split('T')[0]);
+            const checkInDate = new Date(selectedCheckInDate);
+            const minCheckOutDate = new Date(checkInDate);
+            minCheckOutDate.setDate(checkInDate.getDate() + 1);
+            const minCheckOutDateString = minCheckOutDate.toISOString().split('T')[0];
+            const checkOutDateInput = document.getElementById('editCheckOutDateDftcRoom');
+
+            checkOutDateInput.disabled = false;
+            checkOutDateInput.setAttribute('min', minCheckOutDateString);
+
+            checkOutDateInput.value = '';
+
+        } else {
+            const checkOutDateInput = document.getElementById('editCheckOutDateDftcRoom');
+            checkOutDateInput.value = '';
+            checkOutDateInput.disabled = true;
         }
-        var minCheckOutDate = new Date(selectedDate.getTime());
-        $('#editCheckOutDateDftcRoom').attr('min', minCheckOutDate.toISOString().split('T')[0]);
     });
+
+    document.getElementById('editCheckOutDateDftcRoom').addEventListener('change', function() {
+        const selectedCheckOutDate = this.value;
+        const checkInDate = document.getElementById('editCheckInDateDftcRoom').value;
+
+        if (selectedCheckOutDate && selectedCheckOutDate === checkInDate) {
+            alert("Check-out date cannot be the same as check-in date!");
+            this.value = '';
+        }
+});
     $('#editCheckInDateDftcRoom, #editCheckOutDateDftcRoom, #editArrivalDftcRoom, #editDepartureDftcRoom').on('change', computeDaysAndNightsEditDftcRoom);
     $('#editCheckInDateDftcRoom').on('change', function() {
         var selectedDate = new Date($(this).val());

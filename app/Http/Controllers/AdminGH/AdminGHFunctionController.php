@@ -409,10 +409,13 @@ class AdminGHFunctionController extends Controller
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
             $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
             return $now->lte($checkOutDateTime);
-        })
-        ->sortByDesc(function ($booking) {
-            return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
         });
+        $bookings = $bookings->sortByDesc(function ($booking) {
+            // Extract the numeric part after the dash and pad it to ensure correct sorting
+            return (int) substr($booking->GH_number, strpos($booking->GH_number, '-') + 1);
+        });
+
+
         $countBookings = count($bookings);
         return view('adminGH.functions.guesthouse.view-pendings', [
             'bookings' => $bookings,
@@ -423,6 +426,7 @@ class AdminGHFunctionController extends Controller
     public function updateGuestHouseBookingStatusAdminGH(Request $request){
         $status = $request->status;
         $bookingId = $request->booking_id;
+        $or_number = $request->or_number;
         $booking = GuestHouseBooking::where('id', $bookingId)->first();
         if($booking->status != "Pending Review"){
             return 404;
@@ -430,9 +434,23 @@ class AdminGHFunctionController extends Controller
             switch ($status) {
                 case 'Reviewed':
                     $bookings = GuestHouseBooking::where('id', $bookingId)->first();
+                    $room_id = $request->room_id;
+                    $room = Room::where('id', $room_id)->first();
+                    $validator = Validator::make($request->all(), [
+                        'or_number' =>'required|min:3|max:30|unique:guest_house_bookings,or_number,'
+                    ]);
+                    if ($validator->fails()) {
+                        return response()->json([
+                            'message' => $validator->errors()
+                        ]);
+                    }else{
                     if ($bookings) {
                         $bookings->update([
                             'status' => 'Reviewed',
+                            'or_number' => $or_number
+                        ]);
+                        $room->update([
+                            'room_status' => 'Occupied',
                         ]);
                         $facility = Facility::where('facility_name', 'Guest House')->first();
                         (new EmailController)->sendReviewNotification(
@@ -465,8 +483,8 @@ class AdminGHFunctionController extends Controller
                     } else {
                         return 0;
                     }
-                    break;
-
+                }
+                break;
                 case 'Rejected':
                     $bookings = GuestHouseBooking::where('id', $bookingId)->first();
                     if ($bookings) {
@@ -559,7 +577,7 @@ class AdminGHFunctionController extends Controller
         ]);
         if ($request->filled('username') && $request->username !== $client->username) {
             $validator->addRules([
-                'username' => 'required|min:8|max:30|unique:clients,username',
+                'username' => 'required|min:6|max:30|unique:clients,username',
             ]);
         }
         if ($validator->fails()) {
@@ -635,8 +653,6 @@ class AdminGHFunctionController extends Controller
                 if (!$request->extendedCheckOutDate) {
                     return 400;
                 }
-
-
                 preg_match('/\+(\s*\d+)\s*days/', $request->newremarks, $matches);
 
                 $extendedDays = isset($matches[1]) ? (int)trim($matches[1]) : 0;
@@ -665,6 +681,28 @@ class AdminGHFunctionController extends Controller
                 }
 
                 return 500;
+            }
+            if ($request->remarks == 'Checked Out') {
+                $room = Room::where('id', $request->room_id)->first();
+                $checkInDate = Carbon::createFromFormat('F j, Y', $booking->check_in_date, 'Asia/Manila');
+                $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+                $now = Carbon::now('Asia/Manila');
+                if ($now->between($checkInDate, $checkOutDate)) {
+                    $nowPlusTenMinutes = $now->copy()->addMinutes(10);
+                    $formattedNow = $now->format('F j, Y');
+                    $formattedTime = $nowPlusTenMinutes->format('h:i A');
+                    $room->update(['room_status' => 'Available']);
+                    $booking->check_out_date = $formattedNow;
+                    $booking->departure = $formattedTime;
+                    $booking->remarks = 'Checked Out';
+                    if ($booking->save()) {
+                        return 200;
+                    } else {
+                        return 503;
+                    }
+                } else {
+                   return 400;
+                }
             }
             return 400;
         } catch (\Exception $e) {

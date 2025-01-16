@@ -84,7 +84,7 @@
                                 <th width="15%">Check-in</th>
                                 <th width="15%">Check-out</th>
                                 <th width="15%" class="text-center">Status</th>
-                                <th width="15%" class="text-center">Action Taken</th>
+                                <th width="10%" class="text-center">Action Taken</th>
                             </thead>
                             <tbody>
                                 @foreach ($bookings as $booking)

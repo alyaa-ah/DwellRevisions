@@ -14,6 +14,11 @@
                         </a>
                     </li>
                     <li class="border-bottom w-full">
+                        <a href="{{ url('/client/view-guesthouse-ratings') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('client/view-guesthouse-ratings') || Request::is('client/view-staffhouse-ratings') || Request::is('client/view-DFTC-ratings') ? 'bg-dark-green text-dark-white' : '' }}"> <i class="fas fa-star"></i>
+                            <span class="ms-1 d-none d-sm-inline">RATINGS</span>
+                        </a>
+                    </li>
+                    <li class="border-bottom w-full">
                         <a href="{{ url('/client/view-guesthouse-preservations') }}" class="nav-link text-white hover:bg-medium-green {{ Request::is('client/view-guesthouse-preservations') || Request::is('client/view-staffhouse-preservations') || Request::is('client/view-DFTC-preservations') ? 'bg-dark-green text-dark-white' : '' }}">                            <i class="fas fa-calendar-alt"></i>
                             <span class="ms-1 d-none d-sm-inline">PRE-BOOKINGS</span>
                         </a>

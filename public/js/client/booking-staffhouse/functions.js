@@ -49,13 +49,19 @@ $(document).ready(function() {
     $('#checkOutDateStaffHouse').prop('disabled', true);
 
     $('#checkInDateStaffHouse').on('change', function() {
-        $('#checkOutDateStaffHouse').val('').prop('disabled', true);
+    $('#checkOutDateStaffHouse').val('').prop('disabled', true);
 
-        var selectedDate = new Date($(this).val());
+        const selectedDateValue = $(this).val();
 
-        if ($(this).val()) {
+        if (selectedDateValue) {
+            const selectedDate = new Date(selectedDateValue);
+
+            // Calculate minimum check-out date (1 day after check-in date)
+            const minCheckOutDate = new Date(selectedDate.getTime());
+            minCheckOutDate.setDate(selectedDate.getDate() + 1);
+
+            // Enable and set the minimum check-out date
             $('#checkOutDateStaffHouse').prop('disabled', false);
-            var minCheckOutDate = new Date(selectedDate.getTime());
             $('#checkOutDateStaffHouse').attr('min', minCheckOutDate.toISOString().split('T')[0]);
         }
     });

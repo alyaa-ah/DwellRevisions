@@ -25,7 +25,7 @@ class RegisterController extends Controller
                 'unique:clients,email',
                 'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/',
             ],
-            'username' => 'required|min:8|max:30|unique:clients,username',
+            'username' => 'required|min:6|max:30|unique:clients,username',
         ]);
 
         if ($validator->fails()) {
@@ -65,7 +65,11 @@ class RegisterController extends Controller
     }
     public function forgotPassword(Request $request){
         $validator = Validator::make($request->all(), [
-            'email' =>'required|email',
+            'email' => [
+                'required',
+                'email',
+                'regex:/^[a-zA-Z0-9._%+-]+@gmail\.com$/',
+            ],
         ]);
         if ($validator->fails()) {
             return response()->json([

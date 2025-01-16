@@ -76,7 +76,7 @@
             <p class="Montserrat h-12 text-3xl font-extrabold textGradient" style="margin-top: 4rem">VOIDS</p>
             <div class="row justify-content-center">
                 <div class="col-md-12 d-flex justify-content-center" style="margin-top: 1rem;">
-                    <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/view-canceled-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/view-canceled-pre-reservations') }}">Canceled</a>
+                    <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/view-canceled-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/view-canceled-pre-reservations') }}">Cancelled</a>
                     <a class="btn btn-nav h-9 Montserrat mx-1 {{ Request::is('adminDFTC/view-rejected-pre-reservations') ? 'bg-light-green text-dark-white' : 'inactive' }}" href="{{ url('/adminDFTC/view-rejected-pre-reservations') }}">Rejected</a>
                 </div>
             </div>

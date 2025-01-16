@@ -88,24 +88,23 @@
                             <thead>
                                 <th width="15%">Full Name</th>
                                 <th width="10%">Room Name</th>
-                                <th width="13%">Check In</th>
-                                <th width="13%">Check Out</th>
-                                <th width="5%">Amount</th>
+                                <th width="5%" style="text-align: left">Amount</th>
+                                <th width="5%">OR Number</th>
                                 <th width="15%" class="text-center">Remarks</th>
                                 <th width="10%" class="text-center">Action Taken</th>
+                                <th>GH_number</th>
                             </thead>
                             <tbody>
                                 @foreach ($bookings as $booking)
                                     <tr>
                                         <td>{{ $booking->fullname }}</td>
                                         <td>{{ $booking->room_number}}</td>
-                                        <td>{{ $booking->check_in_date }}</td>
-                                        <td>{{ $booking->check_out_date }}</td>
                                         @if ($booking->total_amount == "0.00" && $booking->position == "Student")
-                                            <td>FREE</td>
+                                            <td style="text-align: left">FREE</td>
                                         @else
-                                            <td>{{ $booking->total_amount }}</td>
+                                            <td style="text-align: left">{{ $booking->total_amount }}</td>
                                         @endif
+                                        <td>{{ $booking->or_number }}</td>
                                         <td class="status-cell">
                                             @if ($booking->remarks == "Early Check Out")
                                                 <span class="status-badge early-checkout">
@@ -114,6 +113,10 @@
                                             @elseif (Str::contains($booking->remarks, "Extended"))
                                                 <span class="status-badge extended">
                                                     <i class="fas fa-plus-circle"></i> {{ $booking->remarks }}
+                                                </span>
+                                            @elseif ($booking->remarks == "Checked Out")
+                                                <span class="status-badge checked-out">
+                                                    <i class="fas fa-arrow-right"></i> {{ $booking->remarks }}
                                                 </span>
                                             @else
                                                 @if ($booking->remarks == "" || $booking->remarks == null)
@@ -133,6 +136,7 @@
                                                     <button type="button" onclick="checkGuestHouseBookingAdminGH('{{ addslashes(json_encode($booking) )}}')" class="btn btn-warning"><i class="fa-solid fa-edit" style="color: BLACK;"></i></button>
                                                 @endif
                                         </td>
+                                        <td>{{ $booking->GH_number }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -387,6 +391,10 @@
                                   <label for="reviewStatus" class="form-group text-light-green">Booking ID</label>
                                   <input type="text" class="form-control" name="booking_id" id="booking_check_id">
                                 </div>
+                                <div class="form-group Montserrat text-sm font-semibold" hidden>
+                                    <label for="roomStatus" class="form-group text-light-green">Room ID</label>
+                                    <input type="text" class="form-control" name="room_id" id="room_check_id">
+                                </div>
 
                                 <!-- Original Checkout Date -->
                                 <div class="form-group Montserrat text-sm font-semibold" hidden>
@@ -409,6 +417,7 @@
                                   <label for="reviewCheck" class="form-group text-light-green">Pre-Booking Status</label>
                                   <select id="reviewCheck" name="remarks" class="form-control" onchange="handleStatusChange()">
                                     <option value="">Select status</option>
+                                    <option value="Checked Out">Checked Out</option>
                                     <option value="Early Check Out">Early Check Out</option>
                                     <option value="Extended">Extended</option>
                                   </select>

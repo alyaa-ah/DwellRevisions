@@ -184,14 +184,14 @@
                                 <div class="border-2 rounded-md border-gray-500 p-1" readonly>
                                     <div class="row mb-2">
                                         <div class="form-group text-light-green">
-                                            <label for="numberofDays" class="Montserrat text-sm font-semibold">Number Of Days</label>
-                                            <input type="text" class="form-control" name="numberOfDays" id="numberOfDaysHallDftc" style="background-color:#d3d3d3;" placeholder="0" readonly>
+                                            <label for="numberofNights" class="Montserrat text-sm font-semibold">Number Of Days</label>
+                                            <input type="text" class="form-control" name="numberOfNights" id="numberOfNightsHallDftc" style="background-color:#d3d3d3;" placeholder="0" readonly>
                                         </div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="form-group text-light-green">
-                                            <label for="numberofNights" class="Montserrat text-sm font-semibold">Number Of Nights</label>
-                                            <input type="text" class="form-control" name="numberOfNights" id="numberOfNightsHallDftc" style="background-color:#d3d3d3;" placeholder="0" readonly>
+                                            <label for="numberofDays" class="Montserrat text-sm font-semibold">Number Of Nights</label>
+                                            <input type="text" class="form-control" name="numberOfDays" id="numberOfDaysHallDftc" style="background-color:#d3d3d3;" placeholder="0" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -400,5 +400,22 @@ document.addEventListener("DOMContentLoaded", function() {
         activitySelect.value = "Others";
     });
 });
+const roomNumberSelect = document.getElementById('room_numberHallDftc');
+    const checkInDate = document.getElementById('checkInDateHallDftc');
+    const checkOutDate = document.getElementById('checkOutDateHallDftc');
+    const numOfMale = document.getElementById('numOfMaleHallDftc');
+    const numOfFemale = document.getElementById('numOfFemaleHallDftc');
+    const arrivalDftcHalls = document.getElementById('arrivalHallDftc');
+    const departureDftcHalls = document.getElementById('departureHallDftc');
+    function toggleFields() {
+        const isRoomSelected = roomNumberSelect.value !== '';
+        checkInDate.disabled = !isRoomSelected;
+        numOfMale.disabled = !isRoomSelected;
+        numOfFemale.disabled = !isRoomSelected;
+        arrivalDftcHalls.disabled =!isRoomSelected;
+        departureDftcHalls.disabled =!isRoomSelected;
+    }
+    roomNumberSelect.addEventListener('change', toggleFields);
+    toggleFields();
 </script>
 @endsection
