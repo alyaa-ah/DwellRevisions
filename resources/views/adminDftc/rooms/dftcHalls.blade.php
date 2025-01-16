@@ -71,7 +71,7 @@
                             <span class="Montserrat text-sm font-bold textGradient text-left">DFTC | </span>
                             <span class="Montserrat text-sm font-semibold text-light-green text-left">
                             Status:
-                            @if($bookingCount > 0 && ($room->room_status != "Occupied" && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable'))
+                            @if($bookingCount > 0 && ($room->room_status != "Occupied" && $room->room_status != 'Under-Renovation' && $room->room_status != 'Unavailable'))
                                 <span class="inline-flex items-center bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 rounded-full text-sm">
                                     <i class="fa fa-calendar-check-o mr-1"></i>
                                     <span class="font-semibold">Pre-Booked</span>
@@ -86,10 +86,10 @@
                                     <i class="fa fa-lock mr-1"></i>
                                     <span class="font-semibold">Occupied</span>
                                 </span>
-                            @elseif ($room->room_status === 'On-Renovation')
+                            @elseif ($room->room_status === 'Under-Renovation')
                                 <span class="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded-full text-sm">
                                     <i class="fa fa-tools mr-1"></i>
-                                    <span class="font-semibold">On-Renovation</span>
+                                    <span class="font-semibold">Under-Renovation</span>
                                 </span>
                             @elseif ($room->room_status === 'Unavailable')
                                 <span class="inline-flex items-center bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-full text-sm">
@@ -209,7 +209,7 @@
                                 <div class="col-md-12">
                                     <p class="Montserrat text-light-green text-sm font-medium">Rate: {{ $room->room_rate }}/head</p>
                                     @if(session()->has('loggedInCustomer') || session()->has('loggedInSuperAdmin') || session()->has('loggedInAdminDftc'))
-                                        @if($room->room_status != 'Unavailable' && $room->room_status != 'On-Renovation' && $room->room_status != 'Occupied')
+                                        @if($room->room_status != 'Unavailable' && $room->room_status != 'Under-Renovation' && $room->room_status != 'Occupied')
                                             <div class="d-flex justify-content-end">
                                                 <button type="button" id="dftc-booking"
                                                     onclick="bookDftcHall('{{ addslashes(json_encode($room)) }}', '{{ addslashes(json_encode(session('loggedInAdminDftc'))) }}')"

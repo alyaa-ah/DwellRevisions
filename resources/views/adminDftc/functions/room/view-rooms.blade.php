@@ -113,9 +113,9 @@
                                                 <span class="status-badge unavailable">
                                                     <i class="fas fa-times-circle"></i> Unavailable
                                                 </span>
-                                            @elseif ($room->room_status == "On-Renovation")
+                                            @elseif ($room->room_status == "Under-Renovation")
                                                 <span class="status-badge on-renovation">
-                                                    <i class="fas fa-tools"></i> On-Renovation
+                                                    <i class="fas fa-tools"></i> Under-Renovation
                                                 </span>
                                             @elseif ($room->room_status == "Occupied")
                                                 <span class="status-badge occupied">
@@ -315,8 +315,8 @@
                                             <select name="room_status" id="updateRoomStatus" class="form-control">
                                                 <option value="">Select Room Status</option>
                                                 <option value="Available">Available</option>
-                                                <option value="Unavailable">Unavailable</option>
-                                                <option value="On-Renovation">On-Renovation</option>
+                                                <option value="Under-Renovation">Under-Renovation</option>
+                                                <option value="Occupied">Occupied</option>
                                             </select>
                                         </div>
                                     </div>

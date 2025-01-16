@@ -156,7 +156,7 @@
                                         @else
                                             <option value="">Select Room</option>
                                             @foreach($roomnumbers as $room)
-                                                @if ($room->room_status != 'Occupied' && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable')
+                                                @if ($room->room_status != 'Occupied' && $room->room_status != 'Under-Renovation' && $room->room_status != 'Unavailable')
                                                     <option value="{{ $room->id }}">{{ $room->room_number }}</option>
                                                 @endif
                                             @endforeach

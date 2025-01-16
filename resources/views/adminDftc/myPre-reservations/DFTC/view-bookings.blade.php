@@ -309,7 +309,7 @@
                                                     <select name="room_number" id="editRoomNumberDftcRoom" class="form-control" required>
                                                         <option value="">Select Room</option>
                                                         @foreach ($rooms as $room)
-                                                            @if($room->room_type != "Hall" && ($room->room_status != 'Occupied' && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable'))
+                                                            @if($room->room_type != "Hall" && ($room->room_status != 'Occupied' && $room->room_status != 'Under-Renovation' && $room->room_status != 'Unavailable'))
                                                                 <option value="{{ $room->id }}">{{ $room->room_number }}</option>
                                                             @endif
                                                         @endforeach
@@ -564,7 +564,7 @@
                                                 <select name="room_number" id="editRoomNumberDftcHall" class="form-control"  required>
                                                     <option value="">Select Room</option>
                                                         @foreach($rooms as $room)
-                                                            @if($room->room_type == "Hall" && ($room->room_status != 'Occupied' && $room->room_status != 'On-Renovation' && $room->room_status != 'Unavailable'))
+                                                            @if($room->room_type == "Hall" && ($room->room_status != 'Occupied' && $room->room_status != 'Under-Renovation' && $room->room_status != 'Unavailable'))
                                                                 <option value="{{ $room->id }}">{{ $room->room_number }}</option>
                                                             @endif
                                                         @endforeach
