@@ -45,6 +45,12 @@ return new class extends Migration
             $table->string('female_guest', 500)->nullable();
             $table->string('special_request', 500)->nullable();
             $table->string('reason', 500)->nullable();
+            $table->float('ratings')->nullable();
+            $table->string('feedbacks', 500)->nullable();
+            $table->string('comment_date', 30)->nullable();
+            $table->string('remarks', 120)->nullable();
+            $table->string('or_number', 30)->nullable();
+            $table->string('anonymous', 5)->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });
