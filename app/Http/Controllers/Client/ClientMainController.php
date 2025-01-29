@@ -17,10 +17,7 @@ class ClientMainController extends Controller
     }
     public function goToDashboard(){
         $now = Carbon::now('Asia/Manila');
-        $client_id = session()->get('loggedInCustomer')['id'];
-        $guesthousebooking = GuestHouseBooking::
-        where('client_id', $client_id)
-        ->get()
+        $guestHouseBookings = GuestHouseBooking::all()
         ->filter(function ($booking) use ($now) {
             $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
@@ -29,36 +26,45 @@ class ClientMainController extends Controller
         })
         ->sortByDesc(function ($booking) {
             return Carbon::createFromFormat('F j, Y h:i A', $booking->GH_date, 'Asia/Manila');
-        });
-        $staffhousebooking = StaffHouseBooking::
-        where('client_id', $client_id)
-        ->get()
-        ->filter(function ($booking) use ($now) {
-            $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
-            $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
-            $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
-            return $now->lte($checkOutDateTime);
         })
-        ->sortByDesc(function ($booking) {
-            return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+        ->map(function ($item) {
+            $item->type = 'Guest House';
+            return $item;
         });
-        $dftcbooking = DftcBooking::
-        where('client_id', $client_id)
-        ->get()
-        ->filter(function ($booking) use ($now) {
-            $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
-            $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
-            $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
-            return $now->lte($checkOutDateTime);
-        })
-        ->sortByDesc(function ($booking) {
-            return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
-        });
-        return view('client.dashboard.dashboard', [
-            'guesthousebooking' => $guesthousebooking,
-            'staffhousebooking' => $staffhousebooking,
-            'dftcbooking' => $dftcbooking,
-        ]);
+        $staffHouseBookings = StaffHouseBooking::all()
+            ->filter(function ($booking) use ($now) {
+                $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+                $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
+                $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
+                return $now->lte($checkOutDateTime);
+            })
+            ->sortByDesc(function ($booking) {
+                return Carbon::createFromFormat('F j, Y h:i A', $booking->SH_date, 'Asia/Manila');
+            })
+            ->map(function ($item) {
+                $item->type = 'Staff House';
+                return $item;
+            });
+
+            $dftcBookings = DftcBooking::all()
+                ->filter(function ($booking) use ($now) {
+                    $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
+                    $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
+                    $checkOutDateTime = $checkOutDate->setTimeFrom($departureTime);
+                    return $now->lte($checkOutDateTime);
+                })
+                ->sortByDesc(function ($booking) {
+                    return Carbon::createFromFormat('F j, Y h:i A', $booking->DFTC_date, 'Asia/Manila');
+                })
+                ->map(function ($item) {
+                    $item->type = 'DFTC';
+                    return $item;
+                });
+
+                $allBookings = $guestHouseBookings
+                ->concat($staffHouseBookings)
+                ->concat($dftcBookings);
+        return view('client.dashboard.dashboard', compact('allBookings'));
     }
     public function goToRatingsGuestHouse(){
         $now = Carbon::now('Asia/Manila');

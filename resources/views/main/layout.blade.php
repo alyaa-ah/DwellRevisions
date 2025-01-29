@@ -357,14 +357,6 @@
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="#" data-value="+63" data-flag="{{ asset('icons/ph.png') }}">
                                         <img src="{{ asset('icons/ph.png') }}" alt="Philippines" style="width: 18px;">PH (+63)</a></li>
-                                    <li><a class="dropdown-item" href="#" data-value="+1" data-flag="{{ asset('icons/usa.png') }}">
-                                        <img src="{{ asset('icons/usa.png') }}" alt="USA" style="width: 18px;">US (+1)</a></li>
-                                    <li><a class="dropdown-item" href="#" data-value="+44" data-flag="{{ asset('icons/uk.png') }}">
-                                        <img src="{{ asset('icons/uk.png') }}" alt="UK" style="width: 18px;">UK (+44)</a></li>
-                                    <li><a class="dropdown-item" href="#" data-value="+61" data-flag="{{ asset('icons/aus.png') }}">
-                                        <img src="{{ asset('icons/aus.png') }}" alt="Australia" style="width: 18px;">AU (+61)</a></li>
-                                    <li><a class="dropdown-item" href="#" data-value="+1" data-flag="{{ asset('icons/canada.png') }}">
-                                        <img src="{{ asset('icons/canada.png') }}" alt="Canada" style="width: 18px;">CA (+81)</a></li>
                                 </ul>
                             </div>
 
@@ -383,7 +375,7 @@
                         <div class="container d-flex justify-content-center text-align-center">
                             <div class="row">
                                 <div class="col-12 d-flex justify-content-center align-items-center">
-                                    <input type="checkbox" id="termsCheckbox" required class="me-2">
+                                    <input type="checkbox" id="termsCheckbox" required class="me-2" >
                                     <label for="termsCheckbox" class="Montserrat text-blue-500 underline text-xs font-medium">
                                         <a href="#termsAndConditions" data-bs-toggle="modal">Terms and Conditions</a>
                                     </label>
@@ -394,10 +386,23 @@
                                         <a href="#privacypolicy" data-bs-toggle="modal">Privacy Policy Agreement</a>
                                     </label>
                                 </div>
-                                <div class="col-12 d-flex justify-content-center align-items-center mt-2">
-                                    {!! NoCaptcha::renderJs() !!}
-                                    {!! NoCaptcha::display() !!}
+                                <div class="col-12 d-flex justify-content-center align-items-center mt-4 captcha-container">
+
+                                    <div class="captcha-box">
+
+                                        <span class="captcha-code" id="captchaCode">
+
+                                        </span>
+                                    </div>
+
+
+                                    <span class="refresh-btn" id="refreshCaptcha">
+                                        <i class="fa-solid fa-arrows-rotate"></i>
+                                    </span>
                                 </div>
+
+                                <input type="text" id="captchaInput" class="form-control mt-3" placeholder="Enter here the CAPTCHA" required>
+
                             </div>
                         </div>
                     </div>
@@ -623,36 +628,50 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Get all the dropdown items
     const dropdownItems = document.querySelectorAll('.dropdown-item');
 
     dropdownItems.forEach(item => {
         item.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent the default link behavior
+            e.preventDefault();
 
-            // Get the selected country code and flag
+
             const countryCode = item.getAttribute('data-value');
             const flagUrl = item.getAttribute('data-flag');
-            const countryText = item.textContent.trim(); // Get country name with code
+            const countryText = item.textContent.trim();
 
-            // Update the flag image and country code on the button
+
             const flagImage = document.getElementById('selected-flag');
             flagImage.src = flagUrl;
             flagImage.alt = countryText;
 
-            // Update the button's text content
+
             const button = document.querySelector('.dropdown-toggle');
             button.innerHTML = `<img id="selected-flag" src="${flagUrl}" alt="${countryText}" style="width: 18px;"> ${countryText}`;
 
-            // Update the hidden input field with the country code
+
             const countryCodeInput = document.getElementById('country_code');
             countryCodeInput.value = countryCode;
 
-            // Retrieve the selected country code from the hidden input's value
+
             const selectedCountryCode = countryCodeInput.value;
-            console.log(selectedCountryCode); // Outputs: "+63", "+1", etc.
+            console.log(selectedCountryCode);
         });
     });
+});
+$(document).ready(function(){
+    function generateCaptcha() {
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*?';
+    var captcha = '';
+    for (var i = 0; i < 6; i++) {
+        var randomIndex = Math.floor(Math.random() * characters.length);
+        captcha += characters[randomIndex];
+    }
+    $('#captchaCode').text(captcha);
+    }
+    $('#refreshCaptcha').click(function() {
+        generateCaptcha();
+    });
+    generateCaptcha();
 });
 </script>
 

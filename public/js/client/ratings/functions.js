@@ -69,7 +69,7 @@ $(document).on('submit', '#rating-clientGuestHouse', function(event) {
                             text: response.message,
                             showConfirmButton: true,
                         }).then(function() {
-                            window.location.reload();
+                            window.location = "/client/view-guesthouse-rooms";
                         });
                     }
                 },
@@ -125,7 +125,7 @@ $(document).on('submit', '#rating-clientStaffHouse', function(event) {
                             text: response.message,
                             showConfirmButton: true,
                         }).then(function() {
-                            window.location.reload();
+                            window.location = "/client/view-staffhouse-rooms";
                         });
                     }
                 },
@@ -181,7 +181,7 @@ $(document).on('submit', '#rating-clientDftc', function(event) {
                             text: response.message,
                             showConfirmButton: true,
                         }).then(function() {
-                            window.location.reload();
+                            window.location = "/client/view-DFTC-rooms";
                         });
                     }
                 },

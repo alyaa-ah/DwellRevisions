@@ -1,11 +1,43 @@
 $(document).ready(function(){
     $(document).on('click', '#register-btn', function(event){
         event.preventDefault();
-        console.log("Submit button clicked");
+        var captchaCode = $('#captchaCode').text();
+        var userCaptchaInput = $('#captchaInput').val().trim();
+        var termsCheckbox = document.getElementById('termsCheckbox');
+        var privacyCheckbox = document.getElementById('privacyCheckbox');
+        var termsNotChecked = !termsCheckbox.checked;
+        var privacyNotChecked = !privacyCheckbox.checked;
 
-        var formData = $('#registration-form').serialize();
-        console.log("Form Data: ", formData);
-        // var formData = new FormData($('#registration-form')[0]);
+        if (termsNotChecked || privacyNotChecked) {
+            // alert('Please agree to both the Terms and Conditions and Privacy Policy before submitting');
+            // console.log('Both checkboxes are not checked.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Please agree to both in Terms and Conditions and Privacy Policy before submitting',
+                showConfirmButton: true,
+            });
+        }else if (userCaptchaInput === '') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Please enter the CAPTCHA.',
+                showConfirmButton: true,
+            });
+            return;
+        } else if (userCaptchaInput !== captchaCode) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Please enter the correct CAPTCHA.',
+                showConfirmButton: true,
+            });
+
+            $('#captchaInput').val('');
+            $('#refreshCaptcha').click();
+            return;
+        }else{
+            var formData = $('#registration-form').serialize();
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -57,5 +89,6 @@ $(document).ready(function(){
                     console.log(error);
                 }
             });
+        }
     });
 });

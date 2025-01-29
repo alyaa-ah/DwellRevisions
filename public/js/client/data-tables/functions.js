@@ -272,7 +272,7 @@ $(function () {
     });
 });
 $(function () {
-    var table = $('#guestHouseDashboardTable').dataTable({
+    var table = $('#DashboardTable').dataTable({
         "aLengthMenu": [[5, 15, 25, 50, 75 , 100, -1],[5, 15, 25, 50, 75 , 100, "All"]],
         "pageLength": 5,
         "responsive": {
@@ -284,14 +284,14 @@ $(function () {
                 { name: 'xs', width: 576 }
             ]
         },
-        "columnDefs": [
+         "columnDefs": [
             {
-                "targets": 3,
+                "targets": 5,
                 "visible": false,
                 "searchable": false
             }
         ],
-        "order": [[3, 'desc']],
+        "order": [[5, 'desc']],
     });
 });
 $(function () {

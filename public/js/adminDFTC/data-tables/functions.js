@@ -26,10 +26,10 @@ $(function () {
                 { name: 'xs', width: 576 }
             ]
         },
-        "order": [[7, 'desc']],
+        "order": [[6, 'desc']],
         "columnDefs": [
             {
-                "targets": 7,
+                "targets": 6,
                 "visible": false
             }
         ]

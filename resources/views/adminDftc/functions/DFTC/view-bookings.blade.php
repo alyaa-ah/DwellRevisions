@@ -87,9 +87,8 @@
                             <thead>
                                 <th width="15%">Full Name</th>
                                 <th width="10%">Room Name</th>
-                                <th width="13%">Check In</th>
-                                <th width="13%">Check Out</th>
-                                <th width="5%">Amount</th>
+                                <th width="5%" style="text-align: left">Amount</th>
+                                <th width="5%">OR Number</th>
                                 <th width="15%" class="text-center">Remarks</th>
                                 <th width="10%" class="text-center">Action Taken</th>
                                 <th>DFTC Number</th>
@@ -105,10 +104,8 @@
                                                 {{ $booking->room_number }}
                                             @endif
                                         </td>
-
-                                        <td>{{ $booking->check_in_date }}</td>
-                                        <td>{{ $booking->check_out_date }}</td>
                                         <td class="text-center">{{ $booking->total_amount }}</td>
+                                        <td>{{ $booking->or_number }}</td>
                                         <td class="status-cell">
                                             @if ($booking->remarks == "Early Check Out")
                                                 <span class="status-badge early-checkout">

@@ -1,4 +1,4 @@
-@extends('client/layout')
+{{-- @extends('client/layout')
 
 @section('content')
 
@@ -48,24 +48,23 @@
         <div class="col-10 content m-3 mx-auto items-center" data-aos="fade-up" data-aos-duration="800">
             <p class="Montserrat h-12 text-3xl font-extrabold textGradient" style="margin-top: 3rem">DASHBOARD</p>
             <div class="container card w-100 bg-light-white mt-2">
+                <p class="Montserrat text-2xl md:text-5xl font-extrabold textGradient text-center mt-3">
+                    GUEST HOUSE
+                </p>
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-responsive table-striped table-hover w-auto" id="DashboardTable">
+                        <table class="table table-responsive table-striped table-hover w-auto" id="guestHouseDashboardTable">
                             <thead>
                                 <tr>
-                                    <th width="15">Date and Time</th>
-                                    <th width="10%">Facility</th>
-                                    <th width="20%">Room Name</th>
-                                    <th width="45%" style="text-align: left">Report</th>
+                                    <th width="15%">Room Name</th>
+                                    <th width="60%" style="text-align: left">Report</th>
                                     <th width="5%" class="text-center">Link</th>
-                                    <th width="5%">DATE</th>
+                                    <th width="5%">GH number</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($allBookings as $booking)
+                                @foreach ($guesthousebooking as $booking)
                                     <tr>
-                                        <td>{{ \Carbon\Carbon::parse($booking->updated_at)->format('F d Y g:i A') }}</td>
-                                        <td>{{ $booking->type }}</td>
                                         <td>{{ $booking->room_number }}</td>
                                         <td>
                                             @if ($booking->status == 'Pending Review')
@@ -80,40 +79,114 @@
                                         </td>
                                         <td class="text-center">
                                             @if ($booking->status == 'Pending Review')
-                                                @if ($booking->type == "Guest House")
-                                                    <a href="{{ url('/client/view-guesthouse-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @elseif ($booking->type == "Staff House")
-                                                    <a href="{{ url('/client/view-staffhouse-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @elseif ($booking->type == "DFTC")
-                                                    <a href="{{ url('/client/view-DFTC-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @endif
+                                                <a href="{{ url('/client/view-guesthouse-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
                                             @elseif ($booking->status == 'Canceled')
-                                                @if ($booking->type == "Guest House")
-                                                    <a href="{{ url('/client/view-guesthouse-canceled-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @elseif ($booking->type == "Staff House")
-                                                    <a href="{{ url('/client/view-staffhouse-canceled-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @elseif ($booking->type == "DFTC")
-                                                    <a href="{{ url('/client/view-DFTC-canceled-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @endif
+                                                <a href="{{ url('/client/view-guesthouse-canceled-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
                                             @elseif ($booking->status == 'Rejected')
-                                                @if ($booking->type == "Guest House")
-                                                    <a href="{{ url('/client/view-guesthouse-rejected-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @elseif ($booking->type == "Staff House")
-                                                    <a href="{{ url('/client/view-staffhouse-rejected-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @elseif ($booking->type == "DFTC")
-                                                    <a href="{{ url('/client/view-DFTC-rejected-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @endif
+                                                <a href="{{ url('/client/view-guesthouse-rejected-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
                                             @else
-                                                @if ($booking->type == "Guest House")
-                                                    <a href="{{ url('/client/view-guesthouse-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @elseif ($booking->type == "Staff House")
-                                                    <a href="{{ url('/client/view-staffhouse-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @elseif ($booking->type == "DFTC")
-                                                    <a href="{{ url('/client/view-DFTC-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
-                                                @endif
+                                                <a href="{{ url('/client/view-guesthouse-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
                                             @endif
                                         </td>
-                                        <td>{{ $booking->updated_at }}</td>
+                                        <td>{{ $booking->GH_number }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container card w-100 bg-light-white mt-5">
+                <div class="row">
+                    <p class="Montserrat text-2xl md:text-5xl font-extrabold textGradient text-center mt-3 mb-2">
+                        STAFF HOUSE
+                    </p>
+                    <div class="col-md-12">
+                        <table class="table table-responsive table-striped table-hover w-auto" id="staffHouseDashboardTable">
+                            <thead>
+                                <tr>
+                                    <th width="15%">Room Name</th>
+                                    <th width="60%" style="text-align: left">Report</th>
+                                    <th width="5%" class="text-center">Link</th>
+                                    <th width="5%">SH number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($staffhousebooking as $booking)
+                                    <tr>
+                                        <td>{{ $booking->room_number }}</td>
+                                        <td>
+                                            @if ($booking->status == 'Pending Review')
+                                                Your request is now <span class="status-badge pending">pending for approval.</span>
+                                            @elseif ($booking->status == 'Canceled')
+                                                Your request has been <span class="status-badge canceled"> cancelled due to {{ $booking->reason }}</span>
+                                            @elseif ($booking->status == 'Rejected')
+                                                Your request has been <span class="status-badge rejected"> rejected due to {{ $booking->reason }}</span>
+                                            @else
+                                                Your request is now <span class="status-badge approved">approved by the admin.</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($booking->status == 'Pending Review')
+                                                <a href="{{ url('/client/view-staffhouse-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
+                                            @elseif ($booking->status == 'Canceled')
+                                                <a href="{{ url('/client/view-staffhouse-canceled-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
+                                            @elseif ($booking->status == 'Rejected')
+                                                <a href="{{ url('/client/view-staffhouse-rejected-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
+                                            @else
+                                                <a href="{{ url('/client/view-staffhouse-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
+                                            @endif
+                                        </td>
+                                        <td>{{ $booking->SH_number }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container card w-100 bg-light-white mt-5">
+                <div class="row">
+                    <p class="Montserrat text-2xl md:text-5xl font-extrabold textGradient text-center mt-3 mb-2">
+                        DUMLAO FARMER'S TRAINING CENTER
+                    </p>
+                    <div class="col-md-12">
+                        <table class="table table-responsive table-striped table-hover w-auto" id="dftcDashboardTable">
+                            <thead>
+                                <tr>
+                                    <th width="20%">Room Name</th>
+                                    <th width="70%" style="text-align: left">Report</th>
+                                    <th width="5%" class="text-center">Link</th>
+                                    <th width="5%">DFTC number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($dftcbooking as $booking)
+                                    <tr>
+                                        <td>{{ $booking->room_number }}</td>
+                                        <td>
+                                            @if ($booking->status == 'Pending Review')
+                                                Your request is now <span class="status-badge pending">pending for approval.</span>
+                                            @elseif ($booking->status == 'Canceled')
+                                                Your request has been <span class="status-badge canceled"> cancelled due to {{ $booking->reason }}</span>
+                                            @elseif ($booking->status == 'Rejected')
+                                                Your request has been <span class="status-badge rejected"> rejected due to {{ $booking->reason }}</span>
+                                            @else
+                                                Your request is now <span class="status-badge approved">approved by the admin.</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($booking->status == 'Pending Review')
+                                                <a href="{{ url('/client/view-DFTC-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
+                                            @elseif ($booking->status == 'Canceled')
+                                                <a href="{{ url('/client/view-DFTC-canceled-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
+                                            @elseif ($booking->status == 'Rejected')
+                                                <a href="{{ url('/client/view-DFTC-rejected-preservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
+                                            @else
+                                                <a href="{{ url('/client/view-DFTC-prereservations') }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-right-to-bracket"></i></a>
+                                            @endif
+                                        </td>
+                                        <td>{{ $booking->DFTC_number }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -248,4 +321,4 @@
     }
 </style>
 
-@endsection
+@endsection --}}
