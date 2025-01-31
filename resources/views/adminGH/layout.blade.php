@@ -17,7 +17,7 @@
 
     <link rel="icon" type="image/x-icon" href="{{ asset('images/icon.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="{{ asset('public/build/assets/app-F9i9Njk6.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('public/build/assets/app-DNm3bkJO.css') }}" rel="stylesheet"> --}}
     <!-- External CSS -->
     <link rel="stylesheet" href="{{ asset('css/styles1.css') }}">
     <link rel="stylesheet" href="{{ url('css/styles/adminGH/styles.css') }}">

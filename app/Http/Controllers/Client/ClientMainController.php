@@ -17,7 +17,10 @@ class ClientMainController extends Controller
     }
     public function goToDashboard(){
         $now = Carbon::now('Asia/Manila');
-        $guestHouseBookings = GuestHouseBooking::all()
+        $client_id = session()->get('loggedInCustomer')['id'];
+        $guestHouseBookings = GuestHouseBooking::
+        where('client_id', $client_id)
+        ->get()
         ->filter(function ($booking) use ($now) {
             $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
             $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
@@ -31,7 +34,9 @@ class ClientMainController extends Controller
             $item->type = 'Guest House';
             return $item;
         });
-        $staffHouseBookings = StaffHouseBooking::all()
+        $staffHouseBookings = StaffHouseBooking::
+            where('client_id', $client_id)
+            ->get()
             ->filter(function ($booking) use ($now) {
                 $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
                 $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');
@@ -46,7 +51,9 @@ class ClientMainController extends Controller
                 return $item;
             });
 
-            $dftcBookings = DftcBooking::all()
+            $dftcBookings = DftcBooking::
+                where('client_id', $client_id)
+                ->get()
                 ->filter(function ($booking) use ($now) {
                     $checkOutDate = Carbon::createFromFormat('F j, Y', $booking->check_out_date, 'Asia/Manila');
                     $departureTime = Carbon::createFromFormat('h:i A', $booking->departure, 'Asia/Manila');

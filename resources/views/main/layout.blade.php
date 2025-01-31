@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.11.1/sweetalert2.css" integrity="sha512-n1PBkhxQLVIma0hnm731gu/40gByOeBjlm5Z/PgwNxhJnyW1wYG8v7gPJDT6jpk0cMHfL8vUGUVjz3t4gXyZYQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" type="image/x-icon" href="{{ asset('/public/images/icon.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="{{ asset('public/build/assets/app-F9i9Njk6.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('public/build/assets/app-DNm3bkJO.css') }}" rel="stylesheet"> --}}
     <!-- External CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;500&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">

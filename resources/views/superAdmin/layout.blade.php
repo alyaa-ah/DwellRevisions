@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.min.css">
     <link rel="icon" type="image/x-icon" href="{{ asset('images/icon.png') }}">
-    <link href="{{ asset('build/assets/app-F9i9Njk6.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('public/build/assets/app-DNm3bkJO.css') }}" rel="stylesheet"> --}}
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
     <!-- External CSS -->
